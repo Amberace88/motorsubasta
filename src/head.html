@@ -854,6 +854,58 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
 .hero .mesh{z-index:1}
 .hero .wrap{position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.hero-fx{display:none}}
+
+/* ---------- v11: hero a toda pantalla, como la sala de subastas ---------- */
+.hero-v2{min-height:min(76vh,660px);display:grid;align-items:center;border-bottom:0;isolation:isolate;overflow:hidden}
+.hero-v2::before,.hero-v2::after{display:none}
+.hero-img{position:absolute;inset:0;z-index:0;background:#070606 url("img/hall.jpg") center 64%/cover no-repeat;
+  animation:hallDrift 46s ease-in-out infinite alternate;will-change:transform}
+@keyframes hallDrift{from{transform:scale(1.015) translate3d(-.4%,0,0)}to{transform:scale(1.06) translate3d(.4%,-.6%,0)}}
+.hero-veil{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,0) 0%,rgba(8,7,7,.34) 48%,rgba(8,7,7,.84) 100%),
+    linear-gradient(to bottom,rgba(8,7,7,.72) 0%,rgba(8,7,7,.12) 24%,rgba(8,7,7,.22) 62%,rgba(8,7,7,.86) 88%,var(--bg) 100%)}
+.hero-v2 .hero-fx{z-index:1}
+.hero-v2 .wrap{position:relative;z-index:3;display:block;text-align:center;max-width:1000px;padding-block:72px 64px}
+.hero-v2 .wrap::before{content:"";position:absolute;inset:-4% -10% 2%;z-index:-1;pointer-events:none;
+  background:radial-gradient(58% 54% at 50% 48%,rgba(6,5,5,.74) 0%,rgba(6,5,5,.5) 52%,rgba(6,5,5,0) 78%);filter:blur(14px)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.18);background:rgba(16,14,13,.55);backdrop-filter:blur(10px);
+  font:600 12.5px/1 var(--body);letter-spacing:.02em;color:#f2efec}
+.hero-badge svg{color:var(--accent-2)}
+.hero-v2 h1{font-size:clamp(31px,4.6vw,57px);line-height:1.04;letter-spacing:-.034em;margin:22px auto 0;max-width:17ch;color:#fff;text-wrap:balance;
+  text-shadow:0 2px 40px rgba(0,0,0,.55)}
+.hero-v2 h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-v2 .lead{font-size:clamp(15px,1.5vw,17.5px);color:rgba(245,242,239,.93);max-width:58ch;margin:20px auto 0;text-shadow:0 1px 3px rgba(0,0,0,.75),0 2px 22px rgba(0,0,0,.65)}
+.hero-v2 .hero-cta{justify-content:center;margin-top:30px;gap:12px}
+.btn.lg{height:52px;min-height:52px;padding:0 24px;font-size:15.5px;border-radius:13px}
+.hero-v2 .btn:not(.primary){background:rgba(22,19,18,.62);border-color:rgba(255,255,255,.2);backdrop-filter:blur(10px);color:#f3f1ef}
+.hero-v2 .btn:not(.primary):hover{border-color:rgba(255,255,255,.42);background:rgba(30,26,24,.78)}
+.hero-v2 .btn.primary{box-shadow:0 14px 40px -14px rgba(226,113,34,.75)}
+.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:30px}
+.hero-pills span{display:inline-flex;align-items:center;gap:8px;padding:11px 17px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.17);background:rgba(14,12,11,.62);backdrop-filter:blur(10px);
+  font-size:13.5px;color:rgba(242,238,234,.88)}
+.hero-pills b{font:700 16px/1 var(--display);color:#fff;letter-spacing:-.02em}
+.hero-pills svg{color:var(--accent-2)}
+.hero-v2 .trust{justify-content:center;border-top-color:rgba(255,255,255,.12);margin-top:34px;gap:0 22px}
+.hero-v2 .trust span{color:rgba(234,230,226,.66);text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.livestrip{position:relative;z-index:4;margin-top:-54px}
+.livestrip .livepanel{box-shadow:0 30px 70px -34px rgba(0,0,0,.85)}
+@media (max-width:760px){
+  .hero-v2{min-height:auto}
+  .hero-v2 .wrap{padding-block:48px 40px}
+  .hero-v2 h1{max-width:none}
+  .hero-v2 .hero-cta{flex-direction:column;align-items:stretch}
+  .hero-v2 .btn.lg{width:100%}
+  .livestrip{margin-top:-30px}
+}
+@media (prefers-reduced-motion:reduce){.hero-img{animation:none}}
+:root[data-theme="light"] .hero-veil,
+:root:not([data-theme="dark"]) .hero-veil{
+  background:
+    radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,.10) 0%,rgba(8,7,7,.42) 48%,rgba(8,7,7,.86) 100%),
+    linear-gradient(to bottom,rgba(8,7,7,.74) 0%,rgba(8,7,7,.20) 24%,rgba(8,7,7,.34) 62%,rgba(8,7,7,.9) 88%,var(--bg) 100%)}
 </style>
 
 <div id="prog"></div>

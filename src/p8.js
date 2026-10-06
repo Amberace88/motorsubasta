@@ -143,25 +143,30 @@ function viewHome() {
   const liveN = lots.filter(l => statusOf(l) === "live").length;
   const counts = k => lots.filter(l => l.cat === k).length;
   return `${tickerHTML()}
-  <section class="hero"><div class="shot" aria-hidden="true" style="background-image:url(${imgSrc(pop[0] ? pop[0].img : "bmw-m3")})"></div><div class="mesh" aria-hidden="true"></div><div class="wrap">
-    <div>
-      <div class="eyebrow" data-rev>${ic("shield", "sm")}Plataforma profesional verificada</div>
-      <h1 style="margin-top:18px">Tu plataforma profesional de <em>subastas de vehículos</em></h1>
-      <p class="lead" data-rev style="--d:300ms">Vehículos sin daños, con defectos, siniestros totales, inundados y para desguace. Compra directo en subasta, con el coste total calculado antes de pujar.</p>
-      <div class="hero-cta" data-rev style="--d:380ms">
-        <a class="btn primary" href="#/subastas">${ic("gavel", "sm")}Ver subastas</a>
-        <a class="btn" href="#/publicar">${ic("upload", "sm")}Publicar vehículo</a>
-        <a class="btn ghost" href="#/valoracion">${ic("chart", "sm")}Valoración gratuita</a>
+  <section class="hero hero-v2">
+    <div class="hero-img" aria-hidden="true"></div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="hero-badge" data-rev>${ic("shield", "sm")}Plataforma profesional verificada</span>
+      <h1 data-rev style="--d:120ms">Tu plataforma profesional de <em>subastas de vehículos</em></h1>
+      <p class="lead" data-rev style="--d:240ms">Vehículos sin daños, con defectos, siniestros totales, inundados y para desguace. Compra directo en subasta, con el coste total calculado antes de pujar.</p>
+      <div class="hero-cta" data-rev style="--d:340ms">
+        <a class="btn primary lg" href="#/subastas">${ic("gavel", "sm")}Ver subastas${ic("right", "sm")}</a>
+        <a class="btn lg" href="#/publicar">${ic("upload", "sm")}Publicar vehículo</a>
+        <a class="btn ghost lg" href="#/valoracion">${ic("chart", "sm")}Valoración gratuita</a>
       </div>
-      <div class="stats">
-        <div data-rev style="--d:440ms"><b class="tnum" data-count="${lots.length}">${lots.length}</b><span>subastas activas</span></div>
-        <div data-rev style="--d:490ms"><b class="tnum" data-count="${lots.length + market.length}">${lots.length + market.length}</b><span>vehículos publicados</span></div>
-        <div data-rev style="--d:540ms"><b class="tnum" data-count="4">4</b><span>sesiones diarias</span></div>
-        <div data-rev style="--d:590ms"><b class="tnum" data-count="17">17</b><span>comunidades autónomas</span></div>
+      <div class="hero-pills" data-rev style="--d:440ms">
+        <span>${ic("gavel", "sm")}<b class="tnum" data-count="${liveN || lots.length}">${liveN || lots.length}</b> subastas en vivo</span>
+        <span>${ic("car", "sm")}<b class="tnum" data-count="${lots.length + market.length}">${lots.length + market.length}</b> vehículos</span>
+        <span>${ic("clock", "sm")}<b class="tnum" data-count="4">4</b> sesiones diarias</span>
+        <span>${ic("pin", "sm")}<b class="tnum" data-count="17">17</b> comunidades</span>
       </div>
-      <div class="trust" data-rev style="--d:640ms">${["Aseguradoras", "Rentings", "Concesionarios", "Flotas", "Desguaces", "Particulares"].map(t => `<span>${t}</span>`).join("")}</div>
+      <div class="trust" data-rev style="--d:540ms">${["Aseguradoras", "Rentings", "Concesionarios", "Flotas", "Desguaces", "Particulares"].map(t => `<span>${t}</span>`).join("")}</div>
     </div>
-    <aside class="livepanel" data-rev style="--d:220ms">
+  </section>
+
+  <section class="livestrip"><div class="wrap">
+    <aside class="livepanel" data-rev>
       <div class="hd"><span class="live-dot"></span>${liveN ? "Sala en directo" : "Puja anticipada abierta"}<span class="n tnum">${pop.length} lotes</span></div>
       ${pop.slice(0, 4).map(liveRow).join("")}
       <div class="ft"><span>Sesiones hoy: <b style="color:var(--text)">11:00 · 13:00 · 15:00</b> CET</span><a class="link" href="#/subastas">Ver todas ${ic("right", "sm")}</a></div>

@@ -854,6 +854,58 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
 .hero .mesh{z-index:1}
 .hero .wrap{position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.hero-fx{display:none}}
+
+/* ---------- v11: hero a toda pantalla, como la sala de subastas ---------- */
+.hero-v2{min-height:min(76vh,660px);display:grid;align-items:center;border-bottom:0;isolation:isolate;overflow:hidden}
+.hero-v2::before,.hero-v2::after{display:none}
+.hero-img{position:absolute;inset:0;z-index:0;background:#070606 url("img/hall.jpg") center 64%/cover no-repeat;
+  animation:hallDrift 46s ease-in-out infinite alternate;will-change:transform}
+@keyframes hallDrift{from{transform:scale(1.015) translate3d(-.4%,0,0)}to{transform:scale(1.06) translate3d(.4%,-.6%,0)}}
+.hero-veil{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,0) 0%,rgba(8,7,7,.34) 48%,rgba(8,7,7,.84) 100%),
+    linear-gradient(to bottom,rgba(8,7,7,.72) 0%,rgba(8,7,7,.12) 24%,rgba(8,7,7,.22) 62%,rgba(8,7,7,.86) 88%,var(--bg) 100%)}
+.hero-v2 .hero-fx{z-index:1}
+.hero-v2 .wrap{position:relative;z-index:3;display:block;text-align:center;max-width:1000px;padding-block:72px 64px}
+.hero-v2 .wrap::before{content:"";position:absolute;inset:-4% -10% 2%;z-index:-1;pointer-events:none;
+  background:radial-gradient(58% 54% at 50% 48%,rgba(6,5,5,.74) 0%,rgba(6,5,5,.5) 52%,rgba(6,5,5,0) 78%);filter:blur(14px)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.18);background:rgba(16,14,13,.55);backdrop-filter:blur(10px);
+  font:600 12.5px/1 var(--body);letter-spacing:.02em;color:#f2efec}
+.hero-badge svg{color:var(--accent-2)}
+.hero-v2 h1{font-size:clamp(31px,4.6vw,57px);line-height:1.04;letter-spacing:-.034em;margin:22px auto 0;max-width:17ch;color:#fff;text-wrap:balance;
+  text-shadow:0 2px 40px rgba(0,0,0,.55)}
+.hero-v2 h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-v2 .lead{font-size:clamp(15px,1.5vw,17.5px);color:rgba(245,242,239,.93);max-width:58ch;margin:20px auto 0;text-shadow:0 1px 3px rgba(0,0,0,.75),0 2px 22px rgba(0,0,0,.65)}
+.hero-v2 .hero-cta{justify-content:center;margin-top:30px;gap:12px}
+.btn.lg{height:52px;min-height:52px;padding:0 24px;font-size:15.5px;border-radius:13px}
+.hero-v2 .btn:not(.primary){background:rgba(22,19,18,.62);border-color:rgba(255,255,255,.2);backdrop-filter:blur(10px);color:#f3f1ef}
+.hero-v2 .btn:not(.primary):hover{border-color:rgba(255,255,255,.42);background:rgba(30,26,24,.78)}
+.hero-v2 .btn.primary{box-shadow:0 14px 40px -14px rgba(226,113,34,.75)}
+.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:30px}
+.hero-pills span{display:inline-flex;align-items:center;gap:8px;padding:11px 17px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.17);background:rgba(14,12,11,.62);backdrop-filter:blur(10px);
+  font-size:13.5px;color:rgba(242,238,234,.88)}
+.hero-pills b{font:700 16px/1 var(--display);color:#fff;letter-spacing:-.02em}
+.hero-pills svg{color:var(--accent-2)}
+.hero-v2 .trust{justify-content:center;border-top-color:rgba(255,255,255,.12);margin-top:34px;gap:0 22px}
+.hero-v2 .trust span{color:rgba(234,230,226,.66);text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.livestrip{position:relative;z-index:4;margin-top:-54px}
+.livestrip .livepanel{box-shadow:0 30px 70px -34px rgba(0,0,0,.85)}
+@media (max-width:760px){
+  .hero-v2{min-height:auto}
+  .hero-v2 .wrap{padding-block:48px 40px}
+  .hero-v2 h1{max-width:none}
+  .hero-v2 .hero-cta{flex-direction:column;align-items:stretch}
+  .hero-v2 .btn.lg{width:100%}
+  .livestrip{margin-top:-30px}
+}
+@media (prefers-reduced-motion:reduce){.hero-img{animation:none}}
+:root[data-theme="light"] .hero-veil,
+:root:not([data-theme="dark"]) .hero-veil{
+  background:
+    radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,.10) 0%,rgba(8,7,7,.42) 48%,rgba(8,7,7,.86) 100%),
+    linear-gradient(to bottom,rgba(8,7,7,.74) 0%,rgba(8,7,7,.20) 24%,rgba(8,7,7,.34) 62%,rgba(8,7,7,.9) 88%,var(--bg) 100%)}
 </style>
 
 <div id="prog"></div>
@@ -2693,25 +2745,30 @@ function viewHome() {
   const liveN = lots.filter(l => statusOf(l) === "live").length;
   const counts = k => lots.filter(l => l.cat === k).length;
   return `${tickerHTML()}
-  <section class="hero"><div class="shot" aria-hidden="true" style="background-image:url(${imgSrc(pop[0] ? pop[0].img : "bmw-m3")})"></div><div class="mesh" aria-hidden="true"></div><div class="wrap">
-    <div>
-      <div class="eyebrow" data-rev>${ic("shield", "sm")}Plataforma profesional verificada</div>
-      <h1 style="margin-top:18px">Tu plataforma profesional de <em>subastas de vehículos</em></h1>
-      <p class="lead" data-rev style="--d:300ms">Vehículos sin daños, con defectos, siniestros totales, inundados y para desguace. Compra directo en subasta, con el coste total calculado antes de pujar.</p>
-      <div class="hero-cta" data-rev style="--d:380ms">
-        <a class="btn primary" href="#/subastas">${ic("gavel", "sm")}Ver subastas</a>
-        <a class="btn" href="#/publicar">${ic("upload", "sm")}Publicar vehículo</a>
-        <a class="btn ghost" href="#/valoracion">${ic("chart", "sm")}Valoración gratuita</a>
+  <section class="hero hero-v2">
+    <div class="hero-img" aria-hidden="true"></div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="hero-badge" data-rev>${ic("shield", "sm")}Plataforma profesional verificada</span>
+      <h1 data-rev style="--d:120ms">Tu plataforma profesional de <em>subastas de vehículos</em></h1>
+      <p class="lead" data-rev style="--d:240ms">Vehículos sin daños, con defectos, siniestros totales, inundados y para desguace. Compra directo en subasta, con el coste total calculado antes de pujar.</p>
+      <div class="hero-cta" data-rev style="--d:340ms">
+        <a class="btn primary lg" href="#/subastas">${ic("gavel", "sm")}Ver subastas${ic("right", "sm")}</a>
+        <a class="btn lg" href="#/publicar">${ic("upload", "sm")}Publicar vehículo</a>
+        <a class="btn ghost lg" href="#/valoracion">${ic("chart", "sm")}Valoración gratuita</a>
       </div>
-      <div class="stats">
-        <div data-rev style="--d:440ms"><b class="tnum" data-count="${lots.length}">${lots.length}</b><span>subastas activas</span></div>
-        <div data-rev style="--d:490ms"><b class="tnum" data-count="${lots.length + market.length}">${lots.length + market.length}</b><span>vehículos publicados</span></div>
-        <div data-rev style="--d:540ms"><b class="tnum" data-count="4">4</b><span>sesiones diarias</span></div>
-        <div data-rev style="--d:590ms"><b class="tnum" data-count="17">17</b><span>comunidades autónomas</span></div>
+      <div class="hero-pills" data-rev style="--d:440ms">
+        <span>${ic("gavel", "sm")}<b class="tnum" data-count="${liveN || lots.length}">${liveN || lots.length}</b> subastas en vivo</span>
+        <span>${ic("car", "sm")}<b class="tnum" data-count="${lots.length + market.length}">${lots.length + market.length}</b> vehículos</span>
+        <span>${ic("clock", "sm")}<b class="tnum" data-count="4">4</b> sesiones diarias</span>
+        <span>${ic("pin", "sm")}<b class="tnum" data-count="17">17</b> comunidades</span>
       </div>
-      <div class="trust" data-rev style="--d:640ms">${["Aseguradoras", "Rentings", "Concesionarios", "Flotas", "Desguaces", "Particulares"].map(t => `<span>${t}</span>`).join("")}</div>
+      <div class="trust" data-rev style="--d:540ms">${["Aseguradoras", "Rentings", "Concesionarios", "Flotas", "Desguaces", "Particulares"].map(t => `<span>${t}</span>`).join("")}</div>
     </div>
-    <aside class="livepanel" data-rev style="--d:220ms">
+  </section>
+
+  <section class="livestrip"><div class="wrap">
+    <aside class="livepanel" data-rev>
       <div class="hd"><span class="live-dot"></span>${liveN ? "Sala en directo" : "Puja anticipada abierta"}<span class="n tnum">${pop.length} lotes</span></div>
       ${pop.slice(0, 4).map(liveRow).join("")}
       <div class="ft"><span>Sesiones hoy: <b style="color:var(--text)">11:00 · 13:00 · 15:00</b> CET</span><a class="link" href="#/subastas">Ver todas ${ic("right", "sm")}</a></div>
@@ -5300,6 +5357,206 @@ function heroBackdrop() {
 
 addEventListener("scroll", onScrollTop, { passive: true });
 onScrollTop();
+if (route().path === "/") heroBackdrop();
+
+/* ---------- 4. fin de la tormenta de mutaciones ----------
+   countUp escribía textContent en cada frame. Cada escritura es una
+   mutación de childList, que despertaba el MutationObserver de polish()
+   60 veces por segundo; polish() a su vez muta el DOM, y el bucle
+   saturaba el hilo principal: los contadores se congelaban en "1" y la
+   pestaña llegaba a bloquearse. Escribiendo en el nodo de texto la
+   mutación es de characterData, que ese observador no escucha.        */
+function setText(el, s) {
+  const n = el.firstChild;
+  if (n && el.childNodes.length === 1 && n.nodeType === 3) { if (n.nodeValue !== s) n.nodeValue = s; }
+  else el.textContent = s;
+}
+function countUp(el, from, to, dur = 650, suffix) {
+  const fmt = suffix === undefined ? eur : v => num(v) + suffix;
+  if (RM()) { setText(el, fmt(to)); return; }
+  if (el._cu) cancelAnimationFrame(el._cu);
+  const t0 = performance.now();
+  const step = t => {
+    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    setText(el, fmt(from + (to - from) * e));
+    if (k < 1) el._cu = requestAnimationFrame(step); else el._cu = 0;
+  };
+  el._cu = requestAnimationFrame(step);
+}
+
+/* initReveal: cada cifra se anima una sola vez, pase lo que pase
+   con los re-renderizados o con el lienzo del hero.                   */
+function initReveal(root) {
+  const nodes = $$("[data-rev],[data-count]", root);
+  if (RM() || !("IntersectionObserver" in window)) {
+    nodes.forEach(e => { e.classList.add("rv"); if (e.dataset.count) setText(e, e.dataset.count); });
+    return;
+  }
+  if (!_obs) _obs = new IntersectionObserver(es => es.forEach(en => {
+    if (!en.isIntersecting) return;
+    const el = en.target;
+    el.classList.add("rv");
+    if (el.dataset.count && !el.dataset.counted) {
+      el.dataset.counted = "1";
+      countUp(el, 0, +el.dataset.count, 900, el.dataset.suffix || "");
+    }
+    _obs.unobserve(el);
+  }), { rootMargin: "0px 0px -8% 0px", threshold: .08 });
+  nodes.forEach(e => _obs.observe(e));
+}
+
+/* red de seguridad: si una cifra se quedara a medias, se corrige sola */
+setTimeout(() => {
+  $$("[data-count]").forEach(e => {
+    const fin = e.dataset.count;
+    if (fin && e.textContent.replace(/\D/g, "") !== String(fin).replace(/\D/g, "")) {
+      if (!e._cu) setText(e, num(+fin) + (e.dataset.suffix || ""));
+    }
+  });
+}, 3000);
+/* ============================================================
+   v11 — animación del hero con sensación de sala de subastas
+   Sobre la foto de la nave: las lámparas respiran, un foco cruza
+   la sala, el polvo flota y cada puja real lanza una onda desde
+   el fondo del pasillo.
+   ============================================================ */
+
+var HERO_PULSE = 0;                       /* lo sube cada puja nueva */
+function heroBidPulse() { HERO_PULSE = Math.min(3, HERO_PULSE + 1); }
+
+function heroBackdrop() {
+  if (HERO_FX) { HERO_FX.stop(); HERO_FX = null; }
+  const hero = document.querySelector(".hero");
+  if (!hero || RM()) return;
+
+  const cv = document.createElement("canvas");
+  cv.className = "hero-fx";
+  cv.setAttribute("aria-hidden", "true");
+  hero.insertBefore(cv, hero.children[1] || null);
+  const ctx = cv.getContext("2d", { alpha: true });
+
+  let W = 0, H = 0, dpr = 1, raf = 0, tick = 0, t = 0, visible = true, dead = false;
+
+  /* lámparas: dos hileras que convergen en el punto de fuga (.5,.42) */
+  const VX = .5, VY = .42;
+  const LAMPS = [];
+  for (const side of [-1, 1]) {
+    for (let i = 0; i < 7; i++) {
+      const k = Math.pow(i / 6, 1.7);                 // más juntas al fondo
+      LAMPS.push({
+        x: VX + side * (.012 + k * .50),
+        y: VY - .22 + k * .16,
+        r: .02 + (1 - k) * .085,
+        a: .10 + (1 - k) * .30,
+        ph: Math.random() * 6.28,
+        sp: .00035 + Math.random() * .0005,
+      });
+    }
+  }
+
+  /* polvo en suspensión */
+  const MOTES = [...Array(34)].map(() => ({
+    x: Math.random(), y: Math.random(),
+    r: .4 + Math.random() * 1.5,
+    a: .06 + Math.random() * .2,
+    vx: (Math.random() - .5) * .000035,
+    vy: -.00002 - Math.random() * .00004,
+  }));
+
+  const rings = [];                        /* ondas de puja */
+  let nextRing = 2600;
+
+  function size() {
+    const r = hero.getBoundingClientRect();
+    dpr = Math.min(2, devicePixelRatio || 1);
+    W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    cv.style.width = W + "px"; cv.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function frame() {
+    if (dead) return;
+    raf = requestAnimationFrame(frame);
+    if (!visible || document.hidden) return;
+    if (++tick % 2) return;                 /* ~30 fps */
+    t += 33;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+
+    /* 1 · respiración de las lámparas */
+    for (const l of LAMPS) {
+      const puls = .72 + .28 * Math.sin(t * l.sp + l.ph);
+      const cx = l.x * W, cy = l.y * H, rad = l.r * Math.max(W, H) * (.9 + .2 * puls);
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      const a = l.a * puls * .5;
+      g.addColorStop(0, `rgba(255,186,108,${a})`);
+      g.addColorStop(.42, `rgba(236,140,60,${a * .3})`);
+      g.addColorStop(1, "rgba(226,113,34,0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, rad, 0, 6.2832); ctx.fill();
+    }
+
+    /* 2 · foco que recorre la nave */
+    const sweep = (t % 17000) / 17000;
+    const sx = (-.25 + sweep * 1.5) * W;
+    const sg = ctx.createLinearGradient(sx - W * .22, 0, sx + W * .22, 0);
+    sg.addColorStop(0, "rgba(255,196,128,0)");
+    sg.addColorStop(.5, "rgba(255,196,128,.055)");
+    sg.addColorStop(1, "rgba(255,196,128,0)");
+    ctx.fillStyle = sg; ctx.fillRect(0, 0, W, H);
+
+    /* 3 · ondas de puja desde el fondo del pasillo */
+    if (t > nextRing) { rings.push({ t0: t, strong: HERO_PULSE > 0 }); if (HERO_PULSE > 0) HERO_PULSE--; nextRing = t + 5200 + Math.random() * 4200; }
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const k = (t - rings[i].t0) / (rings[i].strong ? 2600 : 3600);
+      if (k >= 1) { rings.splice(i, 1); continue; }
+      const e = 1 - Math.pow(1 - k, 2.2);
+      const rad = e * Math.max(W, H) * .62;
+      const a = (1 - k) * (rings[i].strong ? .3 : .15);
+      ctx.strokeStyle = `rgba(255,170,90,${a})`;
+      ctx.lineWidth = (rings[i].strong ? 2.2 : 1.3) * (1 - k * .5);
+      ctx.beginPath(); ctx.ellipse(VX * W, VY * H, rad, rad * .42, 0, 0, 6.2832); ctx.stroke();
+    }
+
+    /* 4 · polvo */
+    for (const m of MOTES) {
+      m.x += m.vx * 33 * 30; m.y += m.vy * 33 * 30;
+      if (m.y < -.05) { m.y = 1.05; m.x = Math.random(); }
+      if (m.x < -.05) m.x = 1.05; if (m.x > 1.05) m.x = -.05;
+      ctx.fillStyle = `rgba(255,214,170,${m.a})`;
+      ctx.beginPath(); ctx.arc(m.x * W, m.y * H, m.r, 0, 6.2832); ctx.fill();
+    }
+
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  const ro = new ResizeObserver(size); ro.observe(hero);
+  const io = new IntersectionObserver(e => { visible = e[0].isIntersecting; }, { threshold: 0 });
+  io.observe(hero);
+
+  size();
+  raf = requestAnimationFrame(frame);
+  HERO_FX = {
+    stop() { dead = true; cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); cv.remove(); },
+    theme() {},
+  };
+}
+
+/* la puja real que llega por realtime enciende una onda */
+(function hookRealtimePulse() {
+  const prev = typeof notify === "function" ? notify : null;
+  if (!prev) return;
+  notify = function (txt, icon) { if (/puja|puj/i.test(String(txt))) heroBidPulse(); return prev.apply(this, arguments); };
+})();
+
+/* precarga de la foto para que el hero no aparezca en dos tiempos */
+(function preloadHall() {
+  const l = document.createElement("link");
+  l.rel = "preload"; l.as = "image"; l.href = "img/hall.jpg"; l.fetchPriority = "high";
+  document.head.appendChild(l);
+})();
+
 if (route().path === "/") heroBackdrop();
 
 </script>

@@ -173,3 +173,59 @@ function heroBackdrop() {
 addEventListener("scroll", onScrollTop, { passive: true });
 onScrollTop();
 if (route().path === "/") heroBackdrop();
+
+/* ---------- 4. fin de la tormenta de mutaciones ----------
+   countUp escribía textContent en cada frame. Cada escritura es una
+   mutación de childList, que despertaba el MutationObserver de polish()
+   60 veces por segundo; polish() a su vez muta el DOM, y el bucle
+   saturaba el hilo principal: los contadores se congelaban en "1" y la
+   pestaña llegaba a bloquearse. Escribiendo en el nodo de texto la
+   mutación es de characterData, que ese observador no escucha.        */
+function setText(el, s) {
+  const n = el.firstChild;
+  if (n && el.childNodes.length === 1 && n.nodeType === 3) { if (n.nodeValue !== s) n.nodeValue = s; }
+  else el.textContent = s;
+}
+function countUp(el, from, to, dur = 650, suffix) {
+  const fmt = suffix === undefined ? eur : v => num(v) + suffix;
+  if (RM()) { setText(el, fmt(to)); return; }
+  if (el._cu) cancelAnimationFrame(el._cu);
+  const t0 = performance.now();
+  const step = t => {
+    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    setText(el, fmt(from + (to - from) * e));
+    if (k < 1) el._cu = requestAnimationFrame(step); else el._cu = 0;
+  };
+  el._cu = requestAnimationFrame(step);
+}
+
+/* initReveal: cada cifra se anima una sola vez, pase lo que pase
+   con los re-renderizados o con el lienzo del hero.                   */
+function initReveal(root) {
+  const nodes = $$("[data-rev],[data-count]", root);
+  if (RM() || !("IntersectionObserver" in window)) {
+    nodes.forEach(e => { e.classList.add("rv"); if (e.dataset.count) setText(e, e.dataset.count); });
+    return;
+  }
+  if (!_obs) _obs = new IntersectionObserver(es => es.forEach(en => {
+    if (!en.isIntersecting) return;
+    const el = en.target;
+    el.classList.add("rv");
+    if (el.dataset.count && !el.dataset.counted) {
+      el.dataset.counted = "1";
+      countUp(el, 0, +el.dataset.count, 900, el.dataset.suffix || "");
+    }
+    _obs.unobserve(el);
+  }), { rootMargin: "0px 0px -8% 0px", threshold: .08 });
+  nodes.forEach(e => _obs.observe(e));
+}
+
+/* red de seguridad: si una cifra se quedara a medias, se corrige sola */
+setTimeout(() => {
+  $$("[data-count]").forEach(e => {
+    const fin = e.dataset.count;
+    if (fin && e.textContent.replace(/\D/g, "") !== String(fin).replace(/\D/g, "")) {
+      if (!e._cu) setText(e, num(+fin) + (e.dataset.suffix || ""));
+    }
+  });
+}, 3000);
