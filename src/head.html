@@ -1,7 +1,7 @@
 <title>MotorSubasta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:opsz,wght@14..32,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" crossorigin="anonymous"></script>
 <style>
 :root{
@@ -19,7 +19,7 @@
   --glow:0 0 0 1px var(--accent-line);
   --hero-a:rgba(226,113,34,.11); --hero-b:rgba(120,140,170,.05);
   --display:"Bricolage Grotesque",-apple-system,"Segoe UI",system-ui,sans-serif;
-  --body:"Manrope",-apple-system,"Segoe UI",system-ui,sans-serif;
+  --body:"Inter",-apple-system,"Segoe UI",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --r:14px;
   color-scheme:dark;
@@ -52,7 +52,7 @@
 [hidden]{display:none!important}
 html,body{background:var(--bg)}
 html{overflow-x:hidden}
-body{margin:0;color:var(--text);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;color:var(--text);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:"cv05" 1,"cv08" 1,"ss03" 1;letter-spacing:-.006em}
 a{color:inherit;text-decoration:none}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -97,13 +97,13 @@ html.motion [data-rev].rv.pop{animation-name:revInS}
 .top{height:68px}
 .top .wrap{display:flex;align-items:center;gap:14px;height:68px;min-width:0}
 .logo{display:flex;align-items:center;white-space:nowrap}
-.logo .lg{height:30px;width:auto}
-.top.scrolled .logo .lg{height:26px}
+.logo .lg{height:38px;width:auto}
+.top.scrolled .logo .lg{height:32px}
 .logo .lg-l{display:none}
 :root[data-theme="light"] .logo .lg-d{display:none}
 :root[data-theme="light"] .logo .lg-l{display:block}
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .logo .lg-d{display:none}:root:not([data-theme="dark"]) .logo .lg-l{display:block}}
-footer .logo .lg{height:34px}
+footer .logo .lg{height:40px}
 
 .nav{display:flex;gap:2px;margin-left:10px;position:relative;flex-wrap:nowrap;min-width:0}
 .nav a{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:9px 12px;border-radius:9px;color:var(--muted);font-weight:600;font-size:14px;position:relative;z-index:1;transition:color .2s}
@@ -906,6 +906,14 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
   background:
     radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,.10) 0%,rgba(8,7,7,.42) 48%,rgba(8,7,7,.86) 100%),
     linear-gradient(to bottom,rgba(8,7,7,.74) 0%,rgba(8,7,7,.20) 24%,rgba(8,7,7,.34) 62%,rgba(8,7,7,.9) 88%,var(--bg) 100%)}
+
+/* quién vende aquí — movido fuera del hero, a su sitio natural */
+.sellers{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.sellers span{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:99px;
+  border:1px solid var(--line-2);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);transition:all .2s}
+.sellers span:hover{border-color:var(--accent);color:var(--text)}
+.sellers svg{color:var(--accent)}
+@media (max-width:760px){.sellers{margin-top:18px}}
 </style>
 
 <div id="prog"></div>

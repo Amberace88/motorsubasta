@@ -161,7 +161,6 @@ function viewHome() {
         <span>${ic("clock", "sm")}<b class="tnum" data-count="4">4</b> sesiones diarias</span>
         <span>${ic("pin", "sm")}<b class="tnum" data-count="17">17</b> comunidades</span>
       </div>
-      <div class="trust" data-rev style="--d:540ms">${["Aseguradoras", "Rentings", "Concesionarios", "Flotas", "Desguaces", "Particulares"].map(t => `<span>${t}</span>`).join("")}</div>
     </div>
   </section>
 
@@ -260,6 +259,7 @@ function viewHome() {
     <div class="panel" data-rev style="display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center;padding:32px;background:linear-gradient(120deg,var(--accent-soft),var(--surface) 62%)">
       <div><div class="eyebrow">Para vendedores</div><h2 style="font-size:clamp(23px,2.9vw,31px);letter-spacing:-.03em;margin-top:10px">Aseguradora, taller o particular: publica en minutos</h2><p class="muted" style="margin:10px 0 0;max-width:62ch">Súbelo a subasta, ponlo a precio fijo en el mercado o pide una oferta de compra directa de MotorSubasta en 24 horas.</p></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="#/publicar">Publicar vehículo</a><a class="btn" href="#/valoracion">Pedir oferta 24 h</a></div>
+      <div class="sellers" style="grid-column:1/-1">${[["shield", "Aseguradoras"], ["refresh", "Rentings"], ["store", "Concesionarios"], ["truck", "Flotas"], ["wrench", "Desguaces"], ["user", "Particulares"]].map(([i, t]) => `<span>${ic(i, "sm")}${t}</span>`).join("")}</div>
     </div>
     <div style="margin-top:34px"><div class="lbl" style="margin-bottom:12px">Marcas disponibles</div>
     <div class="brands"><div class="row">${[...Array(2)].map(() => ["Toyota", "Volkswagen", "SEAT", "Renault", "Peugeot", "Citroën", "Opel", "Ford", "BMW", "Mercedes-Benz", "Audi", "Hyundai", "Kia", "Nissan", "Fiat", "Dacia"].map(b => `<span>${b}</span>`).join("")).join("")}</div></div></div>
