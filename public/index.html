@@ -1,7 +1,7 @@
 <title>MotorSubasta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:opsz,wght@14..32,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" crossorigin="anonymous"></script>
 <style>
 :root{
@@ -18,7 +18,7 @@
   --shadow-sm:0 6px 20px -12px rgba(0,0,0,.7);
   --glow:0 0 0 1px var(--accent-line);
   --hero-a:rgba(226,113,34,.11); --hero-b:rgba(120,140,170,.05);
-  --display:"Bricolage Grotesque",-apple-system,"Segoe UI",system-ui,sans-serif;
+  --display:"Inter",-apple-system,"Segoe UI",system-ui,sans-serif;
   --body:"Inter",-apple-system,"Segoe UI",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --r:14px;
@@ -63,7 +63,8 @@ img{max-width:100%;display:block}
 .wrap{max-width:1240px;margin:0 auto;padding-inline:20px}
 .mono{font-family:var(--mono)}
 .tnum{font-variant-numeric:tabular-nums}
-h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.025em;text-wrap:balance;font-weight:700}
+h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.028em;text-wrap:balance;font-weight:700}
+h1,h2{font-weight:750}
 .eyebrow{font:600 11.5px/1.2 var(--body);letter-spacing:.11em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
 .eyebrow svg{display:none}
 .eyebrow::before{content:"";width:16px;height:2px;border-radius:2px;background:var(--accent);flex:none}
@@ -864,7 +865,7 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
 .hero-veil{position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
     radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,0) 0%,rgba(8,7,7,.34) 48%,rgba(8,7,7,.84) 100%),
-    linear-gradient(to bottom,rgba(8,7,7,.72) 0%,rgba(8,7,7,.12) 24%,rgba(8,7,7,.22) 62%,rgba(8,7,7,.86) 88%,var(--bg) 100%)}
+    linear-gradient(to bottom,rgba(8,7,7,.72) 0%,rgba(8,7,7,.12) 24%,rgba(8,7,7,.20) 70%,rgba(8,7,7,.78) 92%,var(--bg) 100%)}
 .hero-v2 .hero-fx{z-index:1}
 .hero-v2 .wrap{position:relative;z-index:3;display:block;text-align:center;max-width:1000px;padding-block:72px 64px}
 .hero-v2 .wrap::before{content:"";position:absolute;inset:-4% -10% 2%;z-index:-1;pointer-events:none;
@@ -873,7 +874,7 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
   border:1px solid rgba(255,255,255,.18);background:rgba(16,14,13,.55);backdrop-filter:blur(10px);
   font:600 12.5px/1 var(--body);letter-spacing:.02em;color:#f2efec}
 .hero-badge svg{color:var(--accent-2)}
-.hero-v2 h1{font-size:clamp(31px,4.6vw,57px);line-height:1.04;letter-spacing:-.034em;margin:22px auto 0;max-width:17ch;color:#fff;text-wrap:balance;
+.hero-v2 h1{font-size:clamp(31px,4.6vw,56px);line-height:1.05;font-weight:800;letter-spacing:-.038em;margin:22px auto 0;max-width:17ch;color:#fff;text-wrap:balance;
   text-shadow:0 2px 40px rgba(0,0,0,.55)}
 .hero-v2 h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-v2 .lead{font-size:clamp(15px,1.5vw,17.5px);color:rgba(245,242,239,.93);max-width:58ch;margin:20px auto 0;text-shadow:0 1px 3px rgba(0,0,0,.75),0 2px 22px rgba(0,0,0,.65)}
@@ -905,7 +906,11 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
 :root:not([data-theme="dark"]) .hero-veil{
   background:
     radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,.10) 0%,rgba(8,7,7,.42) 48%,rgba(8,7,7,.86) 100%),
-    linear-gradient(to bottom,rgba(8,7,7,.74) 0%,rgba(8,7,7,.20) 24%,rgba(8,7,7,.34) 62%,rgba(8,7,7,.9) 88%,var(--bg) 100%)}
+    linear-gradient(to bottom,rgba(8,7,7,.74) 0%,rgba(8,7,7,.20) 24%,rgba(8,7,7,.32) 70%,rgba(8,7,7,.82) 92%,var(--bg) 100%)}
+
+/* primera sección tras el hero (ya sin la sala en directo encima) */
+.blk.first{padding-block:58px 44px}
+@media (max-width:760px){.blk.first{padding-block:32px 30px}}
 
 /* quién vende aquí — movido fuera del hero, a su sitio natural */
 .sellers{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
@@ -2752,7 +2757,7 @@ function viewHome() {
   const pop = [...lots].sort((a, b) => (b.featured - a.featured) || b.hist.length - a.hist.length).slice(0, 8);
   const liveN = lots.filter(l => statusOf(l) === "live").length;
   const counts = k => lots.filter(l => l.cat === k).length;
-  return `${tickerHTML()}
+  return `
   <section class="hero hero-v2">
     <div class="hero-img" aria-hidden="true"></div>
     <div class="hero-veil" aria-hidden="true"></div>
@@ -2774,15 +2779,7 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="livestrip"><div class="wrap">
-    <aside class="livepanel" data-rev>
-      <div class="hd"><span class="live-dot"></span>${liveN ? "Sala en directo" : "Puja anticipada abierta"}<span class="n tnum">${pop.length} lotes</span></div>
-      ${pop.slice(0, 4).map(liveRow).join("")}
-      <div class="ft"><span>Sesiones hoy: <b style="color:var(--text)">11:00 · 13:00 · 15:00</b> CET</span><a class="link" href="#/subastas">Ver todas ${ic("right", "sm")}</a></div>
-    </aside>
-  </div></section>
-
-  <section class="blk" style="padding-block:34px 42px"><div class="wrap">
+  <section class="blk first"><div class="wrap">
     <div class="sec-head" data-rev><div><div class="eyebrow">${ic("flame", "sm")}Subastas populares</div><h2 style="margin-top:10px">Lotes con más actividad</h2><p>Puja o pre-puja directamente desde la tarjeta.</p></div><a class="link" href="#/subastas">Ver todas las subastas ${ic("right", "sm")}</a></div>
     <div class="grid">${pop.map(lotCard).join("")}</div>
   </div></section>

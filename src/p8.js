@@ -142,7 +142,7 @@ function viewHome() {
   const pop = [...lots].sort((a, b) => (b.featured - a.featured) || b.hist.length - a.hist.length).slice(0, 8);
   const liveN = lots.filter(l => statusOf(l) === "live").length;
   const counts = k => lots.filter(l => l.cat === k).length;
-  return `${tickerHTML()}
+  return `
   <section class="hero hero-v2">
     <div class="hero-img" aria-hidden="true"></div>
     <div class="hero-veil" aria-hidden="true"></div>
@@ -164,15 +164,7 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="livestrip"><div class="wrap">
-    <aside class="livepanel" data-rev>
-      <div class="hd"><span class="live-dot"></span>${liveN ? "Sala en directo" : "Puja anticipada abierta"}<span class="n tnum">${pop.length} lotes</span></div>
-      ${pop.slice(0, 4).map(liveRow).join("")}
-      <div class="ft"><span>Sesiones hoy: <b style="color:var(--text)">11:00 · 13:00 · 15:00</b> CET</span><a class="link" href="#/subastas">Ver todas ${ic("right", "sm")}</a></div>
-    </aside>
-  </div></section>
-
-  <section class="blk" style="padding-block:34px 42px"><div class="wrap">
+  <section class="blk first"><div class="wrap">
     <div class="sec-head" data-rev><div><div class="eyebrow">${ic("flame", "sm")}Subastas populares</div><h2 style="margin-top:10px">Lotes con más actividad</h2><p>Puja o pre-puja directamente desde la tarjeta.</p></div><a class="link" href="#/subastas">Ver todas las subastas ${ic("right", "sm")}</a></div>
     <div class="grid">${pop.map(lotCard).join("")}</div>
   </div></section>
