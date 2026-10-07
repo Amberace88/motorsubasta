@@ -67,7 +67,7 @@ async function sbLoadSellerData() {
     S.sellerOffers = o.data.map(x => ({
       id: x.id, listing: x.listing_id, title: x.title, img: photoStem(x.photo), amount: +x.amount, msg: x.message || "", counter: x.counter ? +x.counter : null,
       st: { nueva: "new", aceptada: "acc", rechazada: "rej", contraoferta: "cnt", caducada: "rej" }[x.status] || "new",
-      buyer: x.buyer_name || "Comprador", buyerKind: x.buyer_kind, contact: { phone: x.buyer_phone, whatsapp: x.buyer_whatsapp, email: x.buyer_email },
+      buyer: x.buyer_name || "Comprador", buyerKind: x.buyer_kind, priority: !!x.priority, contact: { phone: x.buyer_phone, whatsapp: x.buyer_whatsapp, email: x.buyer_email },
       d: (d => d === 0 ? "hoy" : d === 1 ? "hace 1 día" : `hace ${d} días`)(Math.max(0, Math.round((Date.now() - new Date(x.created_at)) / 86400000))),
     }));
   }
@@ -91,7 +91,7 @@ function viewSellerOffers() {
   return sellShell("#/vender/ofertas", `
     <div class="admin-head" style="margin-top:0"><div><div class="eyebrow">Mercado</div><h1 style="margin-top:8px">Ofertas y mensajes</h1>
       <p class="muted" style="margin:6px 0 0">Lo que te envían los compradores de tus anuncios. Responde aquí o por el contacto que el comprador haya permitido.</p></div></div>
-    ${list.length ? `<div style="display:grid;gap:12px">${list.map(o => `<div class="panel offer" data-rev>
+    ${list.length ? `<div style="display:grid;gap:12px">${list.map(o => `<div class="panel offer${o.priority ? " prio" : ""}" data-rev>${o.priority ? `<span class="chip acc oprio">${ic("bolt", "sm")}Oferta destacada</span>` : ""}
       <img src="${pimg(o.img)}" alt="">
       <div><b>${esc(o.title)}</b><div class="muted" style="font-size:13px">${esc(o.buyer)}${o.buyerKind ? ` · ${o.buyerKind === "profesional" ? "Profesional" : "Particular"}` : ""} · ${esc(String(o.d))}</div>${o.msg ? `<p class="muted" style="margin:8px 0 0;font-size:13.5px">“${esc(o.msg)}”</p>` : ""}
         <div class="my-a" style="justify-content:flex-start;margin-top:8px">${ctBtns(o)}</div></div>

@@ -60,7 +60,7 @@ function mapMarket(l) {
   };
 }
 async function sbLoadMarket() {
-  const base = `id, price, negotiable, listing_type, created_at,`;
+  const base = `id, price, negotiable, listing_type, created_at, featured_until, urgent_until, bumped_at,`;
   const rich = base + ` vehicles ( ref, make, model, year, km, fuel, transmission, body_type, power_cv, displacement, seats, first_reg, category, title, condition_score, runs, has_keys, description, photos, city, province, seller_kind, country )`;
   const poor = base + ` vehicles ( make, model, year, km, fuel, transmission, category, photos, city )`;
   let r = await sb.from("listings").select(rich).eq("status", "activo").order("created_at", { ascending: false });
