@@ -212,3 +212,15 @@ function mkClassify(m) {
   mapMarket = function (l) { const m = base(l); m.type = mkClassify(m); return m; };
   try { market.forEach(m => m.type = mkClassify(m)); } catch (e) {}
 })();
+
+/* ---------- marcas: una fila de logotipos, sobria y lenta ---------- */
+var BRAND_LOGOS = [["Toyota", "toyota"], ["Volkswagen", "volkswagen"], ["SEAT", "seat"], ["Renault", "renault"], ["Peugeot", "peugeot"], ["Citroën", "citroen"], ["Opel", "opel"], ["Ford", "ford"],
+  ["BMW", "bmw"], ["Mercedes-Benz", "mercedes"], ["Audi", "audi"], ["Škoda", "skoda"], ["Hyundai", "hyundai"], ["Kia", "kia"], ["Nissan", "nissan"], ["Fiat", "fiat"], ["Dacia", "dacia"],
+  ["Mazda", "mazda"], ["Volvo", "volvo"], ["Jeep", "jeep"], ["Mini", "mini"], ["Land Rover", "landrover"], ["Porsche", "porsche"], ["Tesla", "tesla"], ["Honda", "honda"],
+  ["Mitsubishi", "mitsubishi"], ["Suzuki", "suzuki"], ["Alfa Romeo", "alfaromeo"], ["Jaguar", "jaguar"], ["Subaru", "subaru"], ["MG", "mg"], ["Chevrolet", "chevrolet"], ["DAF", "daf"], ["Iveco", "iveco"]];
+function brandsShowcase() {
+  const src = s => `https://cdn.jsdelivr.net/npm/simple-icons@14.15.0/icons/${s}.svg`;
+  const item = ([b, s], dup) => { const n = brandCount(b); return `<a class="bl" href="#/mercado?q=${encodeURIComponent(b)}" ${dup ? 'tabindex="-1" aria-hidden="true"' : `aria-label="${esc(b)}${n ? " · " + n + (n === 1 ? " vehículo" : " vehículos") : ""}"`} title="${esc(b)}${n ? " · " + n + (n === 1 ? " vehículo" : " vehículos") : ""}"><i style="--l:url('${src(s)}')"></i><span translate="no">${esc(b)}</span></a>`; };
+  return `<div class="brandl" data-rev><div class="brandl-h"><span>Marcas disponibles</span></div>
+    <div class="brandl-row"><div class="brandl-track">${BRAND_LOGOS.map(x => item(x, false)).join("")}${BRAND_LOGOS.map(x => item(x, true)).join("")}</div></div></div>`;
+}
