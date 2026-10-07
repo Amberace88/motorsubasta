@@ -13,7 +13,7 @@ function viewLot(id) {
   const spec = [["Marca", l.make], ["Modelo", l.model], ["Año", l.year], ["Primera matriculación", l.firstReg],
     ["VIN", locked ? "•••••••••••••••••" : l.vin], ["Kilometraje", num(l.km) + " km"], ["Tipo de carrocería", l.body], ["Cilindrada", num(l.cc) + " cc"],
     ["Combustible", l.fuel], ["Transmisión", l.trans], ["Potencia", l.cv + " CV"], ["Plazas", l.seats],
-    ["Estado del título", l.cat === "siniestro" ? "Salvamento" : "Limpio"], ["Nivel de daños", ["Ninguno", "Leve", "Moderado", "Grave"][Math.min(3, Math.floor((100 - sc) / 25))]],
+    ["Documentación", docLabel(l.titleSt || (l.cat === "siniestro" ? "salvamento" : "limpio"))], ["Nivel de daños", ["Ninguno", "Leve", "Moderado", "Grave"][Math.min(3, Math.floor((100 - sc) / 25))]],
     ["Categoría", c.short], ["Tipo de vendedor", l.sellerType], ["En marcha", l.runs ? "Sí" : "No"], ["Llaves", l.keys ? "Sí" : "No"]];
   return `<div class="wrap">
   <a class="back" href="#/subastas">${ic("left", "sm")}Volver a subastas</a>
@@ -239,7 +239,7 @@ function viewValuation() {
         <div class="field"><label for="vDmg">Tipo de daño</label><select class="in" id="vDmg">
           <option value="ninguno">Sin daños</option><option value="leve" selected>Colisión / accidente</option><option value="inundado">Inundación / daños por agua</option>
           <option value="quemado">Daños por incendio</option><option value="moderado">Daños por granizo</option><option value="grave">Avería mecánica</option><option value="moderado">Vandalismo / robo</option><option value="leve">Otro</option></select></div>
-        <div class="field"><label for="vTitle">Estado del título</label><select class="in" id="vTitle"><option value="limpio">Título limpio</option><option value="salvamento">Título de salvamento</option><option value="piezas">Solo piezas</option></select></div>
+        <div class="field"><label for="vTitle">Documentación</label><select class="in" id="vTitle"><option value="limpio">En regla</option><option value="salvamento">Siniestro declarado o baja temporal</option><option value="piezas">Baja definitiva · solo piezas</option></select></div>
         <div class="full"><div class="lbl" style="margin-bottom:8px">Estado del vehículo</div><div style="display:flex;gap:18px;flex-wrap:wrap">
           <label><input type="checkbox" id="vKeys" checked> <span>Tiene llaves</span></label>
           <label><input type="checkbox" id="vRuns" checked> <span>Arranca y conduce</span></label></div></div>

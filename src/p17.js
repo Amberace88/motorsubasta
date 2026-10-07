@@ -61,7 +61,7 @@ function sessHead(k, items, isOpen) {
   const st = f.live.length ? "live" : f.soon.length ? "soon" : "end";
   const pics = (f.open.length ? f.open : items).slice(0, 3);
   const left = f.ref ? fmtLeft((st === "live" ? f.ref.endsAt : f.ref.startsAt) - now()) : "";
-  return `<button class="shead" data-sess="${k}" aria-expanded="${isOpen}">
+  return `<button class="shead${st === "live" ? " is-live" : ""}" data-sess="${k}" aria-expanded="${isOpen}">
     <span class="ic" style="background:var(--${col}-soft);color:var(--${col})">${ic(c.icon)}</span>
     <span class="nm"><h3>${c.name}</h3><small>${ic("clock", "sm")}${sesTimes(k)}${k === "oculta" ? '<span class="tzl">solo Dealer</span>' : ""}</small></span>
     <span class="facts">

@@ -408,7 +408,7 @@ function router() {
   const { path, query } = route();
   if (GUARD.auth.some(p => path.startsWith(p)) && !isLogged()) { location.hash = "#/login?next=" + encodeURIComponent("#" + path); return; }
   if (GUARD.seller.some(p => path.startsWith(p)) && !canSell()) {
-    $("#app").innerHTML = `<div class="wrap"><div class="panel empty" style="margin-top:40px">${ic("lock", "lg")}<b>Esta área es para cuentas de vendedor</b><span>Tu cuenta es de tipo ${ROLE_LABEL[S.user.role]}. Puedes activar la venta desde tus ajustes.</span><div style="display:flex;gap:8px"><a class="btn primary" href="#/cuenta/ajustes">Ir a ajustes</a><a class="btn" href="#/subastas">Ver subastas</a></div></div></div>`;
+    $("#app").innerHTML = `<div class="wrap"><div class="panel empty" style="margin-top:40px">${ic("store", "lg")}<b>Activa la venta en tu cuenta</b><span>Con una sola cuenta puedes comprar y vender. Activar la venta es gratis y no cambia nada de lo que ya tienes.</span><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn primary" data-actsell>${ic("check", "sm")}Activar venta gratis</button><a class="btn" href="#/mercado">Volver al Mercado</a></div></div></div>`;
     renderHeader(path); return;
   }
   if (path === "/admin" && !roleIs("admin")) {

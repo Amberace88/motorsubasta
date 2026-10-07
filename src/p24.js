@@ -332,7 +332,7 @@ function mountImport() {
       const r = x.r;
       if (live()) {
         const { data: v, error } = await sb.from("vehicles").insert({ seller_id: S.user.id, vin: r.vin, plate: r.noPlate ? null : r.plate, make: r.make, model: r.model, year: r.year, km: r.km, fuel: r.fuel, transmission: r.transmission,
-          category: r.category, city: r.city, province: r.province, power_cv: r.power_cv, body_type: r.body_type, seats: r.seats, description: r.description, photos: r.photos, status: "mercado" }).select().single();
+          category: r.category, city: r.city, province: r.province, power_cv: r.power_cv, body_type: r.body_type, seats: r.seats, description: r.description, photos: r.photos, status: "mercado" }).select("id, status").single();
         if (error) { x.st = "err"; x.why = /YA_PUBLICADO/.test(error.message) ? "ya publicado" : ""; if (/verif|policy|row-level/i.test(error.message)) { toast("Verifica tu cuenta de vendedor para publicar", "alert"); break; } }
         else { const { error: e2 } = await sb.from("listings").insert({ vehicle_id: v.id, price: r.price, negotiable: r.neg, listing_type: r.type, status: "activo" }); x.st = e2 ? "err" : "ok"; }
       } else {

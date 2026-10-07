@@ -271,7 +271,7 @@ function toggleFav(id) {
   renderHeader(route().path);
 }
 /* ---------- shared pieces ---------- */
-const imgSrc = n => `img/${n}.jpg`;
+const imgSrc = n => /^(https?:|data:|blob:)/.test(String(n)) ? String(n) : `img/${n}.jpg`;
 function lotCard(l) {
   const st = statusOf(l), c = CATS[l.cat], locked = l.cat === "oculta" && !/Dealer|Full/.test(S.plan);
   const lead = S.myBids[l.id] && l.hist[0] && l.hist[0].who === "Tú";
@@ -697,7 +697,7 @@ function viewValuation() {
         <div class="field"><label for="vVin">VIN</label><input class="in mono" id="vVin" maxlength="17" placeholder="17 caracteres"></div>
         <div class="field"><label for="vPlate">Matrícula (opcional)</label><input class="in mono" id="vPlate" placeholder="1234 ABC"></div>
         <div class="field"><label for="vDmg">Tipo de daño</label><select class="in" id="vDmg"><option value="ninguno">Sin daños</option><option value="leve">Leve / estético</option><option value="moderado">Moderado</option><option value="grave">Grave / estructural</option><option value="inundado">Inundado</option><option value="quemado">Incendio</option></select></div>
-        <div class="field"><label for="vTitle">Estado del título</label><select class="in" id="vTitle"><option value="limpio">Título limpio</option><option value="salvamento">Salvamento</option><option value="piezas">Solo piezas</option></select></div>
+        <div class="field"><label for="vTitle">Documentación</label><select class="in" id="vTitle"><option value="limpio">En regla</option><option value="salvamento">Siniestro declarado o baja temporal</option><option value="piezas">Baja definitiva · solo piezas</option></select></div>
         <div class="full" style="display:flex;gap:18px;flex-wrap:wrap"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="vKeys" ${VAL.keys ? "checked" : ""}> Tiene llaves</label><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="vRuns" ${VAL.runs ? "checked" : ""}> Arranca y conduce</label></div>
         <div class="field full"><label for="vDesc">Descripción del daño</label><textarea class="in" id="vDesc" placeholder="Qué pasó, zonas afectadas y reparaciones ya realizadas."></textarea></div>
         <div class="full drop">${ic("upload", "lg")}<b>Arrastra fotos o haz clic para subir</b><span style="font-size:13px">Exterior, interior y zonas dañadas · 0/50 fotos</span><button type="button" class="btn sm" onclick="toast('Selector de fotos disponible en la versión con servidor','upload')">Seleccionar fotos</button></div>
@@ -752,9 +752,7 @@ function viewPublish(query) {
   if (!AUCTIONS_OPEN) PUB.type = "mercado";
   const s = PUB.step;
   const body = [
-    `<div class="panel" style="display:grid;gap:16px"><h3 style="margin:0">Categoría del vehículo</h3>
-      <div class="opt-cards">${[["limpio", "shield", "Buen estado general, sin daños significativos"], ["danado", "wrench", "Daños reparables"], ["siniestro", "alert", "Para piezas o desguace"]].map(([k, i, d]) => `<button type="button" class="opt ${PUB.cat === k ? "on" : ""}" data-pcat="${k}"><b>${ic(i, "sm")}${CATS[k].short}</b><small>${d}</small></button>`).join("")}</div>
-      <div class="lbl">Estado del título</div><div class="seg" id="ptitle">${[["limpio", "Limpio"], ["salvamento", "Salvamento"], ["piezas", "Solo piezas"]].map(([k, t]) => `<button type="button" data-v="${k}" class="${PUB.title === k ? "on" : ""}">${t}</button>`).join("")}</div>
+    `${pubCondBlock()}<div class="panel" style="display:grid;gap:16px;margin-top:14px"><h3 style="margin:0">Identificación y datos</h3>
       <div class="fgrid">
         <div class="field"><label for="pPlate">Matrícula *</label><input class="in mono up" id="pPlate" placeholder="1234 BCD" maxlength="12"><label class="nopl"><input type="checkbox" id="pNoPlate"> <span>Sin matrícula (náutica, vehículo nuevo o dado de baja)</span></label></div>
         <div class="field"><label for="pVin">Número de bastidor (VIN) *</label><div style="display:flex;gap:6px"><input class="in mono" id="pVin" maxlength="17" placeholder="WBAPH5C55BA123456"><button type="button" class="btn" id="pDecode" title="Decodificar VIN">${ic("search", "sm")}</button></div><small class="muted" id="pVinN">0/17 · autocompleta marca, modelo y datos técnicos</small></div>
@@ -823,7 +821,7 @@ function mountPublish() {
   if ($("#phAdd")) {
     let n = 0;
     $("#phAdd").onclick = () => { n = Math.min(50, n + 9); const c = $("#phCount"); c.textContent = n + " fotos"; c.className = "chip ok"; toast(n + " fotos añadidas", "upload"); };
-    $("#genDesc").onclick = () => { $("#pDesc").value = `${$("#pDesc").value ? $("#pDesc").value + "\n\n" : ""}Vehículo ${CATS[PUB.cat].short.toLowerCase()} con título ${PUB.title}. Puntuación de condición ${scoreOf(PUB.panels)}/100. ${Object.keys(PUB.panels).length ? "Daños declarados en: " + PANELS.filter(p => PUB.panels[p[0]]).map(p => p[1].toLowerCase() + " (" + SEV[PUB.panels[p[0]]].toLowerCase() + ")").join(", ") + "." : "Sin daños declarados."} Se entrega con llaves y arranca correctamente. Ideal para ${PUB.cat === "limpio" ? "uso particular o reventa" : "taller o exportación"}.`; };
+    $("#genDesc").onclick = () => { $("#pDesc").value = `${$("#pDesc").value ? $("#pDesc").value + "\n\n" : ""}Vehículo ${CATS[PUB.cat].short.toLowerCase()}. Documentación: ${docLabel(PUB.title).toLowerCase()}. Puntuación de condición ${scoreOf(PUB.panels)}/100. ${Object.keys(PUB.panels).length ? "Daños declarados en: " + PANELS.filter(p => PUB.panels[p[0]]).map(p => p[1].toLowerCase() + " (" + SEV[PUB.panels[p[0]]].toLowerCase() + ")").join(", ") + "." : "Sin daños declarados."} Se entrega con llaves y arranca correctamente. Ideal para ${PUB.cat === "limpio" ? "uso particular o reventa" : "taller o exportación"}.`; };
   }
   $$("[data-ptype]").forEach(b => b.onclick = () => { PUB.type = b.dataset.ptype; router(); });
   const sum = () => {

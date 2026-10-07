@@ -86,7 +86,7 @@ function renderHeader(path) {
     : soonN ? '<span class="live-dot idle" title="Puja anticipada abierta"></span>' : "";
   // admins swap "Empresa" (still in the footer and the mobile menu) for the admin panel,
   // so the header never carries more than five links
-  const nav = roleIs("admin") ? NAV.filter(n => n[0] !== "#/empresa").concat([["#/admin", "Admin", "shield"]]) : [...NAV];
+  const nav = roleIs("admin") ? NAV.filter(n => n[0] !== "#/empresa") : [...NAV];
   const link = ([h, t, i]) => {
     const on = h === "#/" ? path === "/" : path.startsWith(h.slice(1).replace(/s$/, ""));
     return `<a href="${h}" class="${on ? "on" : ""}">${ic(i, "sm")}${t}${h === "#/subastas" ? dot : ""}</a>`;
@@ -117,6 +117,17 @@ $("#userBtn").onclick = e => {
   if (!isLogged()) {
     m.innerHTML = `<a href="#/login">${ic("user", "sm")}Iniciar sesión</a><a href="#/registro">${ic("plus", "sm")}Crear cuenta</a>
       <div style="padding:8px 10px 4px;border-top:1px solid var(--line);margin-top:4px"><small class="muted">Demo: comprador@demo.es / demo1234</small></div>`;
+  } else if (roleIs("admin")) {
+    m.innerHTML = `<div style="padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px"><b>${esc(S.user.name)}</b><small class="muted" style="display:block">${esc(S.user.email)}</small><span class="chip vip" style="margin-top:6px">${ic("shield", "sm")}Administrador</span></div>
+      <a href="#/admin">${ic("chart", "sm")}Panel de control</a>
+      <a href="#/admin/analitica">${ic("gauge", "sm")}Analítica</a>
+      <a href="#/admin/vehiculos">${ic("car", "sm")}Vehículos</a>
+      <a href="#/admin/subastas">${ic("gavel", "sm")}Subastas</a>
+      <a href="#/admin/mercado">${ic("store", "sm")}Mercado</a>
+      <a href="#/admin/operaciones">${ic("truck", "sm")}Operaciones</a>
+      <a href="#/admin/usuarios">${ic("users", "sm")}Usuarios</a>
+      <a href="#/admin/ajustes">${ic("gear", "sm")}Ajustes</a>
+      <button id="logoutBtn" style="color:var(--bad);border-top:1px solid var(--line);margin-top:4px">${ic("logout", "sm")}Cerrar sesión</button>`;
   } else {
     m.innerHTML = `<div style="padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px"><b>${esc(S.user.name)}</b><small class="muted" style="display:block">${esc(S.user.email)}</small><span class="chip acc" style="margin-top:6px">${S.user.plan}</span></div>
       <a href="#/cuenta">${ic("chart", "sm")}Mi panel</a>
@@ -138,11 +149,11 @@ function authShell(title, sub, body, foot) {
   return `<div class="authwrap">
     <aside class="authside">
       <img class="lg lg-d" src="img/logo-dark.png" alt="MotorSubasta"><img class="lg lg-l" src="img/logo-light.png" alt="MotorSubasta">
-      <h2>Subastas profesionales de vehículos en España</h2>
-      <p>Marketplace B2B que conecta compradores profesionales con aseguradoras, rentings, concesionarios y particulares.</p>
+      <h2>Compra y vende vehículos en toda España</h2>
+      <p>Una sola cuenta para el Mercado gratuito y, muy pronto, las subastas profesionales.</p>
       <ul class="checks">
-        <li>${ic("check", "sm")}Vendedores verificados</li><li>${ic("check", "sm")}Subastas en vivo y puja anticipada</li>
-        <li>${ic("check", "sm")}Gestoría y transporte coordinados</li><li>${ic("check", "sm")}Pagos protegidos</li></ul>
+        <li>${ic("check", "sm")}Publicar en el Mercado es gratis</li><li>${ic("check", "sm")}Tus datos son privados: tú eliges tu contacto</li>
+        <li>${ic("check", "sm")}Contrato, gestoría y transporte</li><li>${ic("check", "sm")}Subastas anónimas y verificadas</li></ul>
       <small class="faint">© 2026 MotorSubasta · Alicante, España</small>
     </aside>
     <div class="authcard">

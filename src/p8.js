@@ -244,8 +244,7 @@ function viewHome() {
       <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="#/publicar">Publicar vehículo</a><a class="btn" href="#/valoracion">Pedir oferta 24 h</a></div>
       <div class="sellers" style="grid-column:1/-1">${[["shield", "Aseguradoras"], ["refresh", "Rentings"], ["store", "Concesionarios"], ["truck", "Flotas"], ["wrench", "Desguaces"], ["user", "Particulares"]].map(([i, t]) => `<span>${ic(i, "sm")}${t}</span>`).join("")}</div>
     </div>
-    <div style="margin-top:34px"><div class="lbl" style="margin-bottom:12px">Marcas disponibles</div>
-    <div class="brands"><div class="row">${[...Array(2)].map(() => ["Toyota", "Volkswagen", "SEAT", "Renault", "Peugeot", "Citroën", "Opel", "Ford", "BMW", "Mercedes-Benz", "Audi", "Hyundai", "Kia", "Nissan", "Fiat", "Dacia"].map(b => `<span>${b}</span>`).join("")).join("")}</div></div></div>
+    ${brandsShowcase()}
   </div></section>`;
 }
 

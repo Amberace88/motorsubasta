@@ -18,6 +18,7 @@ function bidderName(id) {
 }
 function photoStem(p) {
   if (!p) return "opel-astra";
+  if (/^(https?:|data:|blob:)/.test(String(p))) return String(p);
   return String(p).replace(/^img\//, "").replace(/\.(jpe?g|png|webp)$/i, "");
 }
 function mapLot(a) {
@@ -48,12 +49,12 @@ function mapLot(a) {
     sellerType: v.seller_kind === "profesional" || (v.profiles && v.profiles.company) ? "Profesional" : "Particular",
     watchers: a.views || 0,
     hist: (a.bids || []).slice().sort((x, y) => new Date(y.created_at) - new Date(x.created_at))
-      .map(b => ({ who: bidderName(b.bidder_id), amt: +b.amount, t: +new Date(b.created_at), auto: b.is_auto })),
+      .map(b => ({ who: bidWho(b), amt: +b.amount, t: +new Date(b.created_at), auto: b.is_auto, bid: b.id })),
     dbStatus: a.status,
-    sellerId: v.seller_id || null,
+    sellerId: myRole(a.id, "is_seller") ? (S.user && S.user.id) : (v.seller_id || null),
     decision: a.decision || null,
     topBid: a.top_bid != null ? +a.top_bid : null,
-    topBidder: a.top_bidder || null,
+    topBidder: myRole(a.id, "is_top") ? (S.user && S.user.id) : (a.top_bidder || null),
     secondBid: a.second_bid != null ? +a.second_bid : null,
     counterPrice: a.counter_price != null ? +a.counter_price : null,
     decisionDeadline: a.decision_deadline ? +new Date(a.decision_deadline) : null,
@@ -75,12 +76,11 @@ function mapMarket(l) {
 
 /* ---------- carga del inventario ---------- */
 const AUCTION_SELECT = `id, session, starts_at, ends_at, start_price, reserve_price, buy_now_price,
-  featured, status, views, winner_id, final_price,
-  top_bid, top_bidder, second_bid, counter_price, decision, decision_deadline,
+  featured, status, views, final_price,
+  top_bid, second_bid, counter_price, decision, decision_deadline,
   vehicles ( make, model, year, km, fuel, transmission, body_type, power_cv, displacement, seats,
-             vin, plate, first_reg, category, title, panels, runs, has_keys, photos, city, province,
-             seller_id, seller_kind ),
-  bids ( id, bidder_id, amount, is_auto, created_at )`;
+             vin, first_reg, category, title, panels, runs, has_keys, photos, city, province, seller_kind ),
+  bids ( id, bidder_alias, amount, is_auto, created_at )`;
 
 async function sbLoadInventory() {
   const { data, error } = await sb.from("auctions").select(AUCTION_SELECT)
@@ -384,6 +384,7 @@ function sbRealtime() {
       }, 2500);
       setTimeout(async () => {
         if (!S.user) return;
+        if (LIVE) { notify("Documentos recibidos. El equipo de MotorSubasta revisa tu identidad en 24 h laborables.", "shield"); return; }
         S.user.verified = true; S.user.vstep = 3;
         await sbSetVerification("verificado");
         renderHeader(route().path);

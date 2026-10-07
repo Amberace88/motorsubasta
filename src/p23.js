@@ -62,7 +62,7 @@ function mapMarket(l) {
 async function sbLoadMarket() {
   const base = `id, price, negotiable, listing_type, created_at,`;
   const rich = base + ` vehicles ( ref, make, model, year, km, fuel, transmission, body_type, power_cv, displacement, seats, vin, first_reg, category, title, condition_score, runs, has_keys, description, photos, city, province, seller_kind )`;
-  const poor = base + ` vehicles ( make, model, year, km, fuel, transmission, category, photos, city, profiles:seller_id ( company ) )`;
+  const poor = base + ` vehicles ( make, model, year, km, fuel, transmission, category, photos, city )`;
   let r = await sb.from("listings").select(rich).eq("status", "activo").order("created_at", { ascending: false });
   if (r.error) { console.warn("listings:", r.error.message); r = await sb.from("listings").select(poor).eq("status", "activo").order("created_at", { ascending: false }); }
   if (r.data) { market.length = 0; r.data.map(mapMarket).forEach(m => market.push(m)); }
