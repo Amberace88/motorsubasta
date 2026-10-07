@@ -2172,6 +2172,87 @@ ol.adm-top img{width:46px;height:34px;object-fit:cover;border-radius:7px;flex:no
 .cvactions .cvmeta{grid-column:2;grid-row:2;justify-content:flex-end;gap:12px}
 .cvactions .cvmeta #cvSaved{display:none}
 @media (max-width:1080px){.cvcard .cvrev ul{position:static;opacity:1;transform:none;pointer-events:auto;box-shadow:none;border:0;display:none}.cvcard .cvrev.open ul{display:grid}}
+/* ---------- v27: interruptores compactos y modernos (toda la web) ---------- */
+label.toggle,.toggle{position:relative;display:inline-block;width:38px;height:22px;min-height:0!important;flex:none;align-self:center;padding:0;gap:0}
+.toggle input,.toggle input[type=checkbox]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1;border-radius:11px}
+.toggle span{position:absolute;inset:0;border-radius:11px;background:var(--surface-3);border:1px solid var(--line-2);box-shadow:inset 0 1px 2px rgba(0,0,0,.18);transition:background .25s,border-color .25s}
+.toggle span::after{top:2px;left:2px;width:16px;height:16px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 .5px rgba(0,0,0,.06);transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.toggle input:checked+span{background:var(--accent);border-color:var(--accent)}
+.toggle input:checked+span::after{transform:translateX(16px)}
+.toggle input:active+span::after{width:19px}.toggle input:checked:active+span::after{transform:translateX(13px)}
+.toggle input:focus-visible+span{outline:2px solid var(--accent-line);outline-offset:2px}
+.trow{align-items:center}
+.toggle-ui{width:36px;height:20px;border-radius:10px;border-color:var(--line-2)}.toggle-ui::after{width:14px;height:14px;top:2px;left:2px;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.adm-tog input:checked+.toggle-ui::after{transform:translateX(16px)}
+/* ---------- v28: mapa de daños 3D ---------- */
+.cond.cond3d{grid-template-columns:1fr!important;gap:16px;justify-items:stretch}
+.c3{--gl:color-mix(in srgb,var(--surface) 70%,transparent);--gb:color-mix(in srgb,var(--line-2) 85%,transparent);position:relative;height:clamp(400px,46vw,560px);border-radius:18px;overflow:hidden;isolation:isolate;border:1px solid var(--line);
+  background:radial-gradient(120% 75% at 50% 18%,#34302e 0%,#1b1918 46%,#0c0b0b 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),var(--shadow-sm)}
+.c3::before{content:"";position:absolute;left:-10%;right:-10%;bottom:0;height:46%;background:radial-gradient(60% 70% at 50% 10%,rgba(255,255,255,.07),transparent 70%),linear-gradient(180deg,transparent,rgba(0,0,0,.28));pointer-events:none;z-index:0}
+.c3::after{content:"";position:absolute;inset:0;background:radial-gradient(140% 100% at 50% 40%,transparent 55%,rgba(0,0,0,.35));pointer-events:none;z-index:1}
+:root[data-theme=light] .c3{background:radial-gradient(120% 75% at 50% 18%,#ffffff 0%,#ebe8e4 50%,#d6d1cb 100%)}
+:root[data-theme=light] .c3::after{background:radial-gradient(140% 100% at 50% 40%,transparent 60%,rgba(60,40,20,.12))}
+@media (prefers-color-scheme:light){:root:not([data-theme=dark]) .c3{background:radial-gradient(120% 75% at 50% 18%,#ffffff 0%,#ebe8e4 50%,#d6d1cb 100%)}:root:not([data-theme=dark]) .c3::after{background:radial-gradient(140% 100% at 50% 40%,transparent 60%,rgba(60,40,20,.12))}}
+.c3view{position:absolute;inset:0;z-index:0}
+.c3cv{display:block;width:100%!important;height:100%!important;cursor:grab;touch-action:pan-y;animation:c3in .9s cubic-bezier(.2,.8,.2,1) both}
+.c3cv:active{cursor:grabbing}
+@keyframes c3in{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.c3load{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:12px;color:var(--muted);font-size:13px;z-index:3}
+.c3top{position:absolute;top:12px;left:12px;right:200px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;z-index:4;pointer-events:none}
+.c3top>*{pointer-events:auto}
+.c3type,.c3by,.c3views,.c3paint,.c3tip,.c3pop,.c3hint{background:var(--gl);-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);border:1px solid var(--gb);box-shadow:0 8px 24px -14px rgba(0,0,0,.6)}
+.c3type{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 6px 0 11px;border-radius:10px;font-size:13px;font-weight:600;color:var(--text);min-height:0!important}
+.c3type select{appearance:none;-webkit-appearance:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 6px center;border:0;color:inherit;font:inherit;padding:0 22px 0 0;height:32px;cursor:pointer;outline:0}
+.c3type select option{background:var(--surface);color:var(--text)}
+.c3type:focus-within{border-color:var(--accent-line)}
+.c3by{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;font-size:12px;color:var(--muted);animation:revIn .5s .3s both}
+.c3by .ic{color:var(--accent)}
+.c3paint{position:absolute;top:12px;right:12px;display:flex;gap:6px;padding:6px;border-radius:999px;z-index:4}
+.c3paint button{width:20px;height:20px;border-radius:50%;border:0;padding:0;cursor:pointer;background:radial-gradient(circle at 32% 28%,color-mix(in srgb,var(--c) 55%,#fff) 0%,var(--c) 45%,color-mix(in srgb,var(--c) 70%,#000) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 1px 3px rgba(0,0,0,.4);transition:transform .2s cubic-bezier(.3,1.4,.5,1),box-shadow .2s}
+.c3paint button:hover{transform:scale(1.15)}
+.c3paint button.on{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--accent)}
+.c3views{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:2px;padding:3px;border-radius:12px;z-index:4;max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}
+.c3views::-webkit-scrollbar{display:none}
+.c3views button{height:30px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:600 12.5px/1 inherit;font-family:inherit;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s;min-height:0}
+.c3views button:hover{color:var(--text);background:color-mix(in srgb,var(--text) 7%,transparent)}
+.c3views button.on{background:var(--accent);color:var(--accent-ink)}
+.c3hint{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap;z-index:3;pointer-events:none;transition:opacity .6s}
+.c3.used .c3hint{opacity:0}
+.c3tip{position:absolute;left:0;top:0;display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;font-size:12.5px;z-index:5;pointer-events:none;white-space:nowrap}
+.c3s{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--surface-3);color:var(--muted)}
+.c3s.s1{background:rgba(61,134,255,.18);color:#6aa3ff}.c3s.s2{background:rgba(244,178,58,.2);color:#f4b23a}.c3s.s3{background:rgba(242,115,31,.2);color:#f2873f}.c3s.s4{background:rgba(229,72,77,.2);color:#f06a6e}
+.c3pop{position:absolute;left:0;top:0;width:220px;padding:8px;border-radius:14px;z-index:6;animation:c3pop .22s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes c3pop{from{opacity:0;scale:.92}to{opacity:1;scale:1}}
+.c3pop-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 8px 6px;font-size:13.5px}
+.c3x{width:26px;height:26px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;min-height:0}
+.c3x:hover{background:var(--surface-3);color:var(--text)}
+.c3sevs{display:grid;gap:2px}
+.c3sevs button{display:flex;align-items:center;gap:9px;height:34px;padding:0 10px;border:0;border-radius:9px;background:transparent;color:var(--text);font:500 13px/1 inherit;font-family:inherit;text-align:left;cursor:pointer;min-height:0;transition:background .15s}
+.c3sevs button:hover{background:color-mix(in srgb,var(--text) 8%,transparent)}
+.c3sevs button.on{background:var(--accent-soft);font-weight:700}
+.c3d{width:10px;height:10px;border-radius:50%;flex:none;background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--line-2)}
+.c3d.s1{background:#3d86ff;box-shadow:0 0 8px #3d86ff88}.c3d.s2{background:#f4b23a;box-shadow:0 0 8px #f4b23a88}.c3d.s3{background:#f2731f;box-shadow:0 0 8px #f2731f88}.c3d.s4{background:#e5484d;box-shadow:0 0 8px #e5484d88}
+.c3.c3ro{height:clamp(320px,38vw,440px)}
+.c3leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted)}
+.c3leg span{display:inline-flex;align-items:center;gap:6px}
+@media (max-width:640px){
+  .c3{height:400px;border-radius:14px}.c3.c3ro{height:330px}
+  .c3top{right:52px}.c3paint{flex-direction:column;padding:5px;gap:5px}.c3paint button{width:18px;height:18px}
+  .c3views button{padding:0 10px;font-size:12px}.c3hint{bottom:54px;font-size:11.5px}
+  .c3pop{width:200px}
+}
+@media (prefers-reduced-motion:reduce){.c3cv,.c3pop,.c3by{animation:none}}
+/* ---------- v28b: casillas y opciones modernas (toda la web) ---------- */
+.toggle input:checked+span,.adm-tog input:checked+.toggle-ui{background:var(--accent-fill);border-color:var(--accent-fill)}
+input[type=checkbox]:where(:not(.toggle input,.mcmp.sm input,.mcmp.blk input,.adm-tog input,.mf-tog input)),input[type=radio]{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin:0;flex:none;display:inline-grid;place-content:center;cursor:pointer;background:var(--surface);border:1.5px solid var(--line-2);border-radius:5px;box-shadow:inset 0 1px 1px rgba(0,0,0,.06);transition:background .18s,border-color .18s,box-shadow .18s,transform .15s;vertical-align:middle}
+input[type=radio]{border-radius:50%}
+input[type=checkbox]:hover,input[type=radio]:hover{border-color:var(--accent-line)}
+input[type=checkbox]:active,input[type=radio]:active{transform:scale(.92)}
+input[type=checkbox]:where(:not(.toggle input,.adm-tog input,.mf-tog input)):checked{background:var(--accent-fill) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.3l2.3 2.3 4.7-5' fill='none' stroke='%23fff' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--accent-fill)}
+input[type=radio]:checked{border-color:var(--accent-fill);background:radial-gradient(circle,var(--accent-fill) 0 4px,var(--surface) 4.5px)}
+input[type=checkbox]:focus-visible,input[type=radio]:focus-visible{outline:2px solid var(--accent-line);outline-offset:2px}
+input[type=checkbox]:disabled,input[type=radio]:disabled{opacity:.45;cursor:not-allowed}
+.pm input,.cvchk input,.tlchk input,.mcmp input{width:17px;height:17px}.nopl input{width:16px;height:16px}
 </style>
 
 <div id="prog"></div>
