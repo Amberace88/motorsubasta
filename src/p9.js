@@ -117,10 +117,10 @@ function renderBidbox(l) {
   const cost = () => {
     const p = +bi.value || 0, fee = buyerFee(p), g = 149, dest = $("#tDest") ? $("#tDest").value : "Alicante";
     const t = Math.round((TRANSPORT[dest] || 200) * (l.runs ? 1 : 1.35) * (l.prov === dest ? .5 : 1));
-    const disc = /Dealer|Full/.test(S.plan) ? .10 : /Pro/.test(S.plan) ? .05 : 0;
+    const disc = planDisc();
     const feeD = fee * (1 - disc), iva = (feeD + g + t) * .21;
     $("#costBox").innerHTML = `<div class="kv"><span>Puja</span><span class="tnum">${eur(p)}</span></div>
-      <div class="kv"><span>Comisión comprador${disc ? ` (−${disc * 100}%)` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
+      <div class="kv"><span>Comisión comprador${disc ? ` (−${Math.round(disc * 100)}%)` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
       <div class="kv"><span>Gestoría transferencia</span><span class="tnum">${eur(g)}</span></div>
       <div class="kv"><span>Transporte a ${dest}</span><span class="tnum">${eur(t)}</span></div>
       <div class="kv"><span>IVA servicios (21%)</span><span class="tnum">${eur(iva)}</span></div>

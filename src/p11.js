@@ -60,7 +60,7 @@ function quickBid(id, amount) {
   modal(pre ? "Confirmar puja anticipada" : "Confirmar puja", `
     <div style="display:flex;gap:12px;align-items:center"><img src="${imgSrc(l.img)}" alt="" style="width:92px;height:66px;object-fit:cover;border-radius:10px"><div><b>${esc(l.title)}</b><div class="muted" style="font-size:13px">${CATS[l.cat].name} · ${esc(l.city)}</div></div></div>
     <div class="kv total" style="border:0;margin:0;padding:0"><span>Tu puja</span><span class="tnum">${eur(v)}</span></div>
-    <div class="kv"><span>Comisión estimada (${S.plan})</span><span class="tnum">${eur(buyerFee(v) * (/Dealer|Full/.test(S.plan) ? .9 : /Pro/.test(S.plan) ? .95 : 1) * 1.21)}</span></div>
+    <div class="kv"><span>Comisión estimada (${S.plan})</span><span class="tnum">${eur(buyerFee(v) * (1 - planDisc()) * 1.21)}</span></div>
     <div class="lead-note" style="background:var(--warn-soft);color:var(--warn)">${ic("alert", "sm")}${pre ? "Tu puja anticipada se aplica al abrir la sesión y se mantiene activa." : "La puja es vinculante durante 30 días y no se puede retirar."}</div>
     <label><input type="checkbox" id="cOk"> <span>Acepto las condiciones de puja</span></label>
     <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="cNo">Cancelar</button><button class="btn primary" id="cYes" disabled>${pre ? "Pre-pujar" : "Pujar"} ${eur(v)}</button></div>`, close => {
@@ -316,9 +316,9 @@ function mountFees() {
       <div class="kv"><span>IVA (21%)</span><span class="tnum">${eur(iva)}</span></div>
       <div class="kv total"><span>Tarifa total</span><span class="tnum">${eur(base + iva)}</span></div>
       <div class="kv"><span>Precio final con el vehículo</span><span class="tnum">${eur(p + base + iva)}</span></div>`;
-    const disc = /Dealer|Full/.test(S.plan) ? .10 : /Pro/.test(S.plan) ? .05 : 0;
+    const disc = planDisc();
     $("#feePlan").textContent = eur(base * (1 - disc) * 1.21);
-    $("#feePlanNote").textContent = disc ? `Incluye el −${disc * 100}% de tu plan ${S.plan}.` : "Sin descuento: con Comprador Pro ahorrarías un 5%.";
+    $("#feePlanNote").textContent = disc ? `Incluye el −${Math.round(disc * 100)}% de tu plan ${S.plan}.` : "Sin descuento: con Comprador Pro ahorrarías un 25%.";
   };
   $("#feeIn").oninput = calc; calc();
 }
@@ -369,7 +369,7 @@ function viewFaq() {
       ["¿Puedo poner precio de reserva?", "Sí. Si la puja no llega a la reserva, decides en 24 h si aceptas, rechazas o contraofertas."]]],
     ["Pagos y cuenta", [["¿Qué métodos de pago se aceptan?", "Transferencia SEPA y tarjeta. Las empresas pueden domiciliar la suscripción."],
       ["¿Cuándo cobro como vendedor?", "Cuando el comprador paga, los fondos se transfieren a tu cuenta menos la comisión de plataforma."],
-      ["¿Por qué debería suscribirme?", "Los planes reducen comisiones, dan acceso anticipado, puja automática y Ofertas Ocultas."],
+      ["¿Por qué debería suscribirme?", "Los planes reducen la comisión de compra hasta un 40% e incluyen puja automática, alertas y Ofertas Ocultas."],
       ["¿Puedo cancelar en cualquier momento?", "Sí. El plan sigue activo hasta el final del periodo pagado y no se renueva."]]]];
   return `<div class="wrap">
   <div class="admin-head"><div><div class="eyebrow">Centro de ayuda</div><h1 style="margin-top:8px">Preguntas frecuentes</h1><p class="muted" style="margin:6px 0 0">Respuestas sobre la plataforma, las subastas y los servicios.</p></div>

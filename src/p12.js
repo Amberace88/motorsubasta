@@ -126,16 +126,16 @@ function viewInvoices() {
     </tbody></table></div>`);
 }
 function viewSubscriptionAcct() {
-  const plan = S.plan, disc = /Dealer|Full/.test(plan) ? 10 : /Pro/.test(plan) ? 5 : 0;
+  const plan = S.plan, disc = Math.round(planDisc(plan) * 100);
   return acctShell("#/cuenta/suscripcion", `
     <div class="admin-head" style="margin-top:0"><div><div class="eyebrow">Comprador</div><h1 style="margin-top:8px">Suscripción</h1></div><a class="btn" href="#/precios">Comparar planes</a></div>
     <div class="a-grid">
       <div class="panel"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
         <div><span class="chip acc">Plan actual</span><h3 style="margin:10px 0 4px;font-size:24px">${plan}</h3><p class="muted" style="margin:0;font-size:13.5px">Renovación el 1 de noviembre de 2026</p></div>
-        <div style="text-align:right"><div class="bigprice tnum">${plan.includes("Gratis") ? "Gratis" : "€39,99"}</div><small class="muted">/mes · IVA incl.</small></div></div>
+        <div style="text-align:right"><div class="bigprice tnum">${planPrice(plan) ? "€" + planPrice(plan).toFixed(2).replace(".", ",") : "Gratis"}</div><small class="muted">/mes · IVA incl.</small></div></div>
         <div style="margin-top:16px">
           <div class="kv"><span>Descuento en comisión</span><b>−${disc}%</b></div>
-          <div class="kv"><span>Acceso anticipado</span><b>${disc ? "+5 min" : "—"}</b></div>
+          <div class="kv"><span>Alertas</span><b>${disc ? "Ilimitadas" : "3"}</b></div>
           <div class="kv"><span>Ofertas Ocultas</span><b>${/Dealer|Full/.test(plan) ? "Incluido" : "No incluido"}</b></div>
           <div class="kv"><span>Puja automática</span><b>${disc ? "Ilimitada" : "Básica"}</b></div></div>
         <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><a class="btn primary" href="#/precios">Mejorar plan</a><button class="btn" id="subCancel">Cancelar suscripción</button></div></div>
@@ -302,7 +302,7 @@ function viewSellerPayouts() {
         <button class="btn primary" id="pySave" style="margin-top:12px">Guardar cuenta de cobro</button></div>
       <div class="panel"><h3>Cómo funcionan los pagos</h3>
         <ol class="howpay"><li>Tu subasta termina y un comprador gana el lote.</li><li>Revisas y aceptas la puja ganadora (24 h si hay reserva).</li><li>El comprador completa el pago en la plataforma.</li><li>Los fondos se transfieren a tu banco menos la comisión de tu plan.</li><li>Coordinas la entrega o el transporte con el comprador.</li></ol>
-        <div class="kv"><span>Comisión de tu plan</span><b>${/Dealer|Full/.test(S.plan) ? "0%" : /Pro/.test(S.plan) ? "1,5%" : "3%"}</b></div>
+        <div class="kv"><span>Comisión de tu plan</span><b>${String(sellerRate() * 100).replace(".", ",")}%</b></div>
         <div class="kv"><span>Plazo de liquidación</span><b>2–3 días laborables</b></div></div>
     </div>
     <div class="panel" style="margin-top:14px"><h3>Liquidaciones</h3>

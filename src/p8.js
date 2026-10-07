@@ -208,15 +208,7 @@ function viewHome() {
     <div class="tags" style="margin-top:18px" data-rev>${[["euro", "Sin comisiones ocultas"], ["users", "Diferentes vendedores"], ["msg", "Soporte en español"]].map(([i, t]) => `<span>${ic(i, "sm")} ${t}</span>`).join("")}</div>
   </div></section>
 
-  <section class="blk"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">Por qué MotorSubasta</div><h2 style="margin-top:10px">Mercado español, reglas claras</h2></div></div>
-    <div class="cats">
-      <div class="panel" data-rev>${ic("users", "lg")}<h3 style="margin:10px 0 6px">Diferentes vendedores</h3><p class="muted" style="margin:0;font-size:13.5px">Compañías de seguros, flotas de alquiler, concesionarios certificados, empresas, profesionales y particulares.</p></div>
-      <div class="panel" data-rev style="--d:70ms">${ic("pin", "lg")}<h3 style="margin:10px 0 6px">Mercado nacional</h3><p class="muted" style="margin:0;font-size:13.5px">Cobertura completa en las 17 comunidades autónomas de España.</p></div>
-      <div class="panel" data-rev style="--d:140ms">${ic("car", "lg")}<h3 style="margin:10px 0 6px">100% mercado español</h3><p class="muted" style="margin:0;font-size:13.5px">Siniestros, averiados, embargo, leasing y renting procedentes del mercado español.</p></div>
-      <div class="panel" data-rev style="--d:210ms">${ic("shield", "lg")}<h3 style="margin:10px 0 6px">Proceso transparente</h3><p class="muted" style="margin:0;font-size:13.5px">Normas de subasta claras, fotos y documentación según lo aportado por el vendedor.</p></div>
-    </div>
-  </div></section>
+  ${whySection()}
 
   ${pv ? "" : mkSec}
 

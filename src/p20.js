@@ -102,10 +102,7 @@ function patchRoute(re, wrapMount) {
   ROUTES[i] = [ROUTES[i][0], (q, m) => { const out = fn(q, m); const mount = out[1]; return [out[0], () => { mount && mount(); wrapMount(q, m); }]; }];
 }
 patchRoute(/^\/subasta\/([\w-]+)$/, () => { if (!AUCTIONS_OPEN) { const w = $("#app .wrap"); if (w && !w.querySelector(".previewbar")) w.insertAdjacentHTML("afterbegin", previewBar()); } });
-patchRoute(/^\/precios$/, () => {
-  const w = $("#app .wrap"); if (!w || w.querySelector(".freebar")) return;
-  w.insertAdjacentHTML("afterbegin", `<div class="freebar" data-rev>${ic("spark", "sm")}<b>Lanzamiento:</b> publicar en el Mercado es gratis. Las tarifas de subasta se aplicarán cuando abran las subastas.</div>`);
-});
+
 patchRoute(/^\/mercado\/([\w-]+)$/, (q, m) => {
   const b = $("#miOffer"); if (!b || $(".segcta")) return;
   b.insertAdjacentHTML("afterend", `<a class="segcta" href="#/seguros?mercado=${encodeURIComponent(m[1])}">${ic("umbrella", "sm")}<span><b>¿Te lo llevas?</b> Pide seguro para el traslado</span>${ic("right", "sm")}</a>`);

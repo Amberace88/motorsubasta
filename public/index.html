@@ -1170,6 +1170,168 @@ textarea.in{min-height:84px;height:auto;resize:vertical;padding-top:11px;line-he
 @media (max-width:900px){.decrow{grid-template-columns:64px minmax(0,1fr)}.decrow img{width:64px;height:48px}.decrow .dnums,.decrow .dact{grid-column:1/-1;justify-content:flex-start}.decrow .dnums{flex-wrap:wrap;gap:12px 18px}}
 .decpanel{margin:0 0 16px}
 @media (max-width:560px){.sgkinds{grid-template-columns:1fr}.pvrow{flex-direction:column}}
+/* ===== v15 — precios ===== */
+.prwrap{padding-bottom:20px}
+.prhero{padding:46px 0 8px;max-width:760px}
+.prhero h1{font-size:clamp(32px,4.6vw,50px);margin:12px 0 12px;letter-spacing:-.034em;line-height:1.05}
+.prhero .lead{font-size:17px;color:var(--muted);margin:0;max-width:62ch}
+.prjump{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.prjump a{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);font-size:13.5px;font-weight:600;color:var(--muted);transition:color .2s,border-color .2s}
+.prjump a:hover{color:var(--text);border-color:var(--accent)}
+.prmk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:28px;margin-top:34px;padding:30px;border-radius:22px;border:1px solid color-mix(in srgb,var(--ok) 28%,var(--line));background:radial-gradient(120% 140% at 0% 0%,var(--ok-soft),transparent 55%),var(--surface);scroll-margin-top:90px}
+.prmk h2{font-size:clamp(24px,2.8vw,32px);margin:14px 0 10px}
+.prmk-amt{display:flex;align-items:center;gap:12px;margin:4px 0 10px}
+.prmk-amt b{font:800 58px/1 var(--display);letter-spacing:-.05em;color:var(--ok)}
+.prmk-amt span{font-size:13px;line-height:1.35;color:var(--muted)}
+.prmk-l>p{margin:0 0 18px;font-size:14.5px}
+.prmk-cta{display:flex;gap:10px;flex-wrap:wrap}
+.prmk-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:center}
+.prmk-cols>div{padding:18px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line)}
+.prmk-cols h4{display:flex;align-items:center;gap:8px;font-size:15px;margin:0 0 12px}
+.prmk-cols h4 svg{color:var(--accent)}
+.prmk-cols ul,.pc-f{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.prmk-cols li{display:flex;gap:9px;font-size:13.5px;line-height:1.45}
+.prmk-cols li svg{color:var(--ok);flex:none;margin-top:3px}
+.prauc{margin-top:64px;scroll-margin-top:90px}
+.prauc-h{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.prauc-h h2{font-size:clamp(26px,3.2vw,36px);margin:10px 0 6px}
+.prauc-h p{margin:0;max-width:56ch}
+.prauc-h .eyebrow .chip{letter-spacing:0;text-transform:none;margin-left:4px}
+.prctl{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.prbill{display:flex;gap:8px;align-items:center;font-size:13.5px;font-weight:600}
+.pcs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.pc{position:relative;display:flex;flex-direction:column;gap:0;padding:26px 24px 24px;border-radius:20px;border:1px solid var(--line);background:var(--surface);transition:transform .3s,border-color .3s,box-shadow .3s}
+.pc:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 18px 40px -24px rgba(0,0,0,.45)}
+.pc.pop{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:linear-gradient(180deg,var(--accent-soft),var(--surface) 42%);box-shadow:0 22px 50px -28px color-mix(in srgb,var(--accent) 60%,transparent)}
+.pc-badge{position:absolute;top:-12px;left:24px;display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;background:var(--accent-fill);color:#fff;font:700 11px/1 var(--body);letter-spacing:.03em}
+.pc header h3{font-size:19px}
+.pc header p{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+.pc-amt{display:flex;align-items:baseline;gap:2px;margin:20px 0 4px;min-height:52px}
+.pc-cur{font:700 24px/1 var(--display);color:var(--muted);align-self:flex-start;margin-top:6px}
+.pc-num{font:800 48px/1 var(--display);letter-spacing:-.05em}
+.pc-free{font:800 48px/1 var(--display);letter-spacing:-.05em}
+.pc-per{font-size:14px;color:var(--muted);margin-left:4px}
+.pc-bill{font-size:12.5px;color:var(--faint);min-height:18px}
+.pc-key{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}
+.pc-key div{padding:11px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.pc.pop .pc-key div{background:color-mix(in srgb,var(--surface-2) 70%,transparent)}
+.pc-key small{display:block;font-size:11.5px;color:var(--muted);margin-bottom:3px}
+.pc-key b{font:700 17px/1.1 var(--display);letter-spacing:-.02em}
+.pc-f{flex:1;margin-bottom:16px;align-content:start}
+.pc-f li{display:flex;gap:9px;align-items:flex-start;font-size:14px;line-height:1.45}
+.pc-f li svg{flex:none;margin-top:3px;color:var(--ok)}
+.pc-f li.off{color:var(--faint)}
+.pc-f li.off svg{color:var(--faint);opacity:.7}
+.pc-f li.off span{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--faint) 50%,transparent)}
+.pc-note{display:flex;gap:8px;align-items:flex-start;margin:0 0 14px;padding:10px 12px;border-radius:11px;background:var(--ok-soft);color:var(--ok);font-size:12.5px;font-weight:600;line-height:1.4;min-height:40px}
+.pc-note.ghost{background:none;padding:0;min-height:40px}
+.pc-note svg{flex:none;margin-top:1px}
+.pcalc{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;margin-top:22px;padding:26px;border-radius:20px;border:1px solid var(--line);background:var(--surface)}
+.pcalc h3{font-size:20px}
+.pcalc-in p{margin:6px 0 16px;font-size:14px}
+.pcalc-in label{display:flex;justify-content:space-between;align-items:baseline}
+.pcalc-in label b{font-size:15px;color:var(--text)}
+.pcalc input[type=range]{width:100%;accent-color:var(--accent-fill);height:28px}
+.pcalc-out{display:grid;gap:10px}
+.pcalc-row{display:grid;grid-template-columns:120px minmax(0,1fr) 110px;grid-template-areas:"nm bar tot" ". det det";gap:4px 12px;align-items:center;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface-2);transition:border-color .25s,background .25s}
+.pcalc-row .nm{grid-area:nm;font-weight:700;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.pcalc-row .nm .chip{font-style:normal;height:20px;font-size:10.5px}
+.pcalc-row .bar{grid-area:bar;height:8px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+.pcalc-row .bar i{display:block;height:100%;border-radius:inherit;background:var(--muted);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.pcalc-row .tot{grid-area:tot;text-align:right;font:700 18px/1 var(--display)}
+.pcalc-row .tot small{font:600 11.5px/1.3 var(--body);color:var(--warn)}
+.pcalc-row .det{grid-area:det;color:var(--faint);font-size:12px}
+.pcalc-row.best{border-color:color-mix(in srgb,var(--ok) 50%,var(--line));background:color-mix(in srgb,var(--ok-soft) 60%,var(--surface-2))}
+.pcalc-row.best .bar i{background:var(--ok)}
+.pcalc-row.over{opacity:.55}
+.pcalc-save{display:flex;gap:8px;align-items:center;margin:14px 0 0;font-size:14px}
+.pcalc-save svg{color:var(--ok);flex:none}
+.combo{margin-top:22px;padding:22px 24px;border-radius:20px;border:1px solid var(--line);background:var(--surface)}
+.combo-h h3{display:flex;align-items:center;gap:8px;font-size:18px}
+.combo-h p{margin:4px 0 12px;font-size:14px}
+.combo-r{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,2fr) auto auto;gap:16px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
+.combo-r .nm{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.combo-r .pts{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13.5px;color:var(--muted)}
+.combo-r .pts span{display:inline-flex;gap:6px;align-items:center}
+.combo-r .pts svg{color:var(--ok)}
+.combo-r .pr b{font:800 22px/1 var(--display);letter-spacing:-.03em}
+.combo-r .pr small{color:var(--muted);margin-left:2px}
+.prfees{margin-top:64px;scroll-margin-top:90px}
+#prFaq{scroll-margin-top:90px}
+@media (max-width:980px){.pcs{grid-template-columns:1fr;max-width:520px}.prmk,.pcalc{grid-template-columns:1fr}.combo-r{grid-template-columns:1fr auto;}.combo-r .pts{grid-column:1/-1;order:3}}
+@media (max-width:560px){.prmk{padding:20px}.prmk-cols{grid-template-columns:1fr}.pcalc{padding:18px}.pcalc-row{grid-template-columns:84px minmax(0,1fr) 92px}.prctl{width:100%}.prctl .seg{width:100%}.prctl .seg button{flex:1;justify-content:center}.prhero{padding-top:28px}}
+/* ===== v15 — Por qué MotorSubasta (bento animado) ===== */
+.whygrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);grid-template-areas:"map sel" "map plate" "proc proc";gap:16px}
+.wc{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);background:var(--surface);padding:24px;isolation:isolate;transition:border-color .3s,transform .3s}
+.wc::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .35s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 16%,transparent),transparent 60%)}
+.wc:hover{border-color:color-mix(in srgb,var(--accent) 38%,var(--line))}
+.wc:hover::before{opacity:1}
+.wtxt h3{font-size:19px;margin:12px 0 6px}
+.wtxt p{margin:0;color:var(--muted);font-size:14px;line-height:1.55;max-width:46ch}
+.wic{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line)}
+.wmap{grid-area:map;display:flex;flex-direction:column;gap:6px}
+.wsel{grid-area:sel}.wplate{grid-area:plate}.wproc{grid-area:proc}
+.wsel,.wplate{display:flex;flex-direction:column}
+.wsel .marq,.wplate .platebox{margin-top:auto;padding-top:22px}
+.wstats{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap}
+.wstats b{display:block;font:800 26px/1 var(--display);letter-spacing:-.04em}
+.wstats small{color:var(--muted);font-size:12px}
+.wmapbox{flex:1;display:grid;place-items:center;margin:4px -8px -10px;min-height:260px}
+.esmap{width:100%;max-width:560px;height:auto;overflow:visible}
+.esmap .land{fill:var(--surface-2);stroke:var(--line-2);stroke-width:1.2;stroke-linejoin:round}
+.esmap .landdots{fill:url(#esDots);stroke:none}
+.esmap .pd{fill:color-mix(in srgb,var(--muted) 38%,transparent)}
+.esmap .land:not(.isl){stroke-dasharray:1600;stroke-dashoffset:1600}
+.whygrid.on .esmap .land:not(.isl){animation:esDraw 2.2s cubic-bezier(.4,.1,.2,1) forwards}
+@keyframes esDraw{to{stroke-dashoffset:0}}
+.esmap .canarias rect{fill:none;stroke:var(--line-2);stroke-dasharray:3 3}
+.esmap .canarias ellipse{fill:var(--surface-2);stroke:var(--line-2)}
+.esmap text{font:600 10.5px var(--body);fill:var(--muted);letter-spacing:.01em}
+.esmap .city circle{fill:var(--text);opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.2)}
+.esmap .city text{opacity:0}
+.whygrid.on .esmap .city circle{animation:esPop .5s cubic-bezier(.3,1.6,.5,1) forwards;animation-delay:calc(.9s + var(--i) * 70ms)}
+.whygrid.on .esmap .city text{animation:esFade .5s forwards;animation-delay:calc(1.1s + var(--i) * 70ms)}
+@keyframes esPop{to{opacity:.85;transform:scale(1)}}
+@keyframes esFade{to{opacity:1}}
+.esmap .rt{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;opacity:.75}
+.whygrid.on .esmap .rt{animation:esRoute 1.1s ease-out forwards;animation-delay:calc(1.3s + var(--i) * 160ms)}
+@keyframes esRoute{to{stroke-dashoffset:0}}
+.esmap .truck{fill:var(--accent);opacity:0;filter:drop-shadow(0 0 4px var(--accent))}
+.whygrid.on .esmap .truck{animation:esFade .3s forwards;animation-delay:calc(2.4s + var(--i) * 160ms)}
+.esmap .hq circle{fill:var(--accent-fill)}
+.esmap .hq .ring{fill:none;stroke:var(--accent);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:esRing 2.2s ease-out infinite}
+.esmap .hq text{fill:var(--accent);font-weight:800;font-size:12px}
+@keyframes esRing{0%{transform:scale(1);opacity:.9}100%{transform:scale(4.2);opacity:0}}
+.marq{display:grid;gap:10px;margin:22px -24px 0;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mrow{display:flex;gap:10px;width:max-content;animation:marq 26s linear infinite}
+.mrow.rev{animation-direction:reverse;animation-duration:30s}
+.wsel:hover .mrow{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
+.sch{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface-2);font-size:13.5px;font-weight:600;white-space:nowrap}
+.sch svg{color:var(--accent)}
+.platebox{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:20px}
+.esplate{display:inline-flex;align-items:stretch;height:52px;border-radius:8px;overflow:hidden;background:#f4f4f1;border:2px solid #1b1b1b;box-shadow:0 10px 26px -14px rgba(0,0,0,.6),inset 0 0 0 2px #fff}
+.esplate .eu{width:28px;background:#1e47c4;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:5px;font:800 13px/1 var(--body)}
+.esplate .eu i{font-style:normal;color:#ffd200;font-size:10px;margin-bottom:auto;margin-top:6px}
+.esplate .pch{display:flex;align-items:center;padding:0 14px;font:700 31px/1 "DIN Alternate","Arial Narrow",var(--mono);letter-spacing:.04em;color:#151515}
+.esplate .pch b{display:inline-block;min-width:.62em;text-align:center;font-weight:700;transition:transform .12s}
+.esplate .pch b.sp{min-width:.45em}
+.esplate .pch b.roll{transform:translateY(-2px);filter:blur(.4px);opacity:.8}
+.pword{height:30px;font-size:13px;padding:0 12px;transition:opacity .2s,transform .2s}
+.pword.out{opacity:0;transform:translateY(6px)}
+.wsteps{position:relative;list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.wsteps li{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.wsteps .dot{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1.5px solid var(--line-2);color:var(--muted);transition:all .35s}
+.wsteps .lb{font-size:13px;font-weight:600;color:var(--muted);transition:color .35s;max-width:16ch}
+.wsteps li.done .dot{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.wsteps li.done .lb{color:var(--text)}
+.wsteps li.cur .dot{transform:scale(1.12);box-shadow:0 0 0 6px color-mix(in srgb,var(--ok) 16%,transparent)}
+.wline{position:absolute;left:10%;right:10%;top:21px;height:2px;background:var(--line-2);z-index:0}
+.wline i{display:block;height:100%;width:0;background:var(--ok);transition:width .6s ease}
+@media (max-width:980px){.whygrid{grid-template-columns:1fr;grid-template-areas:"map" "sel" "plate" "proc"}}
+@media (max-width:640px){.esmap text{font-size:14px}.esmap .hq text{font-size:15px}.wstats{gap:16px}.wsteps{grid-template-columns:1fr;gap:12px}.wsteps li{flex-direction:row;text-align:left}.wsteps .lb{max-width:none}.wline{left:20px;right:auto;top:20px;bottom:20px;width:2px;height:auto}.wline i{width:100%!important;height:var(--p,0);transition:height .6s ease}.esplate .pch{font-size:26px;padding:0 10px}.wc{padding:20px}.marq{margin-inline:-20px}}
+@media (prefers-reduced-motion:reduce){.mrow{animation:none}.esmap .land:not(.isl){stroke-dashoffset:0}.esmap .rt{stroke-dashoffset:0}.esmap .city circle,.esmap .city text,.esmap .truck{opacity:1;transform:none}.esmap .hq .ring{animation:none}}
+@media (max-width:980px){.pcs .pc.pop{order:-1}}
 </style>
 
 <div id="prog"></div>
@@ -1766,10 +1928,10 @@ function renderBidbox(l) {
   const cost = () => {
     const p = +bi.value || 0, fee = buyerFee(p), g = 149, dest = $("#tDest") ? $("#tDest").value : "Alicante";
     const t = Math.round((TRANSPORT[dest] || 200) * (l.runs ? 1 : 1.35) * (l.city.includes(dest) || l.prov === dest ? .5 : 1));
-    const disc = /Dealer|Full/.test(S.plan) ? .10 : /Pro/.test(S.plan) ? .05 : 0;
+    const disc = planDisc();
     const feeD = fee * (1 - disc), iva = (feeD + g + t) * .21;
     $("#costBox").innerHTML = `<div class="kv"><span>Puja</span><span class="tnum">${eur(p)}</span></div>
-      <div class="kv"><span>Comisión comprador${disc ? ` (−${disc * 100}% ${S.plan})` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
+      <div class="kv"><span>Comisión comprador${disc ? ` (−${Math.round(disc * 100)}% ${S.plan})` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
       <div class="kv"><span>Gestoría transferencia</span><span class="tnum">${eur(g)}</span></div>
       <div class="kv"><span>Transporte a ${dest}</span><span class="tnum">${eur(t)}</span></div>
       <div class="kv"><span>IVA servicios (21%)</span><span class="tnum">${eur(iva)}</span></div>
@@ -2148,7 +2310,7 @@ function viewCompany() {
   <section class="blk" style="padding-top:0"><div class="wrap split">
     <div><div class="eyebrow">Qué hacemos</div><p class="big-quote" style="margin-top:12px">Subastas en vivo, mercado profesional y servicios integrales en un solo lugar.</p></div>
     <div style="display:grid;gap:12px">
-      <div class="panel" style="display:flex;gap:14px">${ic("bolt", "lg")}<div><b>Subastas en tiempo real</b><p class="muted" style="margin:2px 0 0;font-size:14px">Pujas transparentes, acceso anticipado y oportunidades exclusivas.</p></div></div>
+      <div class="panel" style="display:flex;gap:14px">${ic("bolt", "lg")}<div><b>Subastas en tiempo real</b><p class="muted" style="margin:2px 0 0;font-size:14px">Pujas transparentes, pre-puja abierta a todos y oportunidades exclusivas.</p></div></div>
       <div class="panel" style="display:flex;gap:14px">${ic("store", "lg")}<div><b>Mercado profesional</b><p class="muted" style="margin:2px 0 0;font-size:14px">Compraventa a precio fijo con herramientas para el sector.</p></div></div>
       <div class="panel" style="display:flex;gap:14px">${ic("truck", "lg")}<div><b>Logística y exportación</b><p class="muted" style="margin:2px 0 0;font-size:14px">Transporte nacional, DUA y exportación a otros mercados.</p></div></div>
     </div></div></section>
@@ -3078,15 +3240,7 @@ function viewHome() {
     <div class="tags" style="margin-top:18px" data-rev>${[["euro", "Sin comisiones ocultas"], ["users", "Diferentes vendedores"], ["msg", "Soporte en español"]].map(([i, t]) => `<span>${ic(i, "sm")} ${t}</span>`).join("")}</div>
   </div></section>
 
-  <section class="blk"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">Por qué MotorSubasta</div><h2 style="margin-top:10px">Mercado español, reglas claras</h2></div></div>
-    <div class="cats">
-      <div class="panel" data-rev>${ic("users", "lg")}<h3 style="margin:10px 0 6px">Diferentes vendedores</h3><p class="muted" style="margin:0;font-size:13.5px">Compañías de seguros, flotas de alquiler, concesionarios certificados, empresas, profesionales y particulares.</p></div>
-      <div class="panel" data-rev style="--d:70ms">${ic("pin", "lg")}<h3 style="margin:10px 0 6px">Mercado nacional</h3><p class="muted" style="margin:0;font-size:13.5px">Cobertura completa en las 17 comunidades autónomas de España.</p></div>
-      <div class="panel" data-rev style="--d:140ms">${ic("car", "lg")}<h3 style="margin:10px 0 6px">100% mercado español</h3><p class="muted" style="margin:0;font-size:13.5px">Siniestros, averiados, embargo, leasing y renting procedentes del mercado español.</p></div>
-      <div class="panel" data-rev style="--d:210ms">${ic("shield", "lg")}<h3 style="margin:10px 0 6px">Proceso transparente</h3><p class="muted" style="margin:0;font-size:13.5px">Normas de subasta claras, fotos y documentación según lo aportado por el vendedor.</p></div>
-    </div>
-  </div></section>
+  ${whySection()}
 
   ${pv ? "" : mkSec}
 
@@ -3308,10 +3462,10 @@ function renderBidbox(l) {
   const cost = () => {
     const p = +bi.value || 0, fee = buyerFee(p), g = 149, dest = $("#tDest") ? $("#tDest").value : "Alicante";
     const t = Math.round((TRANSPORT[dest] || 200) * (l.runs ? 1 : 1.35) * (l.prov === dest ? .5 : 1));
-    const disc = /Dealer|Full/.test(S.plan) ? .10 : /Pro/.test(S.plan) ? .05 : 0;
+    const disc = planDisc();
     const feeD = fee * (1 - disc), iva = (feeD + g + t) * .21;
     $("#costBox").innerHTML = `<div class="kv"><span>Puja</span><span class="tnum">${eur(p)}</span></div>
-      <div class="kv"><span>Comisión comprador${disc ? ` (−${disc * 100}%)` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
+      <div class="kv"><span>Comisión comprador${disc ? ` (−${Math.round(disc * 100)}%)` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
       <div class="kv"><span>Gestoría transferencia</span><span class="tnum">${eur(g)}</span></div>
       <div class="kv"><span>Transporte a ${dest}</span><span class="tnum">${eur(t)}</span></div>
       <div class="kv"><span>IVA servicios (21%)</span><span class="tnum">${eur(iva)}</span></div>
@@ -3649,7 +3803,7 @@ function quickBid(id, amount) {
   modal(pre ? "Confirmar puja anticipada" : "Confirmar puja", `
     <div style="display:flex;gap:12px;align-items:center"><img src="${imgSrc(l.img)}" alt="" style="width:92px;height:66px;object-fit:cover;border-radius:10px"><div><b>${esc(l.title)}</b><div class="muted" style="font-size:13px">${CATS[l.cat].name} · ${esc(l.city)}</div></div></div>
     <div class="kv total" style="border:0;margin:0;padding:0"><span>Tu puja</span><span class="tnum">${eur(v)}</span></div>
-    <div class="kv"><span>Comisión estimada (${S.plan})</span><span class="tnum">${eur(buyerFee(v) * (/Dealer|Full/.test(S.plan) ? .9 : /Pro/.test(S.plan) ? .95 : 1) * 1.21)}</span></div>
+    <div class="kv"><span>Comisión estimada (${S.plan})</span><span class="tnum">${eur(buyerFee(v) * (1 - planDisc()) * 1.21)}</span></div>
     <div class="lead-note" style="background:var(--warn-soft);color:var(--warn)">${ic("alert", "sm")}${pre ? "Tu puja anticipada se aplica al abrir la sesión y se mantiene activa." : "La puja es vinculante durante 30 días y no se puede retirar."}</div>
     <label><input type="checkbox" id="cOk"> <span>Acepto las condiciones de puja</span></label>
     <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="cNo">Cancelar</button><button class="btn primary" id="cYes" disabled>${pre ? "Pre-pujar" : "Pujar"} ${eur(v)}</button></div>`, close => {
@@ -3905,9 +4059,9 @@ function mountFees() {
       <div class="kv"><span>IVA (21%)</span><span class="tnum">${eur(iva)}</span></div>
       <div class="kv total"><span>Tarifa total</span><span class="tnum">${eur(base + iva)}</span></div>
       <div class="kv"><span>Precio final con el vehículo</span><span class="tnum">${eur(p + base + iva)}</span></div>`;
-    const disc = /Dealer|Full/.test(S.plan) ? .10 : /Pro/.test(S.plan) ? .05 : 0;
+    const disc = planDisc();
     $("#feePlan").textContent = eur(base * (1 - disc) * 1.21);
-    $("#feePlanNote").textContent = disc ? `Incluye el −${disc * 100}% de tu plan ${S.plan}.` : "Sin descuento: con Comprador Pro ahorrarías un 5%.";
+    $("#feePlanNote").textContent = disc ? `Incluye el −${Math.round(disc * 100)}% de tu plan ${S.plan}.` : "Sin descuento: con Comprador Pro ahorrarías un 25%.";
   };
   $("#feeIn").oninput = calc; calc();
 }
@@ -3958,7 +4112,7 @@ function viewFaq() {
       ["¿Puedo poner precio de reserva?", "Sí. Si la puja no llega a la reserva, decides en 24 h si aceptas, rechazas o contraofertas."]]],
     ["Pagos y cuenta", [["¿Qué métodos de pago se aceptan?", "Transferencia SEPA y tarjeta. Las empresas pueden domiciliar la suscripción."],
       ["¿Cuándo cobro como vendedor?", "Cuando el comprador paga, los fondos se transfieren a tu cuenta menos la comisión de plataforma."],
-      ["¿Por qué debería suscribirme?", "Los planes reducen comisiones, dan acceso anticipado, puja automática y Ofertas Ocultas."],
+      ["¿Por qué debería suscribirme?", "Los planes reducen la comisión de compra hasta un 40% e incluyen puja automática, alertas y Ofertas Ocultas."],
       ["¿Puedo cancelar en cualquier momento?", "Sí. El plan sigue activo hasta el final del periodo pagado y no se renueva."]]]];
   return `<div class="wrap">
   <div class="admin-head"><div><div class="eyebrow">Centro de ayuda</div><h1 style="margin-top:8px">Preguntas frecuentes</h1><p class="muted" style="margin:6px 0 0">Respuestas sobre la plataforma, las subastas y los servicios.</p></div>
@@ -4171,16 +4325,16 @@ function viewInvoices() {
     </tbody></table></div>`);
 }
 function viewSubscriptionAcct() {
-  const plan = S.plan, disc = /Dealer|Full/.test(plan) ? 10 : /Pro/.test(plan) ? 5 : 0;
+  const plan = S.plan, disc = Math.round(planDisc(plan) * 100);
   return acctShell("#/cuenta/suscripcion", `
     <div class="admin-head" style="margin-top:0"><div><div class="eyebrow">Comprador</div><h1 style="margin-top:8px">Suscripción</h1></div><a class="btn" href="#/precios">Comparar planes</a></div>
     <div class="a-grid">
       <div class="panel"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
         <div><span class="chip acc">Plan actual</span><h3 style="margin:10px 0 4px;font-size:24px">${plan}</h3><p class="muted" style="margin:0;font-size:13.5px">Renovación el 1 de noviembre de 2026</p></div>
-        <div style="text-align:right"><div class="bigprice tnum">${plan.includes("Gratis") ? "Gratis" : "€39,99"}</div><small class="muted">/mes · IVA incl.</small></div></div>
+        <div style="text-align:right"><div class="bigprice tnum">${planPrice(plan) ? "€" + planPrice(plan).toFixed(2).replace(".", ",") : "Gratis"}</div><small class="muted">/mes · IVA incl.</small></div></div>
         <div style="margin-top:16px">
           <div class="kv"><span>Descuento en comisión</span><b>−${disc}%</b></div>
-          <div class="kv"><span>Acceso anticipado</span><b>${disc ? "+5 min" : "—"}</b></div>
+          <div class="kv"><span>Alertas</span><b>${disc ? "Ilimitadas" : "3"}</b></div>
           <div class="kv"><span>Ofertas Ocultas</span><b>${/Dealer|Full/.test(plan) ? "Incluido" : "No incluido"}</b></div>
           <div class="kv"><span>Puja automática</span><b>${disc ? "Ilimitada" : "Básica"}</b></div></div>
         <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><a class="btn primary" href="#/precios">Mejorar plan</a><button class="btn" id="subCancel">Cancelar suscripción</button></div></div>
@@ -4347,7 +4501,7 @@ function viewSellerPayouts() {
         <button class="btn primary" id="pySave" style="margin-top:12px">Guardar cuenta de cobro</button></div>
       <div class="panel"><h3>Cómo funcionan los pagos</h3>
         <ol class="howpay"><li>Tu subasta termina y un comprador gana el lote.</li><li>Revisas y aceptas la puja ganadora (24 h si hay reserva).</li><li>El comprador completa el pago en la plataforma.</li><li>Los fondos se transfieren a tu banco menos la comisión de tu plan.</li><li>Coordinas la entrega o el transporte con el comprador.</li></ol>
-        <div class="kv"><span>Comisión de tu plan</span><b>${/Dealer|Full/.test(S.plan) ? "0%" : /Pro/.test(S.plan) ? "1,5%" : "3%"}</b></div>
+        <div class="kv"><span>Comisión de tu plan</span><b>${String(sellerRate() * 100).replace(".", ",")}%</b></div>
         <div class="kv"><span>Plazo de liquidación</span><b>2–3 días laborables</b></div></div>
     </div>
     <div class="panel" style="margin-top:14px"><h3>Liquidaciones</h3>
@@ -6761,10 +6915,7 @@ function patchRoute(re, wrapMount) {
   ROUTES[i] = [ROUTES[i][0], (q, m) => { const out = fn(q, m); const mount = out[1]; return [out[0], () => { mount && mount(); wrapMount(q, m); }]; }];
 }
 patchRoute(/^\/subasta\/([\w-]+)$/, () => { if (!AUCTIONS_OPEN) { const w = $("#app .wrap"); if (w && !w.querySelector(".previewbar")) w.insertAdjacentHTML("afterbegin", previewBar()); } });
-patchRoute(/^\/precios$/, () => {
-  const w = $("#app .wrap"); if (!w || w.querySelector(".freebar")) return;
-  w.insertAdjacentHTML("afterbegin", `<div class="freebar" data-rev>${ic("spark", "sm")}<b>Lanzamiento:</b> publicar en el Mercado es gratis. Las tarifas de subasta se aplicarán cuando abran las subastas.</div>`);
-});
+
 patchRoute(/^\/mercado\/([\w-]+)$/, (q, m) => {
   const b = $("#miOffer"); if (!b || $(".segcta")) return;
   b.insertAdjacentHTML("afterend", `<a class="segcta" href="#/seguros?mercado=${encodeURIComponent(m[1])}">${ic("umbrella", "sm")}<span><b>¿Te lo llevas?</b> Pide seguro para el traslado</span>${ic("right", "sm")}</a>`);
@@ -7066,6 +7217,313 @@ async function adSolicitudes(b) {
     return base();
   };
 })();
+/* ============================================================
+   v15 — precios
+   · Mercado: gratis (sin suscripciones durante el lanzamiento)
+   · Subastas: Comprar / Vender, 3 planes cada uno, combinados compactos
+   · Sin "acceso anticipado": la pre-puja ya está abierta a todos
+   · Descuentos que compensan de verdad: Pro −25 %, Dealer −40 % de la comisión
+   ============================================================ */
+
+/* una sola fuente para descuentos y comisiones de plan */
+function planDisc(plan) { plan = plan || S.plan || ""; return /Dealer|Full/.test(plan) ? .40 : /Pro/.test(plan) ? .25 : 0; }
+function sellerRate(plan) { plan = plan || S.plan || ""; return /Dealer|Full/.test(plan) ? 0 : /Pro/.test(plan) ? .015 : .03; }
+function planPrice(plan) { return ({ "Comprador Pro": 39.99, "Comprador Dealer": 99.99, "Vendedor Pro": 39.99, "Vendedor Dealer": 99.99, "Combinado Pro": 69.99, "Combinado Full": 149.99 })[plan] || 0; }
+
+/* (la primera pintura ocurre antes de que esta capa se ejecute: todo va en funciones) */
+function pr2() { return window.__pr2 || (window.__pr2 = { role: "buy", annual: false, n: 1, avg: 3000 }); }
+function aucPlans() { return {
+  buy: [
+    { n: "Comprador Gratis", tag: "Para empezar a pujar", p: 0, limit: Infinity,
+      key: [["Comisión de compra", "Estándar"], ["Alertas", "3"]],
+      f: [[1, "Pujar y pre-pujar en todas las subastas públicas"], [1, "Coste total calculado antes de pujar"], [1, "Respuesta del vendedor en 24 h"], [0, "Puja automática"], [0, "Ofertas Ocultas"], [0, "Informes DGT incluidos"]] },
+    { n: "Comprador Pro", tag: "Para quien compra cada mes", p: 39.99, pop: true, limit: Infinity,
+      key: [["Comisión de compra", "−25%"], ["Alertas", "Ilimitadas"]],
+      f: [[1, "Todo lo del plan Gratis"], [1, "Puja automática"], [1, "Alertas por marca, modelo y precio"], [1, "Aviso inmediato de «Comprar ya»"], [0, "Ofertas Ocultas"], [0, "Informes DGT incluidos"]],
+      note: "Se paga solo con una compra de más de 1.000 € al mes" },
+    { n: "Comprador Dealer", tag: "Para profesionales y exportadores", p: 99.99, limit: Infinity,
+      key: [["Comisión de compra", "−40%"], ["Informes DGT", "10/mes"]],
+      f: [[1, "Todo lo del plan Pro"], [1, "Acceso a Ofertas Ocultas"], [1, "10 informes DGT al mes incluidos"], [1, "Gestor de cuenta personal"]],
+      note: "Se paga solo con dos compras de más de 2.000 € al mes" },
+  ],
+  sell: [
+    { n: "Vendedor Gratis", tag: "Para particulares", p: 0, limit: 2,
+      key: [["Comisión de éxito", "3%"], ["Vehículos/mes", "2"]],
+      f: [[1, "Subasta en la sesión de su categoría"], [1, "Tú decides: aceptar, rechazar o contraofertar"], [1, "Oferta directa de MotorSubasta en 24 h"], [0, "Analíticas de visitas y pujas"], [0, "Destacado en su sesión"], [0, "Carga masiva por CSV"]] },
+    { n: "Vendedor Pro", tag: "Para talleres y compraventas", p: 39.99, pop: true, limit: 10,
+      key: [["Comisión de éxito", "1,5%"], ["Vehículos/mes", "10"]],
+      f: [[1, "Todo lo del plan Gratis"], [1, "Analíticas de visitas y pujas"], [1, "Destacado en su sesión"], [1, "Soporte prioritario"], [0, "Carga masiva por CSV"]],
+      note: "Se paga solo vendiendo un vehículo de más de 2.700 € al mes" },
+    { n: "Vendedor Dealer", tag: "Para flotas, rentings y aseguradoras", p: 99.99, limit: Infinity,
+      key: [["Comisión de éxito", "0%"], ["Vehículos/mes", "Sin límite"]],
+      f: [[1, "Todo lo del plan Pro"], [1, "Carga masiva por CSV"], [1, "Analíticas avanzadas"], [1, "Posicionamiento destacado"]],
+      note: "Se paga solo a partir de 3.400 € vendidos al mes" },
+  ],
+}; }
+function comboPlans() { return [
+  { n: "Combinado Pro", p: 69.99, save: 10, pts: ["Comisión de compra −25%", "Comisión de éxito 1,5%", "10 vehículos/mes"] },
+  { n: "Combinado Full", p: 149.99, save: 50, pts: ["Comisión de compra −40%", "Comisión de éxito 0%", "Sin límite", "Ofertas Ocultas"] },
+]; }
+
+function prAmt(p) { return p === 0 ? `<span class="pc-free">Gratis</span>` :
+  `<span class="pc-cur">€</span><span class="pc-num">${(pr2().annual ? p * .83 : p).toFixed(2).replace(".", ",")}</span><span class="pc-per">/mes</span>`; }
+
+function planCta(pl) {
+  if (S.user && S.plan === pl.n) return `<button class="btn block" disabled>${ic("check", "sm")}Tu plan actual</button>`;
+  if (!pl.p) return S.user ? `<a class="btn block" href="#/subastas">${ic("gavel", "sm")}Ver subastas</a>` : `<a class="btn block" href="#/registro">Crear cuenta gratis</a>`;
+  if (!AUCTIONS_OPEN) return `<button class="btn block ${pl.pop ? "primary" : ""}" data-notify>${ic("bell", "sm")}Avísame cuando abran</button>`;
+  return `<button class="btn block ${pl.pop ? "primary" : ""}" data-plan="${pl.n}">Elegir ${pl.n.split(" ").pop()}</button>`;
+}
+function planCard(pl, i) {
+  return `<article class="pc ${pl.pop ? "pop" : ""}" data-rev style="--d:${i * 70}ms">
+    ${pl.pop ? `<span class="pc-badge">${ic("spark", "sm")}Más popular</span>` : ""}
+    <header><h3>${pl.n}</h3><p>${pl.tag}</p></header>
+    <div class="pc-amt tnum">${prAmt(pl.p)}</div>
+    <small class="pc-bill">${pl.p ? (pr2().annual ? `Facturado ${eur(pl.p * .83 * 12)} al año` : "Facturación mensual · cancela cuando quieras") : "Sin cuota, para siempre"}</small>
+    <div class="pc-key">${pl.key.map(([k, v]) => `<div><small>${k}</small><b class="tnum">${v}</b></div>`).join("")}</div>
+    <ul class="pc-f">${pl.f.map(([on, t]) => `<li class="${on ? "" : "off"}">${ic(on ? "check" : "x", "sm")}<span>${t}</span></li>`).join("")}</ul>
+    ${pl.note ? `<p class="pc-note">${ic("euro", "sm")}${pl.note}</p>` : `<p class="pc-note ghost"></p>`}
+    ${planCta(pl)}
+  </article>`;
+}
+
+/* ¿te sale a cuenta? — coste mensual de cada plan con tu volumen */
+function prCalcHTML() {
+  const buy = pr2().role === "buy", plans = aucPlans()[pr2().role], pf = pr2().annual ? .83 : 1;
+  const rows = plans.map(pl => {
+    const n = pr2().n, avg = pr2().avg;
+    const fees = buy ? n * buyerFee(avg) * (1 - planDisc(pl.n)) : n * avg * sellerRate(pl.n);
+    return { pl, fees, total: fees + pl.p * pf, over: !buy && n > pl.limit };
+  });
+  const ok = rows.filter(r => !r.over), best = ok.reduce((a, b) => (b.total < a.total ? b : a), ok[0]);
+  const max = Math.max(...rows.map(r => r.total), 1);
+  return `<div class="pcalc-out">${rows.map(r => `<div class="pcalc-row ${r === best ? "best" : ""} ${r.over ? "over" : ""}">
+      <span class="nm">${r.pl.n.split(" ").pop()}${r === best ? `<i class="chip ok">Te conviene</i>` : ""}</span>
+      <span class="bar"><i style="width:${Math.max(4, r.total / max * 100)}%"></i></span>
+      <span class="tot tnum">${r.over ? `<small>Supera ${r.pl.limit} vehículos/mes</small>` : eur(r.total)}</span>
+      <small class="det tnum">${r.over ? "" : `${eur(r.fees)} ${buy ? "comisiones" : "comisión de éxito"}${r.pl.p ? ` + ${eur(r.pl.p * pf)} plan` : ""}`}</small></div>`).join("")}</div>
+    ${best && best.pl.p ? `<p class="pcalc-save">${ic("check", "sm")}Con <b>${best.pl.n}</b> ahorras <b class="tnum">${eur(rows[0].total - best.total)}</b> al mes frente al plan Gratis.</p>` : `<p class="pcalc-save muted">${ic("check", "sm")}Con este volumen, el plan Gratis es lo más económico.</p>`}`;
+}
+
+function viewPricing() {
+  const buy = pr2().role === "buy", plans = aucPlans()[pr2().role];
+  return `<div class="wrap prwrap">
+  <section class="prhero" data-rev>
+    <div class="eyebrow">${ic("euro", "sm")}Planes y tarifas</div>
+    <h1>Precios claros, sin letra pequeña</h1>
+    <p class="lead">Registrarse es gratis. En el Mercado no pagas nada; en las subastas solo pagas comisión cuando ganas o vendes. Los planes son para quien opera con frecuencia.</p>
+    <nav class="prjump"><a href="#prMk" data-jump>${ic("store", "sm")}Mercado</a><a href="#prAuc" data-jump>${ic("gavel", "sm")}Subastas</a><a href="#prFees" data-jump>${ic("doc", "sm")}Tarifas</a><a href="#prFaq" data-jump>${ic("msg", "sm")}Preguntas</a></nav>
+  </section>
+
+  <section class="prmk" id="prMk" data-rev>
+    <div class="prmk-l">
+      <span class="chip ok">${ic("spark", "sm")}Gratis durante el lanzamiento</span>
+      <h2>Mercado de coches</h2>
+      <div class="prmk-amt"><b>0 €</b><span>sin cuotas<br>ni comisiones</span></div>
+      <p class="muted">Publica y compra a precio fijo, tratando directamente con la otra parte. Sin planes ni suscripciones.</p>
+      <div class="prmk-cta"><a class="btn primary" href="#/publicar?t=mercado">${ic("plus", "sm")}Publicar gratis</a><a class="btn" href="#/mercado">${ic("store", "sm")}Ver anuncios</a></div>
+    </div>
+    <div class="prmk-cols">
+      <div><h4>${ic("upload", "sm")}Si vendes</h4><ul>${["Anuncios gratis para particulares y profesionales", "Sin comisión de venta", "Fotos, ficha técnica y descripción completas", "Anuncio activo 60 días, renovable"].map(t => `<li>${ic("check", "sm")}${t}</li>`).join("")}</ul></div>
+      <div><h4>${ic("search", "sm")}Si compras</h4><ul>${["Todos los anuncios, fotos y precios", "Contacto directo con el vendedor", "Envía tu oferta si el precio es negociable", "Contrato de compraventa gratis en PDF"].map(t => `<li>${ic("check", "sm")}${t}</li>`).join("")}</ul></div>
+    </div>
+  </section>
+
+  <section class="prauc" id="prAuc">
+    <div class="prauc-h" data-rev>
+      <div><div class="eyebrow">${ic("gavel", "sm")}Subastas${AUCTIONS_OPEN ? "" : ` <span class="chip acc">Abren muy pronto</span>`}</div>
+        <h2>Planes para pujar y vender</h2>
+        <p class="muted">${AUCTIONS_OPEN ? "Empieza gratis. Cambia o cancela tu plan cuando quieras." : "Los planes se podrán contratar el día que abran las subastas. Hasta entonces, todo es gratis."}</p></div>
+      <div class="prctl">
+        <div class="seg" id="prRole" role="tablist"><button role="tab" data-v="buy" class="${buy ? "on" : ""}" aria-selected="${buy}">${ic("gavel", "sm")}Quiero comprar</button><button role="tab" data-v="sell" class="${buy ? "" : "on"}" aria-selected="${!buy}">${ic("upload", "sm")}Quiero vender</button></div>
+        <label class="prbill">Mensual <span class="toggle"><input type="checkbox" id="prAnnual" ${pr2().annual ? "checked" : ""} aria-label="Facturación anual"><span></span></span> Anual <span class="chip ok">−17%</span></label>
+      </div>
+    </div>
+    <div class="pcs">${plans.map(planCard).join("")}</div>
+
+    <div class="pcalc" data-rev>
+      <div class="pcalc-in">
+        <h3>¿Te sale a cuenta?</h3>
+        <p class="muted">Mueve los valores y compara lo que pagarías al mes con cada plan.</p>
+        <div class="field"><label for="pcN">${buy ? "Compras al mes" : "Ventas al mes"} <b class="tnum" id="pcNv">${pr2().n}</b></label><input type="range" id="pcN" min="0" max="20" step="1" value="${pr2().n}"></div>
+        <div class="field"><label for="pcA">Precio medio por vehículo <b class="tnum" id="pcAv">${eur(pr2().avg)}</b></label><input type="range" id="pcA" min="500" max="20000" step="250" value="${pr2().avg}"></div>
+        <small class="faint">${buy ? "Comisión de compra según la tabla de tramos, sin IVA." : "Comisión de éxito sobre el precio de adjudicación, sin IVA."}</small>
+      </div>
+      <div id="pcOut">${prCalcHTML()}</div>
+    </div>
+
+    <div class="combo" data-rev>
+      <div class="combo-h"><h3>${ic("users", "sm")}¿Compras y vendes?</h3><p class="muted">Un solo plan para las dos cosas, más barato que contratarlos por separado.</p></div>
+      ${comboPlans().map(c => `<div class="combo-r">
+        <div class="nm"><b>${c.n}</b><span class="chip ok">Ahorras ${eur(c.save)}/mes</span></div>
+        <div class="pts">${c.pts.map(t => `<span>${ic("check", "sm")}${t}</span>`).join("")}</div>
+        <div class="pr tnum"><b>€${(pr2().annual ? c.p * .83 : c.p).toFixed(2).replace(".", ",")}</b><small>/mes</small></div>
+        ${S.user && S.plan === c.n ? `<button class="btn sm" disabled>Tu plan actual</button>` : AUCTIONS_OPEN ? `<button class="btn sm" data-plan="${c.n}">Elegir</button>` : `<button class="btn sm" data-notify>${ic("bell", "sm")}Avísame</button>`}
+      </div>`).join("")}
+    </div>
+  </section>
+
+  <section class="prfees" id="prFees">
+    <div class="sec-head" data-rev><div><div class="eyebrow">Tarifas</div><h2 style="margin-top:8px">Comisión del comprador por tramo</h2><p>Se aplica sobre el precio de adjudicación, solo si ganas. Precios sin IVA; no incluyen transporte ni gestoría.</p></div></div>
+    <div class="tbl-wrap" data-rev><table><thead><tr><th>Precio de adjudicación</th><th class="r">Estándar</th><th class="r">Pro (−25%)</th><th class="r">Dealer (−40%)</th></tr></thead><tbody>
+    ${FEES.map(([a, b, c]) => `<tr><td class="tnum">${num(a)} € – ${num(b)} €</td><td class="r tnum">${c} €</td><td class="r tnum">${Math.round(c * .75)} €</td><td class="r tnum">${Math.round(c * .6)} €</td></tr>`).join("")}
+    <tr><td>16.000 € +</td><td class="r">2,8%</td><td class="r">2,1%</td><td class="r">1,68%</td></tr></tbody></table></div>
+    <div class="commit" style="margin-top:22px">
+      <div data-rev><h3 style="font-size:19px;margin-bottom:12px">${ic("doc")} Servicios de gestoría</h3><div class="tbl-wrap"><table><tbody>${GESTORIA.map(([n, p]) => `<tr><td>${n}</td><td class="r tnum">${p} € + IVA</td></tr>`).join("")}</tbody></table></div></div>
+      <div style="display:grid;gap:14px;align-content:start">
+        <div class="panel" data-rev><h3>${ic("truck")} Transporte</h3><p class="muted" style="margin:0 0 10px;font-size:13.5px">Estimación desde Alicante con portavehículos (grúa +35%).</p>${Object.entries(TRANSPORT).slice(0, 6).map(([k, v]) => `<div class="kv"><span>${k}</span><span class="tnum">${v} € + IVA</span></div>`).join("")}</div>
+        <div class="panel" data-rev style="border-color:color-mix(in srgb,var(--bad) 40%,var(--line))"><h3 style="color:var(--bad)">${ic("alert")} Tarifa de reactivación</h3><p class="muted" style="margin:0 0 10px;font-size:13.5px">Solo si se incumple una compra adjudicada y hay que reactivar la cuenta.</p><div class="bigprice">349 € <small class="muted" style="font:500 14px var(--body)">+ IVA</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top:48px" class="faq" id="prFaq"><h2 style="font-size:28px;margin-bottom:8px">Preguntas frecuentes</h2>
+    ${[["¿Por qué el Mercado es gratis?", "Queremos que encuentres comprador o vehículo sin barreras. Durante el lanzamiento publicar, contactar y vender en el Mercado no tiene coste."],
+      ["¿Tengo que pagar un plan para pujar?", "No. Con la cuenta gratuita puedes pujar y pre-pujar en todas las subastas públicas. Solo pagas la comisión si ganas un lote."],
+      ["¿Qué es la pre-puja?", "Puedes dejar tu puja antes de que empiece la sesión. Se aplica al abrirse y sigue activa durante la subasta, igual para todos los planes."],
+      ["¿Puedo cancelar en cualquier momento?", "Sí. El plan sigue activo hasta el final del periodo pagado y no se renueva."],
+      ["¿Puedo subir o bajar de plan?", "Sí, el cambio es inmediato y se prorratea el importe del periodo en curso."],
+      ["¿Qué pasa si gano una subasta y el vendedor no acepta?", "El vendedor tiene 24 h para aceptar, rechazar o proponerte otro precio. Si rechaza, no tienes ninguna obligación."],
+      ["¿Cómo funciona el anti-sniping?", "Cualquier puja en los dos últimos minutos amplía el cierre dos minutos más, para que todos puedan responder."]].map(([q, a]) => `<details><summary>${q}${ic("chev", "chev")}</summary><p>${a}</p></details>`).join("")}
+  </section></div>`;
+}
+function mountPricing() {
+  $$("#prRole button").forEach(b => b.onclick = () => { pr2().role = b.dataset.v; pr2().n = 1; pr2().avg = pr2().role === "buy" ? 3000 : 3500; router(); });
+  $("#prAnnual").onchange = e => { pr2().annual = e.target.checked; router(); };
+  $$("[data-jump]").forEach(a => a.onclick = e => { e.preventDefault(); const t = $(a.getAttribute("href")); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  const upd = () => { $("#pcNv").textContent = pr2().n; $("#pcAv").textContent = eur(pr2().avg); $("#pcOut").innerHTML = prCalcHTML(); };
+  $("#pcN").oninput = e => { pr2().n = +e.target.value; upd(); };
+  $("#pcA").oninput = e => { pr2().avg = +e.target.value; upd(); };
+  $$("[data-plan]").forEach(b => b.onclick = () => {
+    if (!S.user) { location.hash = "#/registro"; return; }
+    modal("Cambiar a " + b.dataset.plan, `<p style="margin:0">Tu plan pasará de <b>${S.plan}</b> a <b>${b.dataset.plan}</b>. Facturación ${pr2().annual ? "anual" : "mensual"}.</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="cNo">Cancelar</button><button class="btn primary" id="cYes">Confirmar</button></div>`, close => {
+      $("#cNo").onclick = close;
+      $("#cYes").onclick = () => { S.plan = b.dataset.plan; store.set("plan", S.plan); close(); toast("Plan actualizado a " + S.plan, "check"); router(); };
+    });
+  });
+}
+/* ============================================================
+   v15 — "Por qué MotorSubasta" animado
+   · mapa de España con rutas desde Alicante
+   · cinta de tipos de vendedor
+   · matrícula española que cambia de vehículo
+   · proceso transparente paso a paso
+   (todo en funciones: la portada se pinta antes de que esta capa se ejecute)
+   ============================================================ */
+
+function whyProj(lon, lat) { return [((lon + 9.6) * 36).toFixed(1), ((44 - lat) * 36 * 1.3).toFixed(1)]; }
+function whyMapSVG() {
+  const coast = [[-8.41, 43.37], [-8.2, 43.55], [-7.7, 43.79], [-6.9, 43.58], [-5.66, 43.56], [-4.5, 43.42], [-3.8, 43.48], [-2.93, 43.33], [-1.79, 43.39],
+    [-1.3, 43.05], [-0.4, 42.8], [0.7, 42.86], [1.7, 42.5], [2.7, 42.42], [3.32, 42.32], [3.1, 41.85], [2.17, 41.38], [1.25, 41.1], [0.87, 40.7],
+    [0.2, 40.2], [-0.03, 39.98], [-0.33, 39.47], [-0.1, 38.95], [0.23, 38.73], [-0.48, 38.35], [-0.7, 37.95], [-0.69, 37.63], [-1.3, 37.55], [-1.65, 37.38],
+    [-2.19, 36.72], [-2.46, 36.83], [-3.3, 36.73], [-4.42, 36.72], [-5.1, 36.42], [-5.35, 36.15], [-5.6, 36.01], [-6.05, 36.3], [-6.29, 36.53], [-6.4, 36.8],
+    [-6.95, 37.2], [-7.4, 37.18], [-7.5, 37.6], [-7.3, 38.1], [-7.0, 38.6], [-7.3, 39.0], [-7.5, 39.6], [-6.9, 40.25], [-6.85, 41.0], [-6.2, 41.6],
+    [-6.6, 41.95], [-7.4, 41.85], [-8.2, 42.1], [-8.87, 41.88], [-8.72, 42.24], [-9.0, 42.6], [-9.27, 42.88], [-9.1, 43.2], [-8.41, 43.37]];
+  const mallorca = [[2.35, 39.55], [2.75, 39.95], [3.2, 39.92], [3.47, 39.72], [3.25, 39.35], [2.75, 39.4]];
+  const menorca = [[3.82, 40.0], [4.1, 40.07], [4.32, 39.86], [3.95, 39.92]];
+  const ibiza = [[1.2, 38.95], [1.45, 39.12], [1.6, 39.02], [1.4, 38.84]];
+  const poly = pts => pts.map(p => whyProj(p[0], p[1]).join(",")).join(" ");
+  const HQ = [-0.49, 38.35];
+  const cities = [["Madrid", -3.70, 40.42, "r"], ["Barcelona", 2.17, 41.39, "r"], ["Valencia", -0.38, 39.47, "r"], ["Sevilla", -5.98, 37.39, "l"], ["Zaragoza", -0.89, 41.65, ""],
+    ["Málaga", -4.42, 36.72, "b"], ["Murcia", -1.13, 37.99, ""], ["Bilbao", -2.93, 43.26, "b"], ["A Coruña", -8.41, 43.36, "b"], ["Valladolid", -4.72, 41.65, ""], ["Granada", -3.6, 37.18, ""], ["Palma", 2.65, 39.57, ""]];
+  const [hx, hy] = whyProj(HQ[0], HQ[1]).map(Number);
+  const routes = cities.filter(c => ["Madrid", "Barcelona", "Sevilla", "Bilbao", "A Coruña", "Málaga", "Zaragoza", "Palma"].includes(c[0])).map((c, i) => {
+    const [x, y] = whyProj(c[1], c[2]).map(Number);
+    const mx = (hx + x) / 2, my = (hy + y) / 2, dx = x - hx, dy = y - hy, len = Math.hypot(dx, dy);
+    const cx = mx - dy / len * len * .22, cy = my + dx / len * len * .22 * (dx > 0 ? -1 : 1);
+    const d = `M${hx},${hy} Q${cx.toFixed(1)},${cy.toFixed(1)} ${x},${y}`;
+    return `<path class="rt" d="${d}" pathLength="100" style="--i:${i}"/><circle class="truck" r="2.6" style="--i:${i}"><animateMotion dur="3.6s" begin="${(1.4 + i * .45).toFixed(2)}s" repeatCount="indefinite" path="${d}"/></circle>`;
+  }).join("");
+  const dots = cities.map(([n, lon, lat, lab], i) => {
+    const [x, y] = whyProj(lon, lat);
+    const pos = lab === "l" ? `x="${+x - 7}" y="${+y + 3.5}" text-anchor="end"` : lab === "b" ? `x="${x}" y="${+y + 13}" text-anchor="middle"` : `x="${+x + 7}" y="${+y + 3.5}"`;
+    return `<g class="city" style="--i:${i}"><circle cx="${x}" cy="${y}" r="3"/>${lab ? `<text ${pos}>${n}</text>` : ""}</g>`;
+  }).join("");
+  return `<svg class="esmap" viewBox="0 0 512 390" role="img" aria-label="Mapa de España con cobertura nacional" translate="no">
+    <defs><radialGradient id="esGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--accent)" stop-opacity=".55"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></radialGradient>
+      <pattern id="esDots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r=".9" class="pd"/></pattern></defs>
+    <polygon class="land" points="${poly(coast)}"/><polygon class="landdots" points="${poly(coast)}"/>
+    ${[mallorca, menorca, ibiza].map(p => `<polygon class="land isl" points="${poly(p)}"/>`).join("")}
+    <g class="canarias"><rect x="8" y="318" width="118" height="62" rx="9"/>${[[22, 352], [36, 346], [50, 350], [64, 345], [80, 352], [98, 338], [112, 331]].map(([x, y], i) => `<ellipse cx="${x}" cy="${y}" rx="${[3, 5, 5, 6, 6, 7, 5][i]}" ry="${[3, 3, 4, 4, 5, 3, 3][i]}"/>`).join("")}<text x="16" y="372">Canarias</text></g>
+    ${routes}${dots}
+    <circle class="hqglow" cx="${hx}" cy="${hy}" r="34" fill="url(#esGlow)"/>
+    <g class="hq"><circle class="ring" cx="${hx}" cy="${hy}" r="6"/><circle cx="${hx}" cy="${hy}" r="5"/><text x="${hx + 9}" y="${hy + 14}">Alicante</text></g>
+  </svg>`;
+}
+
+function whyT(s) { try { return typeof LANG !== "undefined" && LANG ? tr(s) : s; } catch (e) { return s; } }
+function whyWords() { return [["Siniestro", "bad"], ["Averiado", "warn"], ["Embargo", "info"], ["Leasing", "vip"], ["Renting", "ok"], ["Sin daños", "ok"]]; }
+function whySellers() { return [["shield", "Aseguradoras"], ["refresh", "Rentings"], ["store", "Concesionarios"], ["truck", "Flotas"], ["wrench", "Talleres"], ["recycle", "Desguaces"], ["building", "Empresas"], ["user", "Particulares"]]; }
+function whySteps() { return [["upload", "Fotos del vehículo"], ["car", "Daños por paneles"], ["doc", "Documentación"], ["euro", "Coste total antes de pujar"], ["gavel", "Puja vinculante"]]; }
+
+function whySection() {
+  const S1 = whySellers(), half = Math.ceil(S1.length / 2);
+  const row = list => list.concat(list).map(([i, t]) => `<span class="sch">${ic(i, "sm")}${t}</span>`).join("");
+  return `<section class="blk why"><div class="wrap">
+    <div class="sec-head" data-rev><div><div class="eyebrow">Por qué MotorSubasta</div><h2 style="margin-top:10px">Mercado español, reglas claras</h2></div></div>
+    <div class="whygrid" id="whyGrid">
+      <article class="wc wmap" data-rev>
+        <div class="wtxt"><span class="wic">${ic("pin")}</span><h3>Mercado nacional</h3><p>Cobertura completa en las 17 comunidades autónomas de España.</p>
+          <div class="wstats"><div><b class="tnum" data-count="17">17</b><small>comunidades</small></div><div><b class="tnum" data-count="50">50</b><small>provincias</small></div><div><b class="tnum">24 h</b><small>respuesta del vendedor</small></div></div></div>
+        <div class="wmapbox">${whyMapSVG()}</div>
+      </article>
+      <article class="wc wsel" data-rev style="--d:80ms">
+        <div class="wtxt"><span class="wic">${ic("users")}</span><h3>Diferentes vendedores</h3><p>Compañías de seguros, flotas de alquiler, concesionarios certificados, empresas, profesionales y particulares.</p></div>
+        <div class="marq" aria-hidden="true"><div class="mrow">${row(S1.slice(0, half))}</div><div class="mrow rev">${row(S1.slice(half))}</div></div>
+      </article>
+      <article class="wc wplate" data-rev style="--d:160ms">
+        <div class="wtxt"><span class="wic">${ic("car")}</span><h3>100% mercado español</h3><p>Siniestros, averiados, embargo, leasing y renting procedentes del mercado español.</p></div>
+        <div class="platebox" aria-hidden="true">
+          <div class="esplate" translate="no"><span class="eu"><i>★</i>E</span><span class="pch" id="whyPlate">${"1234 BCD".split("").map(c => `<b class="${c === " " ? "sp" : ""}">${c === " " ? "&nbsp;" : c}</b>`).join("")}</span></div>
+          <span class="chip bad pword" id="whyWord" translate="no">${whyT("Siniestro")}</span>
+        </div>
+      </article>
+      <article class="wc wproc" data-rev style="--d:240ms">
+        <div class="wtxt"><span class="wic">${ic("shield")}</span><h3>Proceso transparente</h3><p>Normas de subasta claras, fotos y documentación según lo aportado por el vendedor.</p></div>
+        <ol class="wsteps" id="whySteps">${whySteps().map(([i, t], n) => `<li style="--n:${n}"><span class="dot">${ic(i, "sm")}</span><span class="lb">${t}</span></li>`).join("")}<span class="wline"><i></i></span></ol>
+      </article>
+    </div>
+  </div></section>`;
+}
+
+/* animación: solo mientras se ve; respeta "reducir movimiento" */
+function whyMount() {
+  const g = $("#whyGrid"); if (!g) return;
+  const rm = typeof RM === "function" && RM();
+  $$(".wc", g).forEach(c => c.addEventListener("pointermove", e => { const r = c.getBoundingClientRect(); c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px"); }));
+  if (rm || !("IntersectionObserver" in window)) { g.classList.add("on", "still"); $$("#whySteps li", g).forEach(li => li.classList.add("done")); return; }
+  const T = whyT;
+  const L = "BCDFGHJKLMNPRSTVWXYZ", D = "0123456789";
+  let timers = [], wi = 0, si = 0;
+  const clear = () => { timers.forEach(clearInterval); timers = []; };
+  const spin = () => {
+    const box = $("#whyPlate"), w = $("#whyWord"); if (!box || !w) return clear();
+    const next = (Math.floor(1000 + Math.random() * 9000)) + " " + [0, 1, 2].map(() => L[Math.floor(Math.random() * L.length)]).join("");
+    $$("b", box).forEach((b, k) => {
+      const ch = next[k]; if (ch === " ") return;
+      let n = 0; const pool = k < 4 ? D : L;
+      b.classList.add("roll");
+      const iv = setInterval(() => { b.textContent = pool[Math.floor(Math.random() * pool.length)]; if (++n > 6 + k) { clearInterval(iv); b.textContent = ch; b.classList.remove("roll"); } }, 45);
+    });
+    wi = (wi + 1) % whyWords().length; const [word, col] = whyWords()[wi];
+    w.className = "chip pword out " + col;
+    setTimeout(() => { w.textContent = T(word); w.className = "chip pword " + col; }, 220);
+  };
+  const step = () => {
+    const lis = $$("#whySteps li"); if (!lis.length) return clear();
+    si = (si + 1) % (lis.length + 2);
+    lis.forEach((li, k) => { li.classList.toggle("done", k < si); li.classList.toggle("cur", k === si - 1); });
+    const ln = $("#whySteps .wline i"); if (ln) { const pc = Math.min(100, Math.max(0, (si - 1) / (lis.length - 1) * 100)) + "%"; ln.style.width = pc; ln.style.setProperty("--p", pc); }
+  };
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) { g.classList.add("on"); if (!timers.length) { timers.push(setInterval(spin, 2600), setInterval(step, 900)); step(); } }
+    else clear();
+  }), { threshold: .2 });
+  io.observe(g);
+}
+
+/* portada: el bloque nuevo sustituye a las cuatro tarjetas */
+patchRoute(/^\/$/, () => whyMount());
 /* ============================================================
    v12 — idiomas: español (base) · English · Português · Polski · Українська
    La aplicación sigue escribiendo en español; una capa fina traduce lo

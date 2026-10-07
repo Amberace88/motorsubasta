@@ -551,10 +551,10 @@ function renderBidbox(l) {
   const cost = () => {
     const p = +bi.value || 0, fee = buyerFee(p), g = 149, dest = $("#tDest") ? $("#tDest").value : "Alicante";
     const t = Math.round((TRANSPORT[dest] || 200) * (l.runs ? 1 : 1.35) * (l.city.includes(dest) || l.prov === dest ? .5 : 1));
-    const disc = /Dealer|Full/.test(S.plan) ? .10 : /Pro/.test(S.plan) ? .05 : 0;
+    const disc = planDisc();
     const feeD = fee * (1 - disc), iva = (feeD + g + t) * .21;
     $("#costBox").innerHTML = `<div class="kv"><span>Puja</span><span class="tnum">${eur(p)}</span></div>
-      <div class="kv"><span>Comisión comprador${disc ? ` (−${disc * 100}% ${S.plan})` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
+      <div class="kv"><span>Comisión comprador${disc ? ` (−${Math.round(disc * 100)}% ${S.plan})` : ""}</span><span class="tnum">${eur(feeD)}</span></div>
       <div class="kv"><span>Gestoría transferencia</span><span class="tnum">${eur(g)}</span></div>
       <div class="kv"><span>Transporte a ${dest}</span><span class="tnum">${eur(t)}</span></div>
       <div class="kv"><span>IVA servicios (21%)</span><span class="tnum">${eur(iva)}</span></div>
@@ -933,7 +933,7 @@ function viewCompany() {
   <section class="blk" style="padding-top:0"><div class="wrap split">
     <div><div class="eyebrow">Qué hacemos</div><p class="big-quote" style="margin-top:12px">Subastas en vivo, mercado profesional y servicios integrales en un solo lugar.</p></div>
     <div style="display:grid;gap:12px">
-      <div class="panel" style="display:flex;gap:14px">${ic("bolt", "lg")}<div><b>Subastas en tiempo real</b><p class="muted" style="margin:2px 0 0;font-size:14px">Pujas transparentes, acceso anticipado y oportunidades exclusivas.</p></div></div>
+      <div class="panel" style="display:flex;gap:14px">${ic("bolt", "lg")}<div><b>Subastas en tiempo real</b><p class="muted" style="margin:2px 0 0;font-size:14px">Pujas transparentes, pre-puja abierta a todos y oportunidades exclusivas.</p></div></div>
       <div class="panel" style="display:flex;gap:14px">${ic("store", "lg")}<div><b>Mercado profesional</b><p class="muted" style="margin:2px 0 0;font-size:14px">Compraventa a precio fijo con herramientas para el sector.</p></div></div>
       <div class="panel" style="display:flex;gap:14px">${ic("truck", "lg")}<div><b>Logística y exportación</b><p class="muted" style="margin:2px 0 0;font-size:14px">Transporte nacional, DUA y exportación a otros mercados.</p></div></div>
     </div></div></section>
