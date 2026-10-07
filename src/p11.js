@@ -318,7 +318,7 @@ function mountFees() {
       <div class="kv"><span>Precio final con el vehículo</span><span class="tnum">${eur(p + base + iva)}</span></div>`;
     const disc = planDisc();
     $("#feePlan").textContent = eur(base * (1 - disc) * 1.21);
-    $("#feePlanNote").textContent = disc ? `Incluye el −${Math.round(disc * 100)}% de tu plan ${S.plan}.` : "Sin descuento: con Comprador Pro ahorrarías un 25%.";
+    $("#feePlanNote").textContent = disc ? `Incluye el −${Math.round(disc * 100)}% de tu plan ${S.plan}.` : "Sin descuento: con Comprador Pro ahorrarías un 5%.";
   };
   $("#feeIn").oninput = calc; calc();
 }
@@ -365,11 +365,11 @@ function viewFaq() {
     ["¿Qué pasa si pujo en el último minuto?", "Cualquier puja en los dos últimos minutos amplía el cierre dos minutos (anti-sniping), para que todos puedan responder."],
     ["¿Puedo retirar una puja?", "No. Las pujas son vinculantes durante 30 días naturales."]]],
     ["Vender", [["¿Cómo publico un vehículo?", "Desde Publicar vehículo: datos del coche, condición por panel, fotos y tipo de publicación (subasta o mercado). Nuestro equipo lo revisa antes de programarlo."],
-      ["¿Cuáles son las comisiones de venta?", "Según plan: 3% en Vendedor Gratis, 1,5% en Pro y 0% en Dealer/Full, sobre el precio de adjudicación."],
+      ["¿Cuáles son las comisiones de venta?", "Según plan: 3% en Vendedor Gratis, 2% en Pro y 1,5% en Dealer/Full, sobre el precio de adjudicación."],
       ["¿Puedo poner precio de reserva?", "Sí. Si la puja no llega a la reserva, decides en 24 h si aceptas, rechazas o contraofertas."]]],
     ["Pagos y cuenta", [["¿Qué métodos de pago se aceptan?", "Transferencia SEPA y tarjeta. Las empresas pueden domiciliar la suscripción."],
       ["¿Cuándo cobro como vendedor?", "Cuando el comprador paga, los fondos se transfieren a tu cuenta menos la comisión de plataforma."],
-      ["¿Por qué debería suscribirme?", "Los planes reducen la comisión de compra hasta un 40% e incluyen puja automática, alertas y Ofertas Ocultas."],
+      ["¿Por qué debería suscribirme?", "Los planes incluyen puja automática, alertas, Ofertas Ocultas y un descuento en la comisión de compra."],
       ["¿Puedo cancelar en cualquier momento?", "Sí. El plan sigue activo hasta el final del periodo pagado y no se renueva."]]]];
   return `<div class="wrap">
   <div class="admin-head"><div><div class="eyebrow">Centro de ayuda</div><h1 style="margin-top:8px">Preguntas frecuentes</h1><p class="muted" style="margin:6px 0 0">Respuestas sobre la plataforma, las subastas y los servicios.</p></div>

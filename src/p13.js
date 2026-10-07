@@ -377,7 +377,10 @@ function mountPublish() {
     PUB.make = $("#pMake").value.trim(); PUB.model = $("#pModel").value.trim();
     PUB.year = +$("#pYear").value || new Date().getFullYear(); PUB.km = +$("#pKm").value || 0;
     PUB.city = $("#pCity").value.trim(); PUB.prov = $("#pProv").value; PUB.vin = $("#pVin").value.trim();
+    PUB.plate = ($("#pPlate") || {}).value ? $("#pPlate").value.trim().toUpperCase() : ""; PUB.noPlate = !!($("#pNoPlate") && $("#pNoPlate").checked);
+    PUB.fuel = ($("#pFuel") || {}).value || PUB.fuel; PUB.trans = ($("#pTrans") || {}).value || PUB.trans;
   };
+  const grab2 = () => { if ($("#pDesc")) PUB.desc = $("#pDesc").value.trim(); if ($("#pPick")) PUB.pickup = $("#pPick").value.trim(); };
   const go = d => { grab(); PUB.step = Math.max(0, Math.min(3, PUB.step + d)); router(); scrollTo(0, 0); };
   $("#pPrev").onclick = () => go(-1);
   $("#pNext").onclick = async () => {
@@ -386,16 +389,22 @@ function mountPublish() {
       if (v.length !== 17) { toast("Introduce un VIN de 17 caracteres o usa el botón de decodificar", "alert"); $("#pVin").focus(); return; }
       if (!$("#pMake").value.trim() || !$("#pModel").value.trim()) { toast("Completa marca y modelo", "alert"); return; }
       if (!$("#pCity").value.trim()) { toast("Indica la ciudad donde está el vehículo", "alert"); $("#pCity").focus(); return; }
+      const noPl = $("#pNoPlate") && $("#pNoPlate").checked, pl = $("#pPlate").value.trim();
+      if (!noPl && !plateOk(pl)) { toast("Indica la matrícula (por ejemplo 1234 BCD) o marca «Sin matrícula»", "alert"); $("#pPlate").focus(); return; }
+      const used = await vehicleInUse(v, noPl ? "" : pl);
+      if (used) { toast(used === "subasta" ? "Este vehículo ya está en una subasta: solo puede estar publicado en un sitio." : "Este vehículo (VIN o matrícula) ya está publicado en el Mercado.", "alert"); return; }
     }
+    grab2();
+    if (PUB.step === 3 && PUB.type === "subasta" && $("#pPick") && $("#pPick").value.trim().length < 5) { toast("Indica la dirección de recogida (es privada)", "alert"); $("#pPick").focus(); return; }
     if (PUB.step === 3) {
       const price = PUB.type === "subasta" ? (+($("#pStart") || {}).value || Math.round(PUB.full * .25)) : (+($("#pPrice") || {}).value || PUB.full);
       if (typeof LIVE !== "undefined" && LIVE) {
         const v = await sbPublishVehicle();
         if (!v) return;
         await sbLoadSellerData();
-        toast("Vehículo enviado a revisión", "check");
+        toast(PUB.type === "mercado" ? "Anuncio publicado en el Mercado" : "Vehículo enviado a revisión", "check");
         PUB.step = 0; PUB.panels = {};
-        location.hash = canSell() ? "#/vender/vehiculos" : "#/cuenta";
+        location.hash = canSell() ? (PUB.type === "mercado" ? "#/vender/anuncios" : "#/vender/subastas") : "#/cuenta";
         router(); return;
       }
       const id = "V-" + (105 + S.myVehicles.length);
@@ -404,13 +413,13 @@ function mountPublish() {
         id, img: pool[S.myVehicles.length % pool.length],
         title: `${PUB.year || 2020} ${PUB.make || "Vehículo"} ${PUB.model || ""}`.trim(),
         km: PUB.km || 0, cat: PUB.cat, st: "revision", price, bids: 0, views: 0,
-        date: new Date().toLocaleDateString("es-ES"), channel: PUB.type, vin: PUB.vin || "—", score: scoreOf(PUB.panels),
+        date: new Date().toLocaleDateString("es-ES"), channel: PUB.type, vin: PUB.vin || "—", plate: PUB.noPlate ? "" : PUB.plate, lst: "activo", score: scoreOf(PUB.panels),
       });
       store.set("myvehicles", S.myVehicles);
-      toast("Vehículo enviado a revisión", "check");
+      toast(PUB.type === "mercado" ? "Anuncio publicado en el Mercado" : "Vehículo enviado a revisión", "check");
       notify(`<b>${esc(PUB.make + " " + PUB.model)}</b> está en revisión. Tiempo medio de aprobación: 2 h.`, "upload");
       PUB.step = 0; PUB.panels = {};
-      location.hash = canSell() ? "#/vender/vehiculos" : "#/cuenta";
+      location.hash = canSell() ? (PUB.type === "mercado" ? "#/vender/anuncios" : "#/vender/subastas") : "#/cuenta";
       return;
     }
     go(1);
@@ -420,6 +429,7 @@ function mountPublish() {
   if ($("#pVin")) {
     ["pMake", "pModel", "pYear", "pKm", "pCity"].forEach(f => { const e = $("#" + f); if (e && PUB[f.slice(1).toLowerCase()] !== undefined) e.value = PUB[f.slice(1).toLowerCase()] || e.value; });
     $("#pVin").value = PUB.vin || "";
+    if ($("#pPlate")) { $("#pPlate").value = PUB.plate || ""; $("#pNoPlate").checked = !!PUB.noPlate; const sync = () => { $("#pPlate").disabled = $("#pNoPlate").checked; }; $("#pNoPlate").onchange = sync; sync(); }
     $("#pVinN").textContent = ($("#pVin").value.length) + "/17 · autocompleta marca, modelo y datos técnicos";
     $("#pVin").oninput = e => { e.target.value = e.target.value.toUpperCase().replace(/[IOQ]/g, ""); $("#pVinN").textContent = e.target.value.length + "/17 · autocompleta marca, modelo y datos técnicos"; };
     $("#pDecode").onclick = () => { $("#pVin").value = "WBAPH5C55BA123456"; $("#pMake").value = "BMW"; $("#pModel").value = "320d Touring"; $("#pYear").value = 2011; $("#pKm").value = 243000; $("#pFuel").value = "Diésel"; $("#pVinN").textContent = "17/17 · VIN decodificado: BMW Serie 3 (E91), 2.0 diésel, 184 CV"; toast("VIN decodificado", "search"); };
@@ -438,7 +448,7 @@ function mountPublish() {
     if (!$("#pSummary")) return;
     const sub = PUB.type === "subasta";
     const price = sub ? +($("#pStart").value || 0) : +($("#pPrice").value || 0);
-    const rate = /Full|Dealer/.test(S.plan) ? 0 : /Pro/.test(S.plan) ? .015 : .03;
+    const rate = sellerRate();
     $("#pSummary").innerHTML = `<div class="kv"><span>${sub ? "Puja de salida" : "Precio de venta"}</span><span class="tnum">${eur(price)}</span></div>
       ${!sub && !AUCTIONS_OPEN ? `<div class="kv"><span>Comisión de venta</span><span class="chip ok">Gratis en el lanzamiento</span></div>`
         : `<div class="kv"><span>Comisión de éxito vendedor <span translate="no">(${(rate * 100).toFixed(1)}% · ${S.plan})</span></span><span class="tnum">${eur((sub ? PUB.full : price) * rate)}</span></div>`}
@@ -535,6 +545,8 @@ addEventListener("hashchange", () => {
 });
 
 /* ---------- boot ---------- */
-router();
+/* primera pintura: las capas siguientes aún no se han ejecutado; si algo falla aquí,
+   la última capa vuelve a pintar (nunca debe cortar la carga del resto del script) */
+try { router(); } catch (e) { console.warn("primera pintura:", e && e.message); }
 initReveal(document);
 polish();

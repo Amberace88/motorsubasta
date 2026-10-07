@@ -177,7 +177,7 @@ function viewHome() {
     </div>
   </section>
 
-  ${pv ? mkSec.replace('class="blk" style="padding-top:0"', 'class="blk first"') : ""}
+  ${pv ? mkSec.replace('class="blk" style="padding-top:0"', 'class="blk first"') + toolsStrip() : ""}
   <section class="blk ${pv ? "" : "first"}"><div class="wrap">
     ${pv ? `<div class="sec-head" data-rev><div><div class="eyebrow">${ic("gavel", "sm")}Subastas · próximamente</div><h2 style="margin-top:10px">Cuatro sesiones al día, a hora de España</h2><p>Ya puedes ver cómo serán las sesiones y sus lotes. La puja se activa el día de apertura.</p></div><button class="btn sm primary" data-notify>${ic("bell", "sm")}Avísame</button></div>`
     : `<div class="sec-head" data-rev><div><div class="eyebrow">${ic("clock", "sm")}Sesiones de subasta</div><h2 style="margin-top:10px">Cuatro categorías, cada día</h2><p>Abre una categoría para ver sus lotes. La puja anticipada está abierta hasta que empieza la sesión.</p></div><a class="link" href="#/subastas">Calendario completo ${ic("right", "sm")}</a></div>`}
@@ -197,16 +197,7 @@ function viewHome() {
   </div></section>
 
 
-  <section class="blk" style="background:var(--bg-2);border-block:1px solid var(--line)"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">Cómo funciona</div><h2 style="margin-top:10px">Compra en tres pasos</h2></div></div>
-    <div class="steps" data-rev>
-      <div class="step"><span class="k">01</span>${ic("search", "lg")}<h4>Explorar</h4><p>Encuentra vehículos de aseguradoras, rentings, concesionarios y particulares.</p></div>
-      <div class="step"><span class="k">02</span>${ic("gavel", "lg")}<h4>Pujar</h4><p>Pujas competitivas en tiempo real, o puja anticipada antes de abrir la sesión.</p></div>
-      <div class="step"><span class="k">03</span>${ic("check", "lg")}<h4>Ganar</h4><p>Al ganar se desbloquean los datos del vendedor y el sistema de contraoferta de 24 h.</p></div>
-      <div class="step"><span class="k">04</span>${ic("truck", "lg")}<h4>Cerrar</h4><p>Gestoría y transporte coordinados hasta la retirada del vehículo.</p></div>
-    </div>
-    <div class="tags" style="margin-top:18px" data-rev>${[["euro", "Sin comisiones ocultas"], ["users", "Diferentes vendedores"], ["msg", "Soporte en español"]].map(([i, t]) => `<span>${ic(i, "sm")} ${t}</span>`).join("")}</div>
-  </div></section>
+  ${howSection()}
 
   ${whySection()}
 

@@ -7,8 +7,8 @@
    ============================================================ */
 
 /* una sola fuente para descuentos y comisiones de plan */
-function planDisc(plan) { plan = plan || S.plan || ""; return /Dealer|Full/.test(plan) ? .40 : /Pro/.test(plan) ? .25 : 0; }
-function sellerRate(plan) { plan = plan || S.plan || ""; return /Dealer|Full/.test(plan) ? 0 : /Pro/.test(plan) ? .015 : .03; }
+function planDisc(plan) { plan = plan || S.plan || ""; return /Dealer|Full/.test(plan) ? .10 : /Pro/.test(plan) ? .05 : 0; }
+function sellerRate(plan) { plan = plan || S.plan || ""; return /Dealer|Full/.test(plan) ? .015 : /Pro/.test(plan) ? .02 : .03; }
 function planPrice(plan) { return ({ "Comprador Pro": 39.99, "Comprador Dealer": 99.99, "Vendedor Pro": 39.99, "Vendedor Dealer": 99.99, "Combinado Pro": 69.99, "Combinado Full": 149.99 })[plan] || 0; }
 
 /* (la primera pintura ocurre antes de que esta capa se ejecute: todo va en funciones) */
@@ -19,31 +19,31 @@ function aucPlans() { return {
       key: [["Comisión de compra", "Estándar"], ["Alertas", "3"]],
       f: [[1, "Pujar y pre-pujar en todas las subastas públicas"], [1, "Coste total calculado antes de pujar"], [1, "Respuesta del vendedor en 24 h"], [0, "Puja automática"], [0, "Ofertas Ocultas"], [0, "Informes DGT incluidos"]] },
     { n: "Comprador Pro", tag: "Para quien compra cada mes", p: 39.99, pop: true, limit: Infinity,
-      key: [["Comisión de compra", "−25%"], ["Alertas", "Ilimitadas"]],
+      key: [["Comisión de compra", "−5%"], ["Alertas", "Ilimitadas"]],
       f: [[1, "Todo lo del plan Gratis"], [1, "Puja automática"], [1, "Alertas por marca, modelo y precio"], [1, "Aviso inmediato de «Comprar ya»"], [0, "Ofertas Ocultas"], [0, "Informes DGT incluidos"]],
-      note: "Se paga solo con una compra de más de 1.000 € al mes" },
+      note: "Puja automática: no pierdas un lote por no estar conectado" },
     { n: "Comprador Dealer", tag: "Para profesionales y exportadores", p: 99.99, limit: Infinity,
-      key: [["Comisión de compra", "−40%"], ["Informes DGT", "10/mes"]],
-      f: [[1, "Todo lo del plan Pro"], [1, "Acceso a Ofertas Ocultas"], [1, "10 informes DGT al mes incluidos"], [1, "Gestor de cuenta personal"]],
-      note: "Se paga solo con dos compras de más de 2.000 € al mes" },
+      key: [["Comisión de compra", "−10%"], ["Informes DGT", "2/mes"]],
+      f: [[1, "Todo lo del plan Pro"], [1, "Acceso a Ofertas Ocultas"], [1, "2 informes DGT al mes incluidos"], [1, "Informes adicionales a 12 €"], [1, "Gestor de cuenta personal"]],
+      note: "Acceso exclusivo a los lotes de Ofertas Ocultas" },
   ],
   sell: [
     { n: "Vendedor Gratis", tag: "Para particulares", p: 0, limit: 2,
       key: [["Comisión de éxito", "3%"], ["Vehículos/mes", "2"]],
       f: [[1, "Subasta en la sesión de su categoría"], [1, "Tú decides: aceptar, rechazar o contraofertar"], [1, "Oferta directa de MotorSubasta en 24 h"], [0, "Analíticas de visitas y pujas"], [0, "Destacado en su sesión"], [0, "Carga masiva por CSV"]] },
-    { n: "Vendedor Pro", tag: "Para talleres y compraventas", p: 39.99, pop: true, limit: 10,
-      key: [["Comisión de éxito", "1,5%"], ["Vehículos/mes", "10"]],
+    { n: "Vendedor Pro", tag: "Para talleres y compraventas", p: 39.99, pop: true, limit: 15,
+      key: [["Comisión de éxito", "2%"], ["Vehículos/mes", "15"]],
       f: [[1, "Todo lo del plan Gratis"], [1, "Analíticas de visitas y pujas"], [1, "Destacado en su sesión"], [1, "Soporte prioritario"], [0, "Carga masiva por CSV"]],
-      note: "Se paga solo vendiendo un vehículo de más de 2.700 € al mes" },
+      note: "Más visibilidad para tus lotes en cada sesión" },
     { n: "Vendedor Dealer", tag: "Para flotas, rentings y aseguradoras", p: 99.99, limit: Infinity,
-      key: [["Comisión de éxito", "0%"], ["Vehículos/mes", "Sin límite"]],
+      key: [["Comisión de éxito", "1,5%"], ["Vehículos/mes", "Sin límite"]],
       f: [[1, "Todo lo del plan Pro"], [1, "Carga masiva por CSV"], [1, "Analíticas avanzadas"], [1, "Posicionamiento destacado"]],
-      note: "Se paga solo a partir de 3.400 € vendidos al mes" },
+      note: "Pensado para volumen: carga masiva y sin límite de vehículos" },
   ],
 }; }
 function comboPlans() { return [
-  { n: "Combinado Pro", p: 69.99, save: 10, pts: ["Comisión de compra −25%", "Comisión de éxito 1,5%", "10 vehículos/mes"] },
-  { n: "Combinado Full", p: 149.99, save: 50, pts: ["Comisión de compra −40%", "Comisión de éxito 0%", "Sin límite", "Ofertas Ocultas"] },
+  { n: "Combinado Pro", p: 69.99, save: 10, pts: ["Comisión de compra −5%", "Comisión de éxito 2%", "15 vehículos/mes"] },
+  { n: "Combinado Full", p: 149.99, save: 50, pts: ["Comisión de compra −10%", "Comisión de éxito 1,5%", "Sin límite", "Ofertas Ocultas"] },
 ]; }
 
 function prAmt(p) { return p === 0 ? `<span class="pc-free">Gratis</span>` :
@@ -122,17 +122,6 @@ function viewPricing() {
     </div>
     <div class="pcs">${plans.map(planCard).join("")}</div>
 
-    <div class="pcalc" data-rev>
-      <div class="pcalc-in">
-        <h3>¿Te sale a cuenta?</h3>
-        <p class="muted">Mueve los valores y compara lo que pagarías al mes con cada plan.</p>
-        <div class="field"><label for="pcN">${buy ? "Compras al mes" : "Ventas al mes"} <b class="tnum" id="pcNv">${pr2().n}</b></label><input type="range" id="pcN" min="0" max="20" step="1" value="${pr2().n}"></div>
-        <div class="field"><label for="pcA">Precio medio por vehículo <b class="tnum" id="pcAv">${eur(pr2().avg)}</b></label><input type="range" id="pcA" min="500" max="20000" step="250" value="${pr2().avg}"></div>
-        <small class="faint">${buy ? "Comisión de compra según la tabla de tramos, sin IVA." : "Comisión de éxito sobre el precio de adjudicación, sin IVA."}</small>
-      </div>
-      <div id="pcOut">${prCalcHTML()}</div>
-    </div>
-
     <div class="combo" data-rev>
       <div class="combo-h"><h3>${ic("users", "sm")}¿Compras y vendes?</h3><p class="muted">Un solo plan para las dos cosas, más barato que contratarlos por separado.</p></div>
       ${comboPlans().map(c => `<div class="combo-r">
@@ -146,9 +135,9 @@ function viewPricing() {
 
   <section class="prfees" id="prFees">
     <div class="sec-head" data-rev><div><div class="eyebrow">Tarifas</div><h2 style="margin-top:8px">Comisión del comprador por tramo</h2><p>Se aplica sobre el precio de adjudicación, solo si ganas. Precios sin IVA; no incluyen transporte ni gestoría.</p></div></div>
-    <div class="tbl-wrap" data-rev><table><thead><tr><th>Precio de adjudicación</th><th class="r">Estándar</th><th class="r">Pro (−25%)</th><th class="r">Dealer (−40%)</th></tr></thead><tbody>
-    ${FEES.map(([a, b, c]) => `<tr><td class="tnum">${num(a)} € – ${num(b)} €</td><td class="r tnum">${c} €</td><td class="r tnum">${Math.round(c * .75)} €</td><td class="r tnum">${Math.round(c * .6)} €</td></tr>`).join("")}
-    <tr><td>16.000 € +</td><td class="r">2,8%</td><td class="r">2,1%</td><td class="r">1,68%</td></tr></tbody></table></div>
+    <div class="tbl-wrap" data-rev><table><thead><tr><th>Precio de adjudicación</th><th class="r">Estándar</th><th class="r">Pro (−5%)</th><th class="r">Dealer (−10%)</th></tr></thead><tbody>
+    ${FEES.map(([a, b, c]) => `<tr><td class="tnum">${num(a)} € – ${num(b)} €</td><td class="r tnum">${c} €</td><td class="r tnum">${Math.round(c * .95)} €</td><td class="r tnum">${Math.round(c * .9)} €</td></tr>`).join("")}
+    <tr><td>16.000 € +</td><td class="r">2,8%</td><td class="r">2,66%</td><td class="r">2,52%</td></tr></tbody></table></div>
     <div class="commit" style="margin-top:22px">
       <div data-rev><h3 style="font-size:19px;margin-bottom:12px">${ic("doc")} Servicios de gestoría</h3><div class="tbl-wrap"><table><tbody>${GESTORIA.map(([n, p]) => `<tr><td>${n}</td><td class="r tnum">${p} € + IVA</td></tr>`).join("")}</tbody></table></div></div>
       <div style="display:grid;gap:14px;align-content:start">
@@ -172,9 +161,6 @@ function mountPricing() {
   $$("#prRole button").forEach(b => b.onclick = () => { pr2().role = b.dataset.v; pr2().n = 1; pr2().avg = pr2().role === "buy" ? 3000 : 3500; router(); });
   $("#prAnnual").onchange = e => { pr2().annual = e.target.checked; router(); };
   $$("[data-jump]").forEach(a => a.onclick = e => { e.preventDefault(); const t = $(a.getAttribute("href")); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); });
-  const upd = () => { $("#pcNv").textContent = pr2().n; $("#pcAv").textContent = eur(pr2().avg); $("#pcOut").innerHTML = prCalcHTML(); };
-  $("#pcN").oninput = e => { pr2().n = +e.target.value; upd(); };
-  $("#pcA").oninput = e => { pr2().avg = +e.target.value; upd(); };
   $$("[data-plan]").forEach(b => b.onclick = () => {
     if (!S.user) { location.hash = "#/registro"; return; }
     modal("Cambiar a " + b.dataset.plan, `<p style="margin:0">Tu plan pasará de <b>${S.plan}</b> a <b>${b.dataset.plan}</b>. Facturación ${pr2().annual ? "anual" : "mensual"}.</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="cNo">Cancelar</button><button class="btn primary" id="cYes">Confirmar</button></div>`, close => {

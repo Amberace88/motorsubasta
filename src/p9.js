@@ -65,7 +65,7 @@ function viewLot(id) {
         <span class="avatar" style="width:46px;height:46px;font-size:15px">${l.sellerType[0]}</span>
         <div style="flex:1;min-width:180px"><b>${l.sellerType} verificado</b><div class="muted" style="font-size:13px">${l.sellerType === "Aseguradora" ? "Compañía de seguros · lotes de siniestro" : l.sellerType === "Empresa" ? "Flota / renting · facturación con IVA" : "Vendedor particular"}</div></div>
         <span class="chip ok">${ic("check", "sm")}Identidad verificada</span>
-        <button class="btn sm" id="sellerBtn">Ver perfil del vendedor</button>
+        <button class="btn sm" id="sellerBtn">${ic("lock", "sm")}Vendedor verificado</button>
       </div>
 
       <div class="lbl" style="margin:30px 0 10px">Otras subastas</div>
@@ -155,9 +155,8 @@ function mountLot(id) {
   $("#dFav").onclick = () => { toggleFav(l.id); $("#dFav").style.color = S.favs.has(l.id) ? "var(--accent)" : ""; };
   $("#dShare").onclick = () => { try { navigator.clipboard.writeText(location.href); } catch (e) {} toast("Enlace del lote copiado", "share"); };
   $("#trBtn").onclick = () => toast("Traducción automática disponible en la versión con servidor", "globe2");
-  $("#sellerBtn").onclick = () => modal("Perfil del vendedor", `<div style="display:flex;gap:12px;align-items:center"><span class="avatar" style="width:46px;height:46px">${l.sellerType[0]}</span><div><b>${l.sellerType} verificado</b><div class="muted" style="font-size:13px">Miembro desde 2024 · ${12 + l.watchers} lotes vendidos</div></div></div>
-    <div class="kv"><span>Valoración media</span><b>4,7 / 5</b></div><div class="kv"><span>Entrega a tiempo</span><b>96%</b></div><div class="kv"><span>Respuesta media</span><b>3 h</b></div>
-    <p class="muted" style="margin:0;font-size:13px">Los datos de contacto se desbloquean automáticamente al ganar el lote.</p>`);
+  $("#sellerBtn").onclick = () => modal("Vendedor verificado", `<div style="display:flex;gap:12px;align-items:center"><span class="avatar" style="width:46px;height:46px">${ic(l.sellerType === "Profesional" ? "building" : "user", "sm")}</span><div><b>${l.sellerType} verificado</b><div class="muted" style="font-size:13px">Identidad comprobada por MotorSubasta</div></div></div>
+    <div class="privnote">${ic("lock", "sm")}<span>En las subastas la identidad del vendedor y la del comprador son confidenciales. MotorSubasta gestiona el pago y, cuando la compra está aceptada y pagada, te facilita la dirección de recogida.</span></div>`);
   bindCards($(".detail"));
 }
 

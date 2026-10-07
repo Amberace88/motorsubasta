@@ -756,7 +756,7 @@ function viewPublish(query) {
       <div class="opt-cards">${[["limpio", "shield", "Buen estado general, sin daños significativos"], ["danado", "wrench", "Daños reparables"], ["siniestro", "alert", "Para piezas o desguace"]].map(([k, i, d]) => `<button type="button" class="opt ${PUB.cat === k ? "on" : ""}" data-pcat="${k}"><b>${ic(i, "sm")}${CATS[k].short}</b><small>${d}</small></button>`).join("")}</div>
       <div class="lbl">Estado del título</div><div class="seg" id="ptitle">${[["limpio", "Limpio"], ["salvamento", "Salvamento"], ["piezas", "Solo piezas"]].map(([k, t]) => `<button type="button" data-v="${k}" class="${PUB.title === k ? "on" : ""}">${t}</button>`).join("")}</div>
       <div class="fgrid">
-        <div class="field"><label for="pPlate">Matrícula (opcional)</label><input class="in mono" id="pPlate" placeholder="1234 ABC"></div>
+        <div class="field"><label for="pPlate">Matrícula *</label><input class="in mono up" id="pPlate" placeholder="1234 BCD" maxlength="12"><label class="nopl"><input type="checkbox" id="pNoPlate"> <span>Sin matrícula (náutica, vehículo nuevo o dado de baja)</span></label></div>
         <div class="field"><label for="pVin">Número de bastidor (VIN) *</label><div style="display:flex;gap:6px"><input class="in mono" id="pVin" maxlength="17" placeholder="WBAPH5C55BA123456"><button type="button" class="btn" id="pDecode" title="Decodificar VIN">${ic("search", "sm")}</button></div><small class="muted" id="pVinN">0/17 · autocompleta marca, modelo y datos técnicos</small></div>
         <div class="field"><label for="pMake">Marca *</label><input class="in" id="pMake" placeholder="BMW"></div>
         <div class="field"><label for="pModel">Modelo *</label><input class="in" id="pModel" placeholder="Serie 3"></div>
@@ -786,7 +786,8 @@ function viewPublish(query) {
       <div class="fgrid"><div class="field"><label for="pFull">Precio deseado (€)</label><input class="in tnum" id="pFull" type="number" value="${PUB.full}"><small class="muted">La puja de salida se sugiere al 25%.</small></div>
       <div class="field"><label for="pStart">Puja de salida (€)</label><input class="in tnum" id="pStart" type="number" value="${Math.round(PUB.full * .25)}"><small class="muted" id="pStartHint"></small></div>
       <div class="field"><label for="pDate">Fecha preferida</label><input class="in" id="pDate" type="date"></div>
-      <div class="field"><label for="pRes">Precio de reserva (€, opcional)</label><input class="in tnum" id="pRes" type="number" placeholder="Sin reserva"></div></div>
+      <div class="field"><label for="pRes">Precio de reserva (€, opcional)</label><input class="in tnum" id="pRes" type="number" placeholder="Sin reserva"></div>
+      <div class="field full"><label for="pPick">Dirección de recogida * <span class="muted">· privada</span></label><input class="in" id="pPick" placeholder="Calle, número, ciudad"><small class="muted">Solo la recibe el comprador cuando la venta está aceptada y pagada. En las subastas nadie ve quién vende.</small></div></div>
       <div class="trow"><div><b>Compra inmediata</b><small>Los compradores pueden cerrar la venta al instante a tu precio.</small></div><label class="toggle"><input type="checkbox" id="pBuy" ${PUB.buy ? "checked" : ""} aria-label="Compra inmediata"><span></span></label></div>`
       : `<div class="fgrid"><div class="field"><label for="pPrice">Precio de venta (€) *</label><input class="in tnum" id="pPrice" type="number" value="${PUB.full}"></div>
       <div class="field"><label for="pMcat">Categoría</label><select class="in" id="pMcat">${["Vehículos ligeros", "Motocicletas", "Náutica", "Transporte pesado"].map(c => `<option ${PUB.mcat === c ? "selected" : ""}>${c}</option>`).join("")}</select></div></div>
@@ -829,7 +830,7 @@ function mountPublish() {
     if (!$("#pSummary")) return;
     const sub = PUB.type === "subasta";
     const price = sub ? +($("#pStart").value || 0) : +($("#pPrice").value || 0);
-    const rate = /Full|Dealer/.test(S.plan) ? 0 : /Pro/.test(S.plan) ? .015 : .03;
+    const rate = sellerRate();
     $("#pSummary").innerHTML = `<div class="kv"><span>${sub ? "Puja de salida" : "Precio de venta"}</span><span class="tnum">${eur(price)}</span></div>
       ${!sub && !AUCTIONS_OPEN ? `<div class="kv"><span>Comisión de venta</span><span class="chip ok">Gratis en el lanzamiento</span></div>`
         : `<div class="kv"><span>Comisión de éxito vendedor <span translate="no">(${(rate * 100).toFixed(1)}% · ${S.plan})</span></span><span class="tnum">${eur((sub ? PUB.full : price) * rate)}</span></div>`}

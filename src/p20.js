@@ -32,6 +32,7 @@ const myEmail = () => store.get("waitlistMe", "") || (S.user && S.user.email) ||
 function notifyModal() {
   modal("Las subastas abren muy pronto", `
     <p class="muted" style="margin:0">Estamos cerrando la parte legal para que cada puja sea vinculante y segura. Déjanos tu email y te avisamos el día que abran. Mientras tanto, el Mercado ya está abierto y publicar es gratis.</p>
+    ${waitBonus()}
     <div class="field"><label for="wlMail">Tu email</label><input class="in" id="wlMail" type="email" autocomplete="email" placeholder="tu@email.com" value="${esc(myEmail())}"></div>
     <div id="wlErr"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap"><a class="btn" href="#/mercado" id="wlMk">${ic("store", "sm")}Ver el Mercado</a><button class="btn primary" id="wlGo">${ic("bell", "sm")}Avísame</button></div>`, close => {
@@ -55,7 +56,7 @@ document.addEventListener("click", e => {
 function previewBar() {
   return `<div class="previewbar" data-rev>
     <span class="pv-ic">${ic("bell")}</span>
-    <div><b>Vista previa de las subastas</b><span>Abrimos muy pronto. Ya puedes ver lotes, sesiones y precios; la puja se activa el día de apertura.</span></div>
+    <div><b>Vista previa de las subastas</b><span>Abrimos muy pronto. Ya puedes ver lotes, sesiones y precios; la puja se activa el día de apertura. Los 500 primeros de la lista tendrán 3 meses de plan Pro gratis.</span></div>
     <div class="pv-act"><button class="btn sm primary" data-notify>${ic("bell", "sm")}Avísame</button><a class="btn sm" href="#/mercado">${ic("store", "sm")}Ir al Mercado</a></div>
   </div>`;
 }

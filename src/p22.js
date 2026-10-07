@@ -118,5 +118,47 @@ function whyMount() {
   io.observe(g);
 }
 
-/* portada: el bloque nuevo sustituye a las cuatro tarjetas */
-patchRoute(/^\/$/, () => whyMount());
+/* ---------- Cómo funciona: tarjetas 3D ---------- */
+function howSteps() {
+  return [["search", "Explorar", "Encuentra vehículos de aseguradoras, rentings, concesionarios y particulares.", "scan"],
+    ["gavel", "Pujar", "Pujas competitivas en tiempo real, o puja anticipada antes de abrir la sesión.", "hit"],
+    ["check", "Ganar", "Al ganar se desbloquean los datos del vendedor y el sistema de contraoferta de 24 h.", "draw"],
+    ["truck", "Cerrar", "Gestoría y transporte coordinados hasta la retirada del vehículo.", "drive"]];
+}
+function howSection() {
+  return `<section class="blk how"><div class="wrap">
+    <div class="sec-head" data-rev><div><div class="eyebrow">Cómo funciona</div><h2 style="margin-top:10px">Compra en cuatro pasos</h2></div></div>
+    <div class="how3d" id="how3d">
+      <svg class="howline" viewBox="0 0 1000 20" preserveAspectRatio="none" aria-hidden="true"><path d="M60 10 H940" pathLength="100"/><circle r="5" class="howdot"><animateMotion dur="6s" repeatCount="indefinite" path="M60 10 H940"/></circle></svg>
+      ${howSteps().map(([i, t, d, fx], n) => `<article class="h3c" style="--n:${n}" data-fx="${fx}">
+        <div class="h3in">
+          <span class="h3num">0${n + 1}</span>
+          <span class="h3ic">${ic(i, "lg")}</span>
+          <h4>${t}</h4><p>${d}</p>
+          <span class="h3glare" aria-hidden="true"></span>
+        </div></article>`).join("")}
+    </div>
+    <div class="tags howtags" data-rev>${[["euro", "Sin comisiones ocultas"], ["users", "Diferentes vendedores"], ["msg", "Soporte en español"]].map(([i, t]) => `<span>${ic(i, "sm")} ${t}</span>`).join("")}</div>
+  </div></section>`;
+}
+function howMount() {
+  const g = $("#how3d"); if (!g) return;
+  const rm = typeof RM === "function" && RM();
+  const fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if (rm || !("IntersectionObserver" in window)) { g.classList.add("on"); return; }
+  new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { g.classList.add("on"); o.disconnect(); } }), { threshold: .25 }).observe(g);
+  if (!fine) return;
+  $$(".h3c", g).forEach(c => {
+    const inn = $(".h3in", c);
+    c.addEventListener("pointermove", e => {
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      inn.style.transform = `rotateY(${x * 16}deg) rotateX(${-y * 14}deg) translateZ(10px)`;
+      inn.style.setProperty("--gx", (x + .5) * 100 + "%"); inn.style.setProperty("--gy", (y + .5) * 100 + "%");
+      c.classList.add("act");
+    });
+    c.addEventListener("pointerleave", () => { inn.style.transform = ""; c.classList.remove("act"); });
+  });
+}
+
+/* portada: los bloques nuevos sustituyen a las tarjetas planas */
+patchRoute(/^\/$/, () => { whyMount(); howMount(); });

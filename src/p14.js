@@ -45,7 +45,7 @@ function mapLot(a) {
     reserve: a.reserve_price ? +a.reserve_price : null,
     featured: !!a.featured,
     runs: v.runs !== false, keys: v.has_keys !== false,
-    sellerType: v.profiles && v.profiles.company ? "Profesional" : "Particular",
+    sellerType: v.seller_kind === "profesional" || (v.profiles && v.profiles.company) ? "Profesional" : "Particular",
     watchers: a.views || 0,
     hist: (a.bids || []).slice().sort((x, y) => new Date(y.created_at) - new Date(x.created_at))
       .map(b => ({ who: bidderName(b.bidder_id), amt: +b.amount, t: +new Date(b.created_at), auto: b.is_auto })),
@@ -79,7 +79,7 @@ const AUCTION_SELECT = `id, session, starts_at, ends_at, start_price, reserve_pr
   top_bid, top_bidder, second_bid, counter_price, decision, decision_deadline,
   vehicles ( make, model, year, km, fuel, transmission, body_type, power_cv, displacement, seats,
              vin, plate, first_reg, category, title, panels, runs, has_keys, photos, city, province,
-             seller_id, profiles:seller_id ( company, full_name ) ),
+             seller_id, seller_kind ),
   bids ( id, bidder_id, amount, is_auto, created_at )`;
 
 async function sbLoadInventory() {
@@ -137,7 +137,7 @@ var VSTATE = { borrador: "borrador", revision: "revision", aprobado: "revision",
 async function sbLoadSellerData() {
   if (!canSell()) return;
   const { data } = await sb.from("vehicles")
-    .select("id, make, model, year, km, category, status, photos, created_at, auctions(id,start_price,status), listings(price)")
+    .select("id, make, model, year, km, category, status, photos, created_at, vin, plate, auctions(id,start_price,status), listings(id,price,status)")
     .eq("seller_id", S.user.id).order("created_at", { ascending: false });
   if (!data) return;
   S.myVehicles = data.map(v => ({
@@ -146,17 +146,21 @@ async function sbLoadSellerData() {
     st: VSTATE[v.status] || "revision",
     price: (v.listings && v.listings[0] && +v.listings[0].price) || (v.auctions && v.auctions[0] && +v.auctions[0].start_price) || 0,
     bids: 0, views: 0, date: new Date(v.created_at).toLocaleDateString("es-ES"),
+    vin: v.vin || "", plate: v.plate || "",
+    channel: v.listings && v.listings.length ? "mercado" : v.auctions && v.auctions.length ? "subasta" : (v.status === "subasta" ? "subasta" : "mercado"),
+    listingId: v.listings && v.listings[0] ? v.listings[0].id : null, lst: v.listings && v.listings[0] ? v.listings[0].status : null,
+    auctionId: v.auctions && v.auctions[0] ? v.auctions[0].id : null,
   }));
   const { data: of } = await sb.from("offers")
-    .select("id, amount, message, status, created_at, vehicles!inner(make,model,year,seller_id,photos)")
-    .eq("vehicles.seller_id", S.user.id).order("created_at", { ascending: false });
+    .select("id, amount, message, status, created_at, listings!inner(vehicles!inner(make,model,year,seller_id,photos))")
+    .eq("listings.vehicles.seller_id", S.user.id).order("created_at", { ascending: false });
   if (of) {
-    S.sellerOffers = of.map(o => ({
-      id: o.id, title: o.vehicles.year + " " + o.vehicles.make + " " + o.vehicles.model,
-      img: photoStem((o.vehicles.photos || [])[0]), amount: +o.amount, msg: o.message || "",
+    S.sellerOffers = of.map(o => { const v = (o.listings && o.listings.vehicles) || o.vehicles || {}; return {
+      id: o.id, title: v.year + " " + v.make + " " + v.model,
+      img: photoStem((v.photos || [])[0]), amount: +o.amount, msg: o.message || "",
       st: { nueva: "new", aceptada: "acc", rechazada: "rej", contraoferta: "cnt", caducada: "rej" }[o.status] || "new",
       d: Math.max(0, Math.round((Date.now() - new Date(o.created_at)) / 86400000)),
-    }));
+    }; });
   }
 }
 async function sbLoadPurchases() {
@@ -167,7 +171,7 @@ async function sbLoadPurchases() {
   S.purchases = data.map(o => {
     const v = (o.auctions && o.auctions.vehicles) || {};
     return {
-      id: "C-" + String(o.id).slice(0, 8).toUpperCase(), ref: o.auction_id,
+      id: "C-" + String(o.id).slice(0, 8).toUpperCase(), oid: o.id, ref: o.auction_id,
       lot: (v.year || "") + " " + (v.make || "") + " " + (v.model || ""),
       img: photoStem((v.photos || [])[0]), amount: +o.amount, fee: +o.fee,
       date: new Date(o.created_at).toLocaleDateString("es-ES"),

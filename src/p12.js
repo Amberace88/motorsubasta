@@ -35,7 +35,7 @@ function acctShell(active, body) {
 }
 function sellShell(active, body) {
   const tabs = [["#/vender", "Panel", "chart"], ["#/vender/vehiculos", "Mis vehículos", "car"], ["#/publicar", "Publicar", "plus"],
-    ["#/vender/ofertas", "Ofertas recibidas", "msg"], ["#/vender/decisiones", "Decisiones", "scale"], ["#/vender/ventas", "Ventas", "euro"], ["#/vender/cobros", "Cobros", "truck"], ["#/cuenta/ajustes", "Ajustes", "gear"]];
+    ["#/vender/ofertas", "Ofertas recibidas", "msg"], ["#/vender/decisiones", "Decisiones", "scale"], ["#/vender/importar", "Importar CSV", "upload"], ["#/vender/ventas", "Ventas", "euro"], ["#/vender/cobros", "Cobros", "truck"], ["#/cuenta/ajustes", "Ajustes", "gear"]];
   return `<div class="wrap"><div class="acct">
     <aside class="acctnav">
       <div class="acctme"><span class="avatar" style="width:44px;height:44px;font-size:15px">${initials(S.user.name)}</span>
@@ -151,9 +151,10 @@ var SETTAB = { t: "perfil" };
 function viewSettings(q) {
   if (q && q.tab) SETTAB.t = q.tab;
   const t = SETTAB.t;
-  const tabs = [["perfil", "Perfil y empresa"], ["notificaciones", "Notificaciones"], ["pantalla", "Pantalla"], ["suscripcion", "Suscripción"], ["seguridad", "Contraseña y seguridad"]];
+  const tabs = [["perfil", "Perfil y empresa"], ["contacto", "Contacto en el Mercado"], ["notificaciones", "Notificaciones"], ["pantalla", "Pantalla"], ["suscripcion", "Suscripción"], ["seguridad", "Contraseña y seguridad"]];
   const u = S.user;
   const panes = {
+    contacto: contactPane(),
     perfil: `<div class="panel" style="display:grid;gap:16px"><h3 style="margin:0">Perfil y empresa</h3>
       <div style="display:flex;gap:14px;align-items:center"><span class="avatar" style="width:64px;height:64px;font-size:20px">${initials(u.name)}</span>
         <div><button class="btn sm" id="stPhoto">${ic("upload", "sm")}Cambiar foto</button><small class="muted" style="display:block;margin-top:6px">JPG, PNG o WebP. Máx 2 MB.</small></div></div>
@@ -342,14 +343,14 @@ function mountSeller() {
   if ($("#pySave")) $("#pySave").onclick = () => { const v = $("#pyIban").value.replace(/\s/g, ""); if (v.length < 20) { toast("Introduce un IBAN válido", "alert"); return; } toast("Cuenta de cobro guardada", "check"); };
   $$("[data-off]").forEach(b => b.onclick = () => {
     const o = S.sellerOffers.find(x => x.id == b.dataset.off), a = b.dataset.a;
-    if (a === "acc") { o.st = "acc"; store.set("selleroffers", S.sellerOffers); toast("Oferta aceptada. Se notifica al comprador.", "check"); router(); }
-    else if (a === "rej") { o.st = "rej"; store.set("selleroffers", S.sellerOffers); toast("Oferta rechazada", "x"); router(); }
+    if (a === "acc") { o.st = "acc"; sbOfferSet(o.id, "aceptada"); store.set("selleroffers", S.sellerOffers); toast("Oferta aceptada. Se notifica al comprador.", "check"); router(); }
+    else if (a === "rej") { o.st = "rej"; sbOfferSet(o.id, "rechazada"); store.set("selleroffers", S.sellerOffers); toast("Oferta rechazada", "x"); router(); }
     else modal("Contraoferta", `<p style="margin:0"><b>${o.title}</b> · oferta recibida ${eur(o.amount)}</p>
       <div class="field"><label for="cntAmt">Tu contraoferta</label><div class="money"><span>€</span><input class="in" id="cntAmt" type="number" value="${Math.round(o.amount * 1.12 / 50) * 50}"></div></div>
       <div class="field"><label for="cntMsg">Mensaje (opcional)</label><textarea class="in" id="cntMsg" placeholder="Incluye ITV recién pasada."></textarea></div>
       <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="cNo">Cancelar</button><button class="btn primary" id="cYes">Enviar contraoferta</button></div>`, close => {
       $("#cNo").onclick = close;
-      $("#cYes").onclick = () => { close(); o.st = "cnt"; toast("Contraoferta de " + eur(+$("#cntAmt").value) + " enviada", "msg"); };
+      $("#cYes").onclick = () => { const v = +$("#cntAmt").value; close(); o.st = "cnt"; sbOfferSet(o.id, "contraoferta", v); toast("Contraoferta de " + eur(v) + " enviada", "msg"); };
     });
   });
 }
@@ -436,7 +437,7 @@ function router() {
   if (!f) return;
   f.innerHTML = `<div><a class="logo" href="#/"><img class="lg lg-d" src="img/logo-dark.png" alt="MotorSubasta"><img class="lg lg-l" src="img/logo-light.png" alt="MotorSubasta"></a>
       <p class="muted" style="max-width:34ch;font-size:14px;margin-top:16px">Subastas y mercado profesional de vehículos en España. Limpios, dañados y siniestros, con reglas claras.</p></div>
-    <div><h5>Plataforma</h5><a href="#/mercado">Mercado</a><a href="#/subastas">Subastas</a><a href="#/ofertas-ocultas">Ofertas ocultas</a><a href="#/valoracion">Valoración gratuita</a><a href="#/contrato">Contrato de compraventa</a><a href="#/seguros">Seguros</a></div>
+    <div><h5>Plataforma</h5><a href="#/mercado">Mercado</a><a href="#/subastas">Subastas</a><a href="#/ofertas-ocultas">Ofertas ocultas</a><a href="#/valoracion">Valoración gratuita</a><a href="#/contrato">Contrato de compraventa</a><a href="#/seguros">Seguros</a><a href="#/herramientas">Herramientas gratis</a><a href="#/venta-rapida">Te compramos tu coche</a><a href="#/exportar">Exportar desde España</a></div>
     <div><h5>Precios</h5><a href="#/precios">Planes y suscripciones</a><a href="#/tarifas">Tarifas del comprador</a><a href="#/tarifas">Servicios de gestoría</a></div>
     <div><h5>Empresa</h5><a href="#/empresa">Sobre nosotros</a><a href="#/como-funciona">Cómo funciona</a><a href="#/faq">Preguntas frecuentes</a><a href="#/contacto">Contacto</a></div>
     <div><h5>Legal</h5><a href="#/privacidad">Política de privacidad</a><a href="#/terminos">Condiciones de uso</a><a href="#/condiciones-puja">Condiciones de puja</a></div>`;
