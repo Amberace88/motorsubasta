@@ -99,8 +99,23 @@ Vienkāršākais: atver https://app.netlify.com/drop un uzmet tur `motorsubasta-
 - **Punto naranja** en Subastas: late con subastas en directo, fijo con puja anticipada abierta.
 - **Documento HTML correcto** (`src/shell.html`): doctype, charset, viewport (móviles), favicon y Open Graph.
 
-### Pendiente de decidir (Eddie)
-`supabase/05-demo-viva.sql` mantiene la demo viva: reprograma cada día las subastas de `vendedor@demo.es`
-en su sesión (hora de Madrid) y cierra las reales con `close_due_auctions()` cada 5 min mediante pg_cron.
-**No está aplicado.** Para activarlo: Supabase → SQL Editor → pegar el archivo → Run.
-Para quitarlo antes del lanzamiento: `select cron.unschedule('motorsubasta-tick');`
+### Lanzamiento (v14)
+- **Interruptor**: `var AUCTIONS_OPEN = false;` al principio de `src/p20.js`. Con `false` las subastas se ven en
+  vista previa (lotes, sesiones, horarios) pero la puja abre un aviso "Avísame" que guarda el email en `waitlist`.
+  Publicar solo permite Mercado (gratis). Con `true` vuelve todo el flujo de puja.
+- **Mercado gratis** primero en la portada; "Publicar gratis" sin comisión de venta durante el lanzamiento.
+- **Seguros** (`#/seguros`): formulario de solicitud → tabla `insurance_leads` (con consentimiento). Se ve y se
+  exporta en CSV en Admin → Solicitudes. Falta la correduría colaboradora (inscrita en la DGSFP).
+- **Decisión tras la subasta**: al cerrar, el vendedor tiene 24 h para aceptar, rechazar o contraofertar
+  (`#/vender/decisiones`); el comprador responde a la contraoferta en "Mis pujas"; el admin supervisa y puede
+  corregir el precio (Admin → Decisiones). Plazo vencido → `caducada` y aviso a admins.
+- **Emails**: se generan en la tabla `email_outbox` (comprador, vendedor, perdedores). Falta conectar un proveedor
+  de envío (p. ej. Resend) cuando haya dominio propio.
+- **Hora**: todo en hora de España (Europe/Madrid, con cambio de horario); quien está en otra zona ve también su hora.
+
+### Base de datos (aplicado)
+`supabase/06-decisiones.sql` (columnas de decisión, `email_outbox`, `waitlist`, `insurance_leads`,
+`close_due_auctions`, `decide_auction`, `respond_counter`) y `supabase/05-demo-viva.sql` (demo en hora de Madrid)
+están aplicados. pg_cron `motorsubasta-tick` cada 5 min ejecuta `demo_roll_auctions()` y `close_due_auctions()`.
+Antes del lanzamiento real, quitar la demo: `select cron.unschedule('motorsubasta-tick');` y volver a programar
+solo `select public.close_due_auctions();`.

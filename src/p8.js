@@ -4,10 +4,7 @@
    ============================================================ */
 
 /* ---------- session schedule (CET day) ---------- */
-function sessionAt(h, m, dayOffset) {
-  const d = new Date(); d.setHours(h, m, 0, 0); d.setDate(d.getDate() + (dayOffset || 0));
-  return d.getTime();
-}
+function sessionAt(h, m, dayOffset) { return madridAt(h, m, dayOffset); }   /* hora de España, no la del navegador */
 const SES = { limpio: [11, 13], danado: [13, 15], siniestro: [15, 16], oculta: [11, 16] };
 function sessionWindow(cat, dayOffset) {
   const [a, b] = SES[cat];
@@ -103,7 +100,7 @@ function lotCard(l, i = 0) {
   const lead = S.myBids[l.id] && l.hist[0] && l.hist[0].who === "Tú";
   const cur = curPrice(l), step = inc(cur), nextBid = l.hist.length ? cur + step : l.start;
   const when = st === "soon" ? l.startsAt : l.endsAt;
-  const hhmm = new Date(l.startsAt).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+  const hhmm = tzDiffers(l.startsAt) ? fmtLocal(l.startsAt) : fmtES(l.startsAt);
   return `<article class="card" data-rev style="--d:${Math.min(i, 8) * 55}ms">
     <a class="ph ${locked ? "locked" : ""}" href="#/subasta/${l.id}" aria-label="${esc(l.title)}">
       <img src="${imgSrc(l.img)}" alt="${esc(l.title)}" loading="lazy">
@@ -123,7 +120,7 @@ function lotCard(l, i = 0) {
         <div class="price"><small>${l.hist.length ? (st === "soon" ? "Puja anticipada" : "Puja actual") : "Precio de salida"}</small><span class="tnum" data-price="${l.id}">${locked ? "€ •••" : eur(cur)}</span></div>
         <div class="tm"><small>${st === "soon" ? "Empieza " + hhmm : st === "live" ? "Cierra en" : "Finalizada"}</small><span class="t ${st === "live" && l.endsAt - now() < 10 * MIN ? "hot" : ""}" data-tm="${l.id}">${st === "end" ? "—" : fmtLeft(when - now())}</span></div>
       </div>
-      ${locked || st === "end" ? "" : `<div class="qbid">
+      ${locked || st === "end" ? "" : !AUCTIONS_OPEN ? `<div class="qbid pv"><button data-notify class="go">${ic("bell", "sm")}Avísame cuando abran</button></div>` : `<div class="qbid">
         <button data-qb="${l.id}" data-amt="${nextBid}" class="go">${ic("gavel", "sm")}${st === "soon" ? "Pre-pujar" : "Pujar"} ${eur(nextBid)}</button>
         ${[step, step * 2, step * 4].map(s => `<button data-qb="${l.id}" data-amt="${cur + s}">+${eur(s)}</button>`).join("")}
       </div>`}
@@ -144,37 +141,51 @@ function viewHome() {
   const pop = [...lots].sort((a, b) => rank(a) - rank(b) || (b.featured - a.featured) || b.hist.length - a.hist.length).slice(0, 8);
   const liveN = lots.filter(l => statusOf(l) === "live").length;
   const soonN = lots.filter(l => statusOf(l) === "soon").length;
+  const pv = !AUCTIONS_OPEN;
+  const mkSec = `<section class="blk" style="padding-top:0"><div class="wrap">
+    <div class="sec-head" data-rev><div><div class="eyebrow">${ic("store", "sm")}Mercado · ${pv ? "publicar es gratis" : "precio fijo"}</div><h2 style="margin-top:10px">${pv ? "Coches en venta ahora" : "Descubre el marketplace"}</h2><p>${pv ? "Anuncios a precio fijo de profesionales y particulares. Contacta y negocia directamente." : "Vehículos disponibles a precio fijo, sin esperar a la subasta."}</p></div><a class="link" href="#/mercado">${pv ? "Ver todos los anuncios" : "Ver marketplace"} ${ic("right", "sm")}</a></div>
+    <div class="grid">${market.slice(0, pv ? 8 : 4).map(mkCard).join("")}</div>
+    ${pv ? `<div class="freecta" data-rev><div><b>¿Vendes un vehículo?</b><span>Publícalo gratis en unos minutos. Sin comisiones durante el lanzamiento.</span></div><a class="btn primary" href="#/publicar?t=mercado">${ic("plus", "sm")}Publicar gratis</a></div>` : ""}
+  </div></section>`;
   return `
   <section class="hero hero-v2">
     <div class="hero-img" aria-hidden="true"></div>
     <div class="hero-veil" aria-hidden="true"></div>
     <div class="wrap">
       <span class="hero-badge" data-rev>${ic("shield", "sm")}Plataforma profesional verificada</span>
-      <h1 data-rev style="--d:120ms">Tu plataforma profesional de <em>subastas de vehículos</em></h1>
+      ${pv ? `<h1 data-rev style="--d:120ms">Compra y vende vehículos en <em>toda España</em></h1>
+      <p class="lead" data-rev style="--d:240ms">Publica tu coche gratis en el Mercado y trata directamente con el comprador. Muy pronto, subastas profesionales de vehículos sin daños, dañados y siniestrados.</p>
+      <div class="hero-cta" data-rev style="--d:340ms">
+        <a class="btn primary lg" href="#/mercado">${ic("store", "sm")}Ver coches en venta${ic("right", "sm")}</a>
+        <a class="btn lg" href="#/publicar?t=mercado">${ic("plus", "sm")}Publicar gratis</a>
+        <a class="btn ghost lg" href="#/subastas">${ic("gavel", "sm")}Subastas · próximamente</a>
+      </div>` : `<h1 data-rev style="--d:120ms">Tu plataforma profesional de <em>subastas de vehículos</em></h1>
       <p class="lead" data-rev style="--d:240ms">Vehículos sin daños, con defectos, siniestros totales, inundados y para desguace. Compra directo en subasta, con el coste total calculado antes de pujar.</p>
       <div class="hero-cta" data-rev style="--d:340ms">
         <a class="btn primary lg" href="#/subastas">${ic("gavel", "sm")}Ver subastas${ic("right", "sm")}</a>
         <a class="btn lg" href="#/publicar">${ic("upload", "sm")}Publicar vehículo</a>
         <a class="btn ghost lg" href="#/valoracion">${ic("chart", "sm")}Valoración gratuita</a>
-      </div>
+      </div>`}
       <div class="hero-pills" data-rev style="--d:440ms">
-        ${liveN ? `<span><i class="live-dot"></i><b class="tnum" data-count="${liveN}">${liveN}</b> subastas en directo</span>`
+        ${pv ? `<span>${ic("check", "sm")}Publicar es <b>gratis</b></span><span><i class="live-dot idle"></i>Subastas próximamente</span>` : liveN ? `<span><i class="live-dot"></i><b class="tnum" data-count="${liveN}">${liveN}</b> subastas en directo</span>`
           : soonN ? `<span><i class="live-dot idle"></i><b class="tnum" data-count="${soonN}">${soonN}</b> lotes en puja anticipada</span>`
           : `<span>${ic("gavel", "sm")}<b class="tnum">11:00</b> próxima sesión</span>`}
         <span>${ic("car", "sm")}<b class="tnum" data-count="${lots.length + market.length}">${lots.length + market.length}</b> vehículos</span>
-        <span>${ic("clock", "sm")}<b class="tnum" data-count="4">4</b> sesiones diarias</span>
+        ${pv ? "" : `<span>${ic("clock", "sm")}<b class="tnum" data-count="4">4</b> sesiones diarias</span>`}
         <span>${ic("pin", "sm")}<b class="tnum" data-count="17">17</b> comunidades</span>
       </div>
     </div>
   </section>
 
-  <section class="blk first"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">${ic("clock", "sm")}Sesiones de subasta</div><h2 style="margin-top:10px">Cuatro categorías, cada día</h2><p>Abre una categoría para ver sus lotes. La puja anticipada está abierta hasta que empieza la sesión.</p></div><a class="link" href="#/subastas">Calendario completo ${ic("right", "sm")}</a></div>
+  ${pv ? mkSec.replace('class="blk" style="padding-top:0"', 'class="blk first"') : ""}
+  <section class="blk ${pv ? "" : "first"}"><div class="wrap">
+    ${pv ? `<div class="sec-head" data-rev><div><div class="eyebrow">${ic("gavel", "sm")}Subastas · próximamente</div><h2 style="margin-top:10px">Cuatro sesiones al día, a hora de España</h2><p>Ya puedes ver cómo serán las sesiones y sus lotes. La puja se activa el día de apertura.</p></div><button class="btn sm primary" data-notify>${ic("bell", "sm")}Avísame</button></div>`
+    : `<div class="sec-head" data-rev><div><div class="eyebrow">${ic("clock", "sm")}Sesiones de subasta</div><h2 style="margin-top:10px">Cuatro categorías, cada día</h2><p>Abre una categoría para ver sus lotes. La puja anticipada está abierta hasta que empieza la sesión.</p></div><a class="link" href="#/subastas">Calendario completo ${ic("right", "sm")}</a></div>`}
     <div class="sesslist" id="homeSess" data-rev>${homeSessions()}</div>
   </div></section>
 
   <section class="blk" style="padding-top:8px"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">${ic("flame", "sm")}Subastas populares</div><h2 style="margin-top:10px">Lotes con más actividad</h2><p>Puja o pre-puja directamente desde la tarjeta.</p></div><a class="link" href="#/subastas">Ver todas las subastas ${ic("right", "sm")}</a></div>
+    <div class="sec-head" data-rev><div><div class="eyebrow">${ic("flame", "sm")}${pv ? "Vista previa" : "Subastas populares"}</div><h2 style="margin-top:10px">Lotes con más actividad</h2><p>${pv ? "Así se verán los lotes cuando abran las subastas." : "Puja o pre-puja directamente desde la tarjeta."}</p></div><a class="link" href="#/subastas">Ver todas las subastas ${ic("right", "sm")}</a></div>
     <div class="grid">${pop.map(lotCard).join("")}</div>
   </div></section>
 
@@ -207,10 +218,7 @@ function viewHome() {
     </div>
   </div></section>
 
-  <section class="blk" style="padding-top:0"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">Mercado · precio fijo</div><h2 style="margin-top:10px">Descubre el marketplace</h2><p>Vehículos disponibles a precio fijo, sin esperar a la subasta.</p></div><a class="link" href="#/mercado">Ver marketplace ${ic("right", "sm")}</a></div>
-    <div class="grid">${market.slice(0, 4).map(mkCard).join("")}</div>
-  </div></section>
+  ${pv ? "" : mkSec}
 
   <section class="blk" style="background:var(--bg-2);border-block:1px solid var(--line)"><div class="wrap">
     <div class="sec-head" data-rev><div><div class="eyebrow">Proceso de puja</div><h2 style="margin-top:10px">Pujar es un compromiso real</h2><p>En MotorSubasta las pujas tienen carácter vinculante y contractual. Esto garantiza seriedad y protege a todos los participantes.</p></div></div>
@@ -261,11 +269,12 @@ function viewHome() {
 /* ---------- AUCTIONS ---------- */
 function viewAuctions(query) {
   if (query.cat) { AUC.cat = query.cat; if (CATS[query.cat]) AUC.open[query.cat] = true; }
-  const days = [...Array(12)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
+  const days = [...Array(12)].map((_, i) => madridDay(i));
   const dn = ["DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"], mn = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
   const liveLot = lots.find(l => statusOf(l) === "live");
   const nextLot = lots.filter(l => statusOf(l) === "soon").sort((a, b) => a.startsAt - b.startsAt)[0];
   return `<div class="wrap">
+  ${AUCTIONS_OPEN ? "" : previewBar()}
   <section class="guide" data-rev>
     <div class="gh"><div><div class="eyebrow">Cómo pujar</div><h2>Guía rápida para ganar tu próximo vehículo</h2></div></div>
     <div class="gsteps">
@@ -277,14 +286,14 @@ function viewAuctions(query) {
   </section>
 
   <div class="sesbar" data-rev>
-    <div class="now"><span class="live-dot ${liveLot ? "" : nextLot ? "idle" : "off"}"></span><span class="mono tnum" id="cetClock">--:--</span><small>CET</small></div>
+    <div class="now"><span class="live-dot ${liveLot ? "" : nextLot ? "idle" : "off"}"></span><span class="mono tnum" id="cetClock">${fmtES(Date.now())}</span><small>España</small></div>
     <div class="st">${liveLot ? `<b>Sesión en directo</b><span class="muted">${sesName(liveLot.cat)} · cierra en <span class="mono" data-tm="${liveLot.id}"></span></span>`
       : nextLot ? `<b>Sin sesión activa</b><span class="muted">${sesName(nextLot.cat)} empieza en <span class="mono" data-tm="${nextLot.id}"></span></span>`
-      : "<b>Sesiones cerradas por hoy</b><span class=\"muted\">Vuelven mañana a las 11:00 CET</span>"}</div>
-    <div class="pre"><span class="chip acc">${ic("bolt", "sm")}Puja anticipada abierta</span></div>
+      : "<b>Sesiones cerradas por hoy</b><span class=\"muted\">Vuelven mañana a las 11:00, hora de España</span>"}</div>
+    <div class="pre">${AUCTIONS_OPEN ? `<span class="chip acc">${ic("bolt", "sm")}Puja anticipada abierta</span>` : `<span class="chip acc">${ic("bell", "sm")}Vista previa</span>`}</div>
   </div>
 
-  <div class="days">${days.map((d, i) => `<button class="day ${i === AUC.day ? "on" : ""}" data-day="${i}"><small>${i === 0 ? "HOY" : i === 1 ? "MAÑ" : d.toLocaleDateString(uiLoc(), { weekday: "short" }).replace(/\.$/, "").toUpperCase()}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString(uiLoc(), { month: "short" }).replace(/\.$/, "").toUpperCase()}</small><em>${i === 0 ? lots.length : i === 1 ? 8 : "&nbsp;"}</em></button>`).join("")}</div>
+  <div class="days">${days.map((d, i) => `<button class="day ${i === AUC.day ? "on" : ""}" data-day="${i}"><small>${i === 0 ? "HOY" : i === 1 ? "MAÑ" : d.toLocaleDateString(uiLoc(), { weekday: "short", timeZone: "UTC" }).replace(/\.$/, "").toUpperCase()}</small><b>${d.getUTCDate()}</b><small>${d.toLocaleDateString(uiLoc(), { month: "short", timeZone: "UTC" }).replace(/\.$/, "").toUpperCase()}</small><em>${i === 0 ? lots.length : i === 1 ? 8 : "&nbsp;"}</em></button>`).join("")}</div>
 
   <div class="toolbar">
     <div class="search">${ic("search")}<input class="in" id="aq" placeholder="Buscar marca, modelo, ciudad o referencia…" value="${esc(AUC.q)}"></div>
@@ -309,4 +318,4 @@ function renderSessions() {
   bindCards(box);
   initReveal(box);
 }
-setInterval(() => { const c = $("#cetClock"); if (c) c.textContent = new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }, 1000);
+setInterval(() => { const c = $("#cetClock"); if (c) c.textContent = new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Madrid" }); }, 1000);

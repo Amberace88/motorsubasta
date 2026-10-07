@@ -35,7 +35,7 @@ function acctShell(active, body) {
 }
 function sellShell(active, body) {
   const tabs = [["#/vender", "Panel", "chart"], ["#/vender/vehiculos", "Mis vehículos", "car"], ["#/publicar", "Publicar", "plus"],
-    ["#/vender/ofertas", "Ofertas recibidas", "msg"], ["#/vender/ventas", "Ventas", "euro"], ["#/vender/cobros", "Cobros", "truck"], ["#/cuenta/ajustes", "Ajustes", "gear"]];
+    ["#/vender/ofertas", "Ofertas recibidas", "msg"], ["#/vender/decisiones", "Decisiones", "scale"], ["#/vender/ventas", "Ventas", "euro"], ["#/vender/cobros", "Cobros", "truck"], ["#/cuenta/ajustes", "Ajustes", "gear"]];
   return `<div class="wrap"><div class="acct">
     <aside class="acctnav">
       <div class="acctme"><span class="avatar" style="width:44px;height:44px;font-size:15px">${initials(S.user.name)}</span>
@@ -436,7 +436,7 @@ function router() {
   if (!f) return;
   f.innerHTML = `<div><a class="logo" href="#/"><img class="lg lg-d" src="img/logo-dark.png" alt="MotorSubasta"><img class="lg lg-l" src="img/logo-light.png" alt="MotorSubasta"></a>
       <p class="muted" style="max-width:34ch;font-size:14px;margin-top:16px">Subastas y mercado profesional de vehículos en España. Limpios, dañados y siniestros, con reglas claras.</p></div>
-    <div><h5>Plataforma</h5><a href="#/subastas">Subastas en vivo</a><a href="#/mercado">Mercado</a><a href="#/ofertas-ocultas">Ofertas ocultas</a><a href="#/valoracion">Valoración gratuita</a></div>
+    <div><h5>Plataforma</h5><a href="#/mercado">Mercado</a><a href="#/subastas">Subastas</a><a href="#/ofertas-ocultas">Ofertas ocultas</a><a href="#/valoracion">Valoración gratuita</a><a href="#/contrato">Contrato de compraventa</a><a href="#/seguros">Seguros</a></div>
     <div><h5>Precios</h5><a href="#/precios">Planes y suscripciones</a><a href="#/tarifas">Tarifas del comprador</a><a href="#/tarifas">Servicios de gestoría</a></div>
     <div><h5>Empresa</h5><a href="#/empresa">Sobre nosotros</a><a href="#/como-funciona">Cómo funciona</a><a href="#/faq">Preguntas frecuentes</a><a href="#/contacto">Contacto</a></div>
     <div><h5>Legal</h5><a href="#/privacidad">Política de privacidad</a><a href="#/terminos">Condiciones de uso</a><a href="#/condiciones-puja">Condiciones de puja</a></div>`;

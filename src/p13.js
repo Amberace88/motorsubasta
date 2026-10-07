@@ -440,7 +440,8 @@ function mountPublish() {
     const price = sub ? +($("#pStart").value || 0) : +($("#pPrice").value || 0);
     const rate = /Full|Dealer/.test(S.plan) ? 0 : /Pro/.test(S.plan) ? .015 : .03;
     $("#pSummary").innerHTML = `<div class="kv"><span>${sub ? "Puja de salida" : "Precio de venta"}</span><span class="tnum">${eur(price)}</span></div>
-      <div class="kv"><span>Comisión de éxito vendedor (${(rate * 100).toFixed(1)}% · ${S.plan})</span><span class="tnum">${eur((sub ? PUB.full : price) * rate)}</span></div>
+      ${!sub && !AUCTIONS_OPEN ? `<div class="kv"><span>Comisión de venta</span><span class="chip ok">Gratis en el lanzamiento</span></div>`
+        : `<div class="kv"><span>Comisión de éxito vendedor <span translate="no">(${(rate * 100).toFixed(1)}% · ${S.plan})</span></span><span class="tnum">${eur((sub ? PUB.full : price) * rate)}</span></div>`}
       <div class="kv"><span>Sesión</span><span>${sub ? CATS[PUB.cat].name + " · " + CATS[PUB.cat].session : "Mercado · 60 días"}</span></div>`;
     if ($("#pStartHint")) $("#pStartHint").textContent = price < PUB.full * .15 ? "Salida muy baja: atrae pujas, pero fija una reserva." : "Salida atractiva para compradores profesionales.";
   };
@@ -483,7 +484,7 @@ function lotPayBanner(id) {
   d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
     <div><b>${ic("check", "sm")} Has ganado este lote por ${eur(curPrice(l))}</b>
       <p class="muted" style="margin:4px 0 0;font-size:13.5px">Completa el pago en las próximas 48 h para reservar la retirada.</p></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#/contrato?lote=${l.id}">${ic("doc", "sm")}Contrato de compraventa</a><a class="btn primary" href="#/pago/${l.id}">${ic("euro", "sm")}Pagar ahora</a></div></div>`;
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#/contrato?lote=${l.id}">${ic("doc", "sm")}Contrato de compraventa</a><a class="btn" href="#/seguros?lote=${l.id}">${ic("umbrella", "sm")}Seguro para llevártelo</a><a class="btn primary" href="#/pago/${l.id}">${ic("euro", "sm")}Pagar ahora</a></div></div>`;
   w.insertBefore(d, w.firstChild);
 }
 

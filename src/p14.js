@@ -50,6 +50,14 @@ function mapLot(a) {
     hist: (a.bids || []).slice().sort((x, y) => new Date(y.created_at) - new Date(x.created_at))
       .map(b => ({ who: bidderName(b.bidder_id), amt: +b.amount, t: +new Date(b.created_at), auto: b.is_auto })),
     dbStatus: a.status,
+    sellerId: v.seller_id || null,
+    decision: a.decision || null,
+    topBid: a.top_bid != null ? +a.top_bid : null,
+    topBidder: a.top_bidder || null,
+    secondBid: a.second_bid != null ? +a.second_bid : null,
+    counterPrice: a.counter_price != null ? +a.counter_price : null,
+    decisionDeadline: a.decision_deadline ? +new Date(a.decision_deadline) : null,
+    finalPrice: a.final_price != null ? +a.final_price : null,
   };
 }
 function mapMarket(l) {
@@ -68,6 +76,7 @@ function mapMarket(l) {
 /* ---------- carga del inventario ---------- */
 const AUCTION_SELECT = `id, session, starts_at, ends_at, start_price, reserve_price, buy_now_price,
   featured, status, views, winner_id, final_price,
+  top_bid, top_bidder, second_bid, counter_price, decision, decision_deadline,
   vehicles ( make, model, year, km, fuel, transmission, body_type, power_cv, displacement, seats,
              vin, plate, first_reg, category, title, panels, runs, has_keys, photos, city, province,
              seller_id, profiles:seller_id ( company, full_name ) ),

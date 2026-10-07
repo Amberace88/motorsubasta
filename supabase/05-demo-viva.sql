@@ -28,7 +28,9 @@ begin
     if now() >= e then s := s + interval '1 day'; e := e + interval '1 day'; end if;
     if a.starts_at is distinct from s or a.ends_at is distinct from e then
       update auctions
-         set starts_at = s, ends_at = e, status = 'programada', winner_id = null, final_price = null
+         set starts_at = s, ends_at = e, status = 'programada', winner_id = null, final_price = null,
+             top_bid = null, top_bidder = null, second_bid = null, second_bidder = null, decision = null,
+             decision_deadline = null, counter_price = null, decided_by = null, decided_at = null
        where id = a.id;
       update vehicles set status = 'subasta' where id = a.vehicle_id and status <> 'subasta';
       n := n + 1;

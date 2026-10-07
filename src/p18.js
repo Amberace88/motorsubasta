@@ -424,7 +424,7 @@ function viewContract(query) {
           <li><b>Vendedor · 10 días.</b> Notifica la venta a la DGT (sede electrónica o Jefatura de Tráfico) con una copia del contrato.</li>
           <li><b>Comprador · 30 días hábiles.</b> Liquida el impuesto de transmisiones (normalmente el modelo 620) en la Hacienda de tu comunidad. Si compras a un profesional, la operación suele llevar IVA y no hay ITP.</li>
           <li><b>Comprador · 30 días.</b> Solicita el cambio de titularidad en la DGT y paga la tasa de tráfico.</li>
-          <li><b>Antes de circular.</b> Contrata el seguro obligatorio a tu nombre.</li>
+          <li><b>Antes de circular.</b> Contrata el seguro obligatorio a tu nombre. <a class="link" href="#/seguros">Pide ofertas gratis</a>.</li>
         </ol>
         <p class="muted" style="margin:10px 0 0;font-size:12.5px">Modelo orientativo. Ante una situación especial (herencias, vehículos embargados, financiación pendiente) consulta con una gestoría.</p>
       </div>

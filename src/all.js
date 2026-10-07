@@ -749,6 +749,7 @@ const PUB = { step: 0, cat: "danado", title: "salvamento", type: "subasta", pane
 const PUB_STEPS = ["Vehículo", "Condición", "Fotos y texto", "Publicación"];
 function viewPublish(query) {
   if (query.t === "mercado") PUB.type = "mercado";
+  if (!AUCTIONS_OPEN) PUB.type = "mercado";
   const s = PUB.step;
   const body = [
     `<div class="panel" style="display:grid;gap:16px"><h3 style="margin:0">Categoría del vehículo</h3>
@@ -778,7 +779,9 @@ function viewPublish(query) {
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Descripción</h3><button type="button" class="btn sm" id="genDesc">${ic("spark", "sm")}Generar descripción</button></div>
       <textarea class="in" id="pDesc" style="min-height:160px" placeholder="Condición, daños, reparaciones necesarias, historial…"></textarea></div>`,
     `<div class="panel" style="display:grid;gap:16px"><h3 style="margin:0">Tipo de publicación</h3>
-      <div class="opt-cards" style="grid-template-columns:1fr 1fr">${[["subasta", "gavel", "Subasta", "Pujas competitivas en la sesión de su categoría"], ["mercado", "store", "Mercado", "Precio fijo para venta directa"]].map(([k, i, t, d]) => `<button type="button" class="opt ${PUB.type === k ? "on" : ""}" data-ptype="${k}"><b>${ic(i, "sm")}${t}</b><small>${d}</small></button>`).join("")}</div>
+      <div class="opt-cards" style="grid-template-columns:1fr 1fr">${[["subasta", "gavel", "Subasta", "Pujas competitivas en la sesión de su categoría"], ["mercado", "store", "Mercado", "Precio fijo para venta directa"]].map(([k, i, t, d]) => k === "subasta" && !AUCTIONS_OPEN
+        ? `<button type="button" class="opt soonopt" disabled aria-disabled="true"><b>${ic(i, "sm")}${t}<span class="chip acc">Próximamente</span></b><small>Abrimos muy pronto. Te avisaremos para subastar tu vehículo.</small></button>`
+        : `<button type="button" class="opt ${PUB.type === k ? "on" : ""}" data-ptype="${k}"><b>${ic(i, "sm")}${t}</b><small>${k === "mercado" && !AUCTIONS_OPEN ? "Precio fijo para venta directa · gratis en el lanzamiento" : d}</small></button>`).join("")}</div>
       ${PUB.type === "subasta" ? `
       <div class="fgrid"><div class="field"><label for="pFull">Precio deseado (€)</label><input class="in tnum" id="pFull" type="number" value="${PUB.full}"><small class="muted">La puja de salida se sugiere al 25%.</small></div>
       <div class="field"><label for="pStart">Puja de salida (€)</label><input class="in tnum" id="pStart" type="number" value="${Math.round(PUB.full * .25)}"><small class="muted" id="pStartHint"></small></div>
@@ -828,7 +831,8 @@ function mountPublish() {
     const price = sub ? +($("#pStart").value || 0) : +($("#pPrice").value || 0);
     const rate = /Full|Dealer/.test(S.plan) ? 0 : /Pro/.test(S.plan) ? .015 : .03;
     $("#pSummary").innerHTML = `<div class="kv"><span>${sub ? "Puja de salida" : "Precio de venta"}</span><span class="tnum">${eur(price)}</span></div>
-      <div class="kv"><span>Comisión de éxito vendedor (${(rate * 100).toFixed(1)}% · ${S.plan})</span><span class="tnum">${eur((sub ? PUB.full : price) * rate)}</span></div>
+      ${!sub && !AUCTIONS_OPEN ? `<div class="kv"><span>Comisión de venta</span><span class="chip ok">Gratis en el lanzamiento</span></div>`
+        : `<div class="kv"><span>Comisión de éxito vendedor <span translate="no">(${(rate * 100).toFixed(1)}% · ${S.plan})</span></span><span class="tnum">${eur((sub ? PUB.full : price) * rate)}</span></div>`}
       <div class="kv"><span>Sesión</span><span>${sub ? CATS[PUB.cat].name + " · " + CATS[PUB.cat].session : "Mercado · 60 días"}</span></div>`;
     if ($("#pStartHint")) $("#pStartHint").textContent = price < PUB.full * .15 ? "Salida muy baja: atrae pujas, pero fija una reserva." : "Salida atractiva para compradores profesionales.";
   };

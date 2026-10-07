@@ -82,7 +82,7 @@ function renderBidbox(l) {
   const locked = l.cat === "oculta" && !/Dealer|Full/.test(S.plan);
   const prev = $("#bidIn") ? +$("#bidIn").value : 0;
   const val = Math.max(prev || 0, minBid);
-  const closeTxt = new Date(l.endsAt).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  const closeTxt = new Date(l.endsAt).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" });
   const bidders = new Set(l.hist.map(h => h.who)).size;
   box.innerHTML = `<div class="hd ${st}"><span>${st === "live" ? "● Subasta en directo" : st === "soon" ? "Próximamente" : "Subasta cerrada"}</span><span class="tnum">${ic("gavel", "sm")} ${l.hist.length}</span></div>
   <div class="bd">
@@ -108,7 +108,7 @@ function renderBidbox(l) {
       <div style="display:flex;gap:8px"><button class="btn sm primary" id="autoGo">${S.auto[l.id] ? "Actualizar" : "Activar"}</button>${S.auto[l.id] ? '<button class="btn sm" id="autoOff">Desactivar</button>' : ""}</div></div></details>`}
     <ul class="muted" style="font-size:12px;margin:0;padding-left:16px;display:grid;gap:3px">
       <li>Incremento mínimo: ${eur(step)}</li><li>Todas las pujas son vinculantes 30 días</li>
-      <li>Termina: ${closeTxt} CEST</li><li>Anti-sniping: una puja en los 2 últimos minutos amplía 2 minutos</li></ul>
+      <li>Termina: ${closeTxt} (hora de España)</li><li>Anti-sniping: una puja en los 2 últimos minutos amplía 2 minutos</li></ul>
     <div><div class="lbl" style="margin-bottom:6px">${l.hist.length} ${l.hist.length === 1 ? "puja" : "pujas"}</div>
     ${l.hist.length ? `<ul class="bids">${l.hist.slice(0, 12).map(b => `<li class="${b.who === "Tú" ? "me" : ""}"><span><b>${b.who}</b> <small class="faint">${ago(b.t)}${b.pre ? " · anticipada" : ""}</small></span><span class="mono tnum">${eur(b.amt)}</span></li>`).join("")}</ul>` : '<p class="muted" style="margin:0;font-size:13px">Aún no hay pujas. ¡Sé el primero en pujar!</p>'}</div>
   </div>`;
@@ -168,7 +168,7 @@ function viewMarket() {
   const brands = [...new Set(market.map(m => m.title.split(" ")[0]))];
   return `<div class="wrap">
   <div class="admin-head"><div><div class="eyebrow">Mercado · precio fijo</div><h1 style="margin-top:8px">Encuentra tu vehículo</h1><p class="muted" style="margin:6px 0 0">Compra directa sin esperar a la subasta. Haz una oferta y el vendedor responde en 48 h.</p></div>
-  <a class="btn primary" href="#/publicar?t=mercado">${ic("plus", "sm")}Publicar anuncio</a></div>
+  <a class="btn primary" href="#/publicar?t=mercado">${ic("plus", "sm")}Publicar gratis</a></div>
   <div class="mk" style="margin-top:0">
     <aside class="filters">
       <div class="search" style="min-width:0">${ic("search")}<input class="in" id="mq" placeholder="Buscar BMW Serie 3…" value="${esc(MK.q)}"></div>
