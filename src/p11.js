@@ -93,7 +93,7 @@ function renderHeader(path) {
   };
   // en escritorio el logo ya lleva a Inicio: así caben las cinco secciones
   // Empresa vive en el pie y en el menú móvil; el admin cambia además Precios por su panel
-  const deskHide = ["#/", "#/empresa"].concat(roleIs("admin") ? ["#/precios"] : []);
+  const deskHide = ["#/", "#/empresa"];
   $("#nav").innerHTML = nav.filter(n => !deskHide.includes(n[0])).map(link).join("") + '<span class="ind"></span>';
   const links = nav.map(link).join("");
   $("#mnav").innerHTML = links + `<a href="#/como-funciona">${ic("doc", "sm")}Cómo funciona</a><a href="#/tarifas">${ic("euro", "sm")}Tarifas</a><a href="#/faq">${ic("msg", "sm")}Ayuda</a>` + (isLogged()
