@@ -107,8 +107,15 @@ function cvRenderReview() {
   const box = $("#cvRev"); if (!box) return;
   const r = cvReview(), ok = !r.items.filter(x => x.lvl === "warn").length;
   box.className = "cvrev " + (ok && !r.missing ? "ok" : ok ? "mid" : "warn");
-  box.innerHTML = `<div class="cvrev-h">${ic(ok ? (r.missing ? "clock" : "check") : "alert", "sm")}<b>${!ok ? `${r.items.filter(x => x.lvl === "warn").length} ${r.items.filter(x => x.lvl === "warn").length === 1 ? "cosa que revisar" : "cosas que revisar"}` : r.missing ? `Faltan ${r.missing} ${r.missing === 1 ? "dato" : "datos"}` : "Todo en orden"}</b>${ok && !r.missing ? `<span>El contrato está listo para firmar y descargar.</span>` : ""}</div>
-    ${r.items.length ? `<ul>${r.items.slice(0, 5).map(x => `<li class="${x.lvl}">${x.p ? `<button type="button" data-goto="${x.p}">${esc(x.t)}${ic("right", "sm")}</button>` : `<span>${esc(x.t)}</span>`}</li>`).join("")}</ul>` : ""}`;
+  const nw = r.items.filter(x => x.lvl === "warn").length;
+  const title = nw ? `${nw} ${nw === 1 ? "cosa que revisar" : "cosas que revisar"}` : r.missing ? `Faltan ${r.missing} ${r.missing === 1 ? "dato" : "datos"}` : "Todo en orden";
+  box.classList.toggle("open", !!window.__cvRevOpen && r.items.length > 0);
+  box.innerHTML = `<button type="button" class="cvrev-h" id="cvRevT" ${r.items.length ? `aria-expanded="${!!window.__cvRevOpen}"` : "disabled"}>${ic(nw ? "alert" : r.missing ? "clock" : "check", "sm")}<b>${title}</b>${!nw && !r.missing ? `<span>El contrato está listo para firmar y descargar.</span>` : ""}${r.items.length ? `<em class="tnum">${r.items.length}</em>${ic("chev", "sm")}` : ""}</button>
+    ${r.items.length ? `<ul>${r.items.slice(0, 6).map(x => `<li class="${x.lvl}">${x.p ? `<button type="button" data-goto="${x.p}">${esc(x.t)}${ic("right", "sm")}</button>` : `<span>${esc(x.t)}</span>`}</li>`).join("")}</ul>` : ""}`;
+  if (!box.__bound) { box.__bound = 1;
+    const tog = () => { window.__cvRevOpen = !window.__cvRevOpen; box.classList.toggle("open", window.__cvRevOpen); const t = $("#cvRevT"); if (t) t.setAttribute("aria-expanded", window.__cvRevOpen); };
+    box.addEventListener("pointerdown", e => { const t = e.target.closest("#cvRevT"); if (t && !t.disabled) { e.preventDefault(); tog(); } });
+    box.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.id === "cvRevT") { e.preventDefault(); tog(); } }); }
   $$("[data-goto]", box).forEach(b => b.onclick = () => cvFocusPath(b.dataset.goto));
 }
 
@@ -182,6 +189,7 @@ function cvBindParty(side) {
       const blocks = [...paper.querySelectorAll("[data-bi]")], now = blocks.map(b => b.textContent);
       if (CV_LASTTXT.length) blocks.forEach((b, i) => { if (CV_LASTTXT[i] != null && CV_LASTTXT[i] !== now[i] && b.dataset.sec !== "otros") { b.classList.remove("chg"); void b.offsetWidth; b.classList.add("chg"); } });
       CV_LASTTXT = now;
+      const fp = $("#cvPaperFull"); if (fp) fp.innerHTML = paper.innerHTML;
     }
     cvRenderSecs(); cvRenderReview();
     /* la marca sale sola del bastidor */
@@ -198,7 +206,7 @@ function cvBindParty(side) {
   viewContract = function (query) {
     let h = v.apply(this, arguments);
     h = h.replace('<div class="cvcard-h"><b>Vista previa</b><div class="cvprevtabs" id="cvPrevTabs"></div></div>',
-      `<div class="cvcard-h"><b>${ic("doc", "sm")}Vista previa</b><div class="cvprevtabs" id="cvPrevTabs"></div><div class="cvzoom" role="group" aria-label="Tamaño de la vista previa"><button type="button" data-z="-1" aria-label="Reducir">−</button><span id="cvZ" class="tnum">${Math.round(CV_ZOOM * 100)}%</span><button type="button" data-z="1" aria-label="Ampliar">+</button></div></div>`)
+      `<div class="cvcard-h"><b>${ic("doc", "sm")}Vista previa</b><div class="cvprevtabs" id="cvPrevTabs"></div><div class="cvzoom" role="group" aria-label="Tamaño de la vista previa"><button type="button" data-z="-1" aria-label="Reducir">−</button><span id="cvZ" class="tnum">${Math.round(CV_ZOOM * 100)}%</span><button type="button" data-z="1" aria-label="Ampliar">+</button></div><button type="button" class="cvfullb" id="cvFull" aria-label="Ver el contrato a pantalla completa" title="Pantalla completa">${ic("eye", "sm")}</button></div>`)
       .replace('<div class="cvpaper" id="cvPaper" translate="no"></div>', `<div class="cvpaper" id="cvPaper" translate="no" style="--z:${CV_ZOOM}"></div><div class="cvrev" id="cvRev"></div>`)
 ;
     /* el bloque "Después de firmar" pasa al final del formulario: la columna derecha queda para el contrato */
@@ -233,6 +241,9 @@ function cvBindParty(side) {
       const sec = blk.dataset.sec, first = { sel: "#cvSel", com: "#cvCom", veh: "#cvVeh", pago: "#cvPago", entrega: "#cvPago", estado: "#cvEst", place: "#cvFir", firma: "#cvFir" }[sec];
       const t = first && $(first); if (t) { t.scrollIntoView({ behavior: "smooth", block: "start" }); const inp = t.querySelector("[data-cv]"); if (inp) setTimeout(() => inp.focus({ preventScroll: true }), 400); }
     });
+    /* pantalla completa: capa propia sobre el body (el contenedor de la página tiene transform) */
+    const full = $("#cvFull");
+    if (full) full.onclick = () => cvFullOpen();
     /* zoom */
     $$(".cvzoom [data-z]").forEach(b => b.onclick = () => { CV_ZOOM = Math.max(.8, Math.min(1.4, Math.round((CV_ZOOM + (+b.dataset.z) * .1) * 10) / 10)); paper.style.setProperty("--z", CV_ZOOM); $("#cvZ").textContent = Math.round(CV_ZOOM * 100) + "%"; try { store.set("cvzoom", CV_ZOOM); } catch (e) {} });
     cvUpdate();
@@ -241,6 +252,19 @@ function cvBindParty(side) {
   const rp = cvRerenderParty;
   cvRerenderParty = function (side) { rp.apply(this, arguments); cvBindParty(side); };
 })();
+
+function cvFullOpen() {
+  if ($("#cvFullOv")) return;
+  const ov = document.createElement("div"); ov.id = "cvFullOv"; ov.className = "cvfullov"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "Contrato a pantalla completa");
+  ov.innerHTML = `<div class="cvfullov-h"><b>${ic("doc", "sm")}Contrato</b><span class="muted">Clic en un hueco para rellenarlo</span><button type="button" class="btn sm" id="cvFullPdf">${ic("download", "sm")}PDF</button><button type="button" class="icon-btn" id="cvFullX" aria-label="Cerrar">${ic("x")}</button></div><div class="cvpaper" id="cvPaperFull" translate="no" style="--z:${Math.max(1, CV_ZOOM)}">${cvPreviewHTML(CV_PREV)}</div>`;
+  document.body.appendChild(ov); document.documentElement.classList.add("mk-lock");
+  const close = () => { ov.remove(); document.documentElement.classList.remove("mk-lock"); document.removeEventListener("keydown", esc1); };
+  const esc1 = e => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", esc1);
+  $("#cvFullX").onclick = close; $("#cvFullPdf").onclick = () => cvMakePdf("save");
+  $("#cvPaperFull").addEventListener("click", e => { const mk = e.target.closest("mark[data-hole]"), path = mk && cvHolePath(mk); if (path) { close(); cvFocusPath(path); } });
+  requestAnimationFrame(() => ov.classList.add("on"));
+}
 
 /* desde un anuncio del Mercado, el contrato viene ya rellenado */
 patchRoute(/^\/mercado\/([\w-]+)$/, (q, mm) => { const a = $('.mkd-links a[href="#/contrato"]'); if (a) a.setAttribute("href", "#/contrato?mercado=" + encodeURIComponent(mm[1])); });
