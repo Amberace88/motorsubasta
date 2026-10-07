@@ -403,10 +403,19 @@ ROUTES.push(
   [/^\/vender\/cobros$/, () => [viewSellerPayouts(), mountSeller]],
   [/^\/admin$/, () => [viewAdmin(), mountAdmin]],
 );
+function authPending() {
+  if (typeof SB_READY === "undefined" || SB_READY || !window.supabase) return false;
+  if ((window.__bootT0 || (window.__bootT0 = Date.now())) < Date.now() - 8000) return false;
+  try { return Object.keys(localStorage).some(k => /^sb-.+-auth-token$/.test(k)); } catch (e) { return false; }
+}
 function router() {
   ensureMotion();
   const { path, query } = route();
-  if (GUARD.auth.some(p => path.startsWith(p)) && !isLogged()) { location.hash = "#/login?next=" + encodeURIComponent("#" + path); return; }
+  if (GUARD.auth.some(p => path.startsWith(p)) && !isLogged()) {
+    /* al abrir un enlace directo (p. ej. la vuelta del pago) la sesión guardada aún se está restaurando: esperamos en vez de mandar al login */
+    if (authPending()) { $("#app").innerHTML = `<div class="wrap"><div class="panel empty" style="margin-top:40px"><span class="spin" aria-hidden="true"></span><b>Cargando tu cuenta…</b></div></div>`; if (!window.__authWait) window.__authWait = setTimeout(() => { window.__authWait = 0; router(); }, 8000); return; }
+    location.hash = "#/login?next=" + encodeURIComponent("#" + path); return;
+  }
   if (GUARD.seller.some(p => path.startsWith(p)) && !canSell()) {
     $("#app").innerHTML = `<div class="wrap"><div class="panel empty" style="margin-top:40px">${ic("store", "lg")}<b>Activa la venta en tu cuenta</b><span>Con una sola cuenta puedes comprar y vender. Activar la venta es gratis y no cambia nada de lo que ya tienes.</span><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn primary" data-actsell>${ic("check", "sm")}Activar venta gratis</button><a class="btn" href="#/mercado">Volver al Mercado</a></div></div></div>`;
     renderHeader(path); return;

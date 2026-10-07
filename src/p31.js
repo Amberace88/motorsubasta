@@ -296,3 +296,6 @@ patchRoute(/^\/precios$/, () => {
   };
   ROUTES.unshift([/^\/admin\/extras$/, admRoute("extras", "Extras y pagos", "Lo opcional que se paga en un Mercado gratis: precios, compras, regalos y la puesta en marcha de Stripe.")]);
 })();
+
+/* con sesión iniciada, el login con ?next= lleva directo a donde iba */
+patchRoute(/^\/login$/, q => { if (isLogged() && q && q.next && /^#\/[\w\/?=&%.-]*$/.test(q.next)) location.replace(q.next); });
