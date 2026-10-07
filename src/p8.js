@@ -139,9 +139,11 @@ function bindCards(root = document) {
 
 /* ---------- HOME ---------- */
 function viewHome() {
-  const pop = [...lots].sort((a, b) => (b.featured - a.featured) || b.hist.length - a.hist.length).slice(0, 8);
+  // primero lo que se puede pujar ahora, luego lo programado; lo cerrado solo rellena
+  const rank = l => ({ live: 0, soon: 1, end: 2 })[statusOf(l)];
+  const pop = [...lots].sort((a, b) => rank(a) - rank(b) || (b.featured - a.featured) || b.hist.length - a.hist.length).slice(0, 8);
   const liveN = lots.filter(l => statusOf(l) === "live").length;
-  const counts = k => lots.filter(l => l.cat === k).length;
+  const soonN = lots.filter(l => statusOf(l) === "soon").length;
   return `
   <section class="hero hero-v2">
     <div class="hero-img" aria-hidden="true"></div>
@@ -156,7 +158,9 @@ function viewHome() {
         <a class="btn ghost lg" href="#/valoracion">${ic("chart", "sm")}Valoración gratuita</a>
       </div>
       <div class="hero-pills" data-rev style="--d:440ms">
-        <span>${ic("gavel", "sm")}<b class="tnum" data-count="${liveN || lots.length}">${liveN || lots.length}</b> subastas en vivo</span>
+        ${liveN ? `<span><i class="live-dot"></i><b class="tnum" data-count="${liveN}">${liveN}</b> subastas en directo</span>`
+          : soonN ? `<span><i class="live-dot idle"></i><b class="tnum" data-count="${soonN}">${soonN}</b> lotes en puja anticipada</span>`
+          : `<span>${ic("gavel", "sm")}<b class="tnum">11:00</b> próxima sesión</span>`}
         <span>${ic("car", "sm")}<b class="tnum" data-count="${lots.length + market.length}">${lots.length + market.length}</b> vehículos</span>
         <span>${ic("clock", "sm")}<b class="tnum" data-count="4">4</b> sesiones diarias</span>
         <span>${ic("pin", "sm")}<b class="tnum" data-count="17">17</b> comunidades</span>
@@ -165,6 +169,11 @@ function viewHome() {
   </section>
 
   <section class="blk first"><div class="wrap">
+    <div class="sec-head" data-rev><div><div class="eyebrow">${ic("clock", "sm")}Sesiones de subasta</div><h2 style="margin-top:10px">Cuatro categorías, cada día</h2><p>Abre una categoría para ver sus lotes. La puja anticipada está abierta hasta que empieza la sesión.</p></div><a class="link" href="#/subastas">Calendario completo ${ic("right", "sm")}</a></div>
+    <div class="sesslist" id="homeSess" data-rev>${homeSessions()}</div>
+  </div></section>
+
+  <section class="blk" style="padding-top:8px"><div class="wrap">
     <div class="sec-head" data-rev><div><div class="eyebrow">${ic("flame", "sm")}Subastas populares</div><h2 style="margin-top:10px">Lotes con más actividad</h2><p>Puja o pre-puja directamente desde la tarjeta.</p></div><a class="link" href="#/subastas">Ver todas las subastas ${ic("right", "sm")}</a></div>
     <div class="grid">${pop.map(lotCard).join("")}</div>
   </div></section>
@@ -176,15 +185,6 @@ function viewHome() {
     <div class="proc" data-rev style="--d:210ms"><span class="t">04 · Entrega</span><b>Retirada o transporte</b><span>Se coordina con el vendedor: recogida propia o portavehículos.</span><span class="when">3–10 días laborables</span></div>
   </div></section>
 
-  <section class="blk"><div class="wrap">
-    <div class="sec-head" data-rev><div><div class="eyebrow">Explorar por categoría</div><h2 style="margin-top:10px">Cuatro sesiones, cada día</h2><p>Cada categoría abre en su franja horaria. La puja anticipada está abierta antes de que empiece.</p></div></div>
-    <div class="cats">
-      ${Object.entries(CATS).map(([k, c], i) => `<a class="cat ${k === "oculta" ? "oculta" : k}" href="#/subastas?cat=${k}" data-rev style="--d:${i * 70}ms">
-        <div class="row"><span class="ic">${ic(c.icon)}</span><span class="n tnum">${counts(k)}</span></div>
-        <h3>${c.name}</h3>${k === "oculta" ? '<span class="eyebrow" style="color:var(--vip)">Acceso premium</span>' : ""}<p>${c.desc}</p>
-        <span class="link" style="font-size:13px">Explorar ${ic("right", "sm")}</span></a>`).join("")}
-    </div>
-  </div></section>
 
   <section class="blk" style="background:var(--bg-2);border-block:1px solid var(--line)"><div class="wrap">
     <div class="sec-head" data-rev><div><div class="eyebrow">Cómo funciona</div><h2 style="margin-top:10px">Compra en tres pasos</h2></div></div>
@@ -277,14 +277,14 @@ function viewAuctions(query) {
   </section>
 
   <div class="sesbar" data-rev>
-    <div class="now"><span class="live-dot" style="${liveLot ? "" : "background:var(--muted);animation:none"}"></span><span class="mono tnum" id="cetClock">--:--</span><small>CET</small></div>
+    <div class="now"><span class="live-dot ${liveLot ? "" : nextLot ? "idle" : "off"}"></span><span class="mono tnum" id="cetClock">--:--</span><small>CET</small></div>
     <div class="st">${liveLot ? `<b>Sesión en directo</b><span class="muted">${sesName(liveLot.cat)} · cierra en <span class="mono" data-tm="${liveLot.id}"></span></span>`
       : nextLot ? `<b>Sin sesión activa</b><span class="muted">${sesName(nextLot.cat)} empieza en <span class="mono" data-tm="${nextLot.id}"></span></span>`
       : "<b>Sesiones cerradas por hoy</b><span class=\"muted\">Vuelven mañana a las 11:00 CET</span>"}</div>
     <div class="pre"><span class="chip acc">${ic("bolt", "sm")}Puja anticipada abierta</span></div>
   </div>
 
-  <div class="days">${days.map((d, i) => `<button class="day ${i === AUC.day ? "on" : ""}" data-day="${i}"><small>${i === 0 ? "HOY" : i === 1 ? "MAÑ" : dn[d.getDay()]}</small><b>${d.getDate()}</b><small>${mn[d.getMonth()]}</small><em>${i === 0 ? lots.length : i === 1 ? 8 : "&nbsp;"}</em></button>`).join("")}</div>
+  <div class="days">${days.map((d, i) => `<button class="day ${i === AUC.day ? "on" : ""}" data-day="${i}"><small>${i === 0 ? "HOY" : i === 1 ? "MAÑ" : d.toLocaleDateString(uiLoc(), { weekday: "short" }).replace(/\.$/, "").toUpperCase()}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString(uiLoc(), { month: "short" }).replace(/\.$/, "").toUpperCase()}</small><em>${i === 0 ? lots.length : i === 1 ? 8 : "&nbsp;"}</em></button>`).join("")}</div>
 
   <div class="toolbar">
     <div class="search">${ic("search")}<input class="in" id="aq" placeholder="Buscar marca, modelo, ciudad o referencia…" value="${esc(AUC.q)}"></div>
@@ -302,13 +302,7 @@ function renderSessions() {
   const sorter = { end: (a, b) => a.startsAt - b.startsAt || b.featured - a.featured, low: (a, b) => curPrice(a) - curPrice(b), bids: (a, b) => b.hist.length - a.hist.length }[AUC.sort];
   box.innerHTML = Object.entries(CATS).filter(([k]) => AUC.cat === "all" || AUC.cat === k).map(([k, c]) => {
     const items = list.filter(l => l.cat === k).sort(sorter);
-    const col = { limpio: "ok", danado: "warn", siniestro: "bad", oculta: "vip" }[k];
-    const any = items[0], st = any ? statusOf(any) : "soon";
-    return `<div class="session ${AUC.open[k] ? "open" : ""}"><button data-sess="${k}" aria-expanded="${!!AUC.open[k]}">
-      <span class="ic" style="background:var(--${col}-soft);color:var(--${col})">${ic(c.icon)}</span>
-      <div><h3>${c.name}</h3><small>${ic("clock", "sm")}${c.session} CET ${k === "oculta" ? "· solo Dealer" : ""}</small></div>
-      <span class="sescount">${any ? `<span class="chip ${st === "live" ? "bad" : "acc"}">${st === "live" ? "En directo" : "Pre-puja"}</span><span class="mono tnum" data-tm="${any.id}">${fmtLeft((st === "live" ? any.endsAt : any.startsAt) - now())}</span>` : ""}</span>
-      <span class="cnt tnum">${items.length}</span>${ic("chev", "chev")}</button>
+    return `<div class="session ${AUC.open[k] ? "open" : ""}">${sessHead(k, items, !!AUC.open[k])}
       ${AUC.open[k] ? `<div class="inner">${items.length ? `<div class="grid">${items.map(lotCard).join("")}</div>` : `<div class="empty">${ic("search", "lg")}No hay lotes con estos filtros</div>`}</div>` : ""}</div>`;
   }).join("");
   $$("[data-sess]", box).forEach(b => b.onclick = () => { AUC.open[b.dataset.sess] = !AUC.open[b.dataset.sess]; renderSessions(); });

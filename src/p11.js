@@ -77,17 +77,23 @@ function quickBid(id, amount) {
 /* ---------- header: role aware ---------- */
 NAV.length = 0;
 NAV.push(["#/", "Inicio", "home"], ["#/subastas", "Subastas", "gavel"], ["#/mercado", "Mercado", "store"],
-  ["#/precios", "Precios", "euro"], ["#/empresa", "Empresa", "building"]);
+  ["#/contrato", "Contrato", "doc"], ["#/precios", "Precios", "euro"], ["#/empresa", "Empresa", "building"]);
 function renderHeader(path) {
   const liveN = lots.filter(l => statusOf(l) === "live").length;
+  const soonN = lots.filter(l => statusOf(l) === "soon").length;
+  // en directo: punto que late · solo puja anticipada: punto fijo
+  const dot = liveN ? '<span class="live-dot" title="Subastas en directo"></span>'
+    : soonN ? '<span class="live-dot idle" title="Puja anticipada abierta"></span>' : "";
   // admins swap "Empresa" (still in the footer and the mobile menu) for the admin panel,
   // so the header never carries more than five links
   const nav = roleIs("admin") ? NAV.filter(n => n[0] !== "#/empresa").concat([["#/admin", "Admin", "shield"]]) : [...NAV];
-  const links = nav.map(([h, t, i]) => {
+  const link = ([h, t, i]) => {
     const on = h === "#/" ? path === "/" : path.startsWith(h.slice(1).replace(/s$/, ""));
-    return `<a href="${h}" class="${on ? "on" : ""}">${ic(i, "sm")}${t}${t === "Subastas" && liveN ? '<span class="live-dot" title="Subastas en vivo"></span>' : ""}</a>`;
-  }).join("");
-  $("#nav").innerHTML = links + '<span class="ind"></span>';
+    return `<a href="${h}" class="${on ? "on" : ""}">${ic(i, "sm")}${t}${h === "#/subastas" ? dot : ""}</a>`;
+  };
+  // en escritorio el logo ya lleva a Inicio: así caben las cinco secciones
+  $("#nav").innerHTML = nav.filter(n => n[0] !== "#/").map(link).join("") + '<span class="ind"></span>';
+  const links = nav.map(link).join("");
   $("#mnav").innerHTML = links + `<a href="#/como-funciona">${ic("doc", "sm")}Cómo funciona</a><a href="#/tarifas">${ic("euro", "sm")}Tarifas</a><a href="#/faq">${ic("msg", "sm")}Ayuda</a>` + (isLogged()
     ? `<a href="#/cuenta">${ic("user", "sm")}Mi cuenta</a>${canSell() ? `<a href="#/vender">${ic("truck", "sm")}Panel de vendedor</a>` : ""}<a href="#/valoracion">${ic("car", "sm")}Valoración gratuita</a>`
     : `<a href="#/login">${ic("user", "sm")}Iniciar sesión</a><a href="#/registro">${ic("plus", "sm")}Crear cuenta</a>`);

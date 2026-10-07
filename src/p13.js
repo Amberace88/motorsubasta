@@ -483,7 +483,7 @@ function lotPayBanner(id) {
   d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
     <div><b>${ic("check", "sm")} Has ganado este lote por ${eur(curPrice(l))}</b>
       <p class="muted" style="margin:4px 0 0;font-size:13.5px">Completa el pago en las próximas 48 h para reservar la retirada.</p></div>
-    <a class="btn primary" href="#/pago/${l.id}">${ic("euro", "sm")}Pagar ahora</a></div>`;
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#/contrato?lote=${l.id}">${ic("doc", "sm")}Contrato de compraventa</a><a class="btn primary" href="#/pago/${l.id}">${ic("euro", "sm")}Pagar ahora</a></div></div>`;
   w.insertBefore(d, w.firstChild);
 }
 

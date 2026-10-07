@@ -87,3 +87,20 @@ Vienkāršākais: atver https://app.netlify.com/drop un uzmet tur `motorsubasta-
 4. **Cron** — `select close_due_auctions();` ik minūti (Supabase → Integrations → Cron).
 5. **Foto augšupielāde** — publicēšanas vednis pagaidām saglabā auto bez bildēm; bucket `vehicle-photos` ir gatavs.
 6. **Domēns** — pievienot motorsubasta.com Netlify pusē.
+
+## v12 · 2026-10-07
+
+- **Contrato de compraventa** (`#/contrato`, gratis): formulario guiado, validación DNI/NIE/CIF/VIN/matrícula,
+  importe en letras, firma en pantalla, PDF con fuente Unicode (`public/fonts`, `public/vendor/jspdf.umd.min.js`),
+  copia traducida opcional. Prellenado desde un lote ganado: `#/contrato?lote=<id>`. Nada se envía al servidor.
+- **Idiomas**: es (base), en, pt, pl, uk. Diccionarios en `public/i18n/*.json`; capa de traducción en `src/p19.js`.
+  Enlace directo: `?lang=en`. Lo marcado con `translate="no"` no se traduce.
+- **Sesiones** cerradas por defecto en portada y en Subastas, con vehículos, precio desde, pujas y cuenta atrás.
+- **Punto naranja** en Subastas: late con subastas en directo, fijo con puja anticipada abierta.
+- **Documento HTML correcto** (`src/shell.html`): doctype, charset, viewport (móviles), favicon y Open Graph.
+
+### Pendiente de decidir (Eddie)
+`supabase/05-demo-viva.sql` mantiene la demo viva: reprograma cada día las subastas de `vendedor@demo.es`
+en su sesión (hora de Madrid) y cierra las reales con `close_due_auctions()` cada 5 min mediante pg_cron.
+**No está aplicado.** Para activarlo: Supabase → SQL Editor → pegar el archivo → Run.
+Para quitarlo antes del lanzamiento: `select cron.unschedule('motorsubasta-tick');`

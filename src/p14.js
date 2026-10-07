@@ -25,6 +25,8 @@ function mapLot(a) {
   const st = a.auction_state || {};
   return {
     id: a.id,
+    // referencia legible y estable a partir del uuid (MS-1000 … MS-9999)
+    ref: "MS-" + (1000 + parseInt(String(a.id).replace(/[^0-9a-f]/gi, "").slice(0, 7) || "0", 16) % 9000),
     img: photoStem((v.photos || [])[0]),
     photos: (v.photos || []).map(photoStem),
     year: v.year, make: v.make, model: v.model,

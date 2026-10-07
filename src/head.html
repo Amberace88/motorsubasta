@@ -908,6 +908,176 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
     radial-gradient(128% 92% at 50% 46%,rgba(8,7,7,.10) 0%,rgba(8,7,7,.42) 48%,rgba(8,7,7,.86) 100%),
     linear-gradient(to bottom,rgba(8,7,7,.74) 0%,rgba(8,7,7,.20) 24%,rgba(8,7,7,.32) 70%,rgba(8,7,7,.82) 92%,var(--bg) 100%)}
 
+/* ---------- v12: punto en directo naranja ---------- */
+.live-dot{display:inline-block;flex:none;width:8px;height:8px;border-radius:50%;background:var(--accent-fill);animation:pulseO 1.7s infinite}
+@keyframes pulseO{0%{box-shadow:0 0 0 0 rgba(226,113,34,.65)}70%{box-shadow:0 0 0 8px rgba(226,113,34,0)}100%{box-shadow:0 0 0 0 rgba(226,113,34,0)}}
+.live-dot.idle{animation:none;box-shadow:0 0 0 3px rgba(226,113,34,.2)}
+.live-dot.off{animation:none;background:var(--muted);box-shadow:none}
+.status.live{background:#c4580f;color:#fff}
+.hero-pills .live-dot{margin-right:2px}
+@media (prefers-reduced-motion:reduce){.live-dot{animation:none}}
+
+/* ---------- v12: titulares en Inter, aire justo ---------- */
+h1,h2,h3,h4{letter-spacing:-.018em}
+.hero-v2 h1{letter-spacing:-.024em;line-height:1.06;max-width:21ch}
+
+/* ---------- v12: filas de sesión ---------- */
+.sesslist .session:last-child{margin-bottom:0}
+.session>.shead{display:grid;grid-template-columns:38px minmax(0,1fr) auto auto 20px;align-items:center;gap:14px;padding:14px 16px}
+.shead .nm{min-width:0}
+.shead .nm h3{font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shead .facts{display:flex;align-items:center;gap:18px}
+.shead .f{display:grid;gap:3px;justify-items:end;min-width:52px}
+.shead .f b{font:700 15.5px/1 var(--display);letter-spacing:-.01em}
+.shead .f small{font-size:11px;color:var(--muted);letter-spacing:.02em}
+.shead .thumbs{display:flex;padding-left:8px}
+.shead .thumbs img{width:40px;height:30px;object-fit:cover;border-radius:7px;border:2px solid var(--surface);margin-left:-10px;background:var(--surface-2)}
+.shead .thumbs.lk img{filter:blur(4px) grayscale(.5)}
+.shead .sst{display:flex;align-items:center;gap:12px;min-width:236px;justify-content:flex-end}
+.shead .sst .chip{gap:7px}
+.shead .sst .chip::before{display:none}
+.shead .sst .livechip{background:rgba(226,113,34,.16);color:var(--accent);border-color:var(--accent-line)}
+.shead .when{display:grid;gap:3px;justify-items:end}
+.shead .when small{font-size:11px;color:var(--muted)}
+.shead .when .mono{font:600 14px/1 var(--mono);color:var(--text)}
+.shead .chev{transition:transform .25s;color:var(--muted)}
+.session.open .shead .chev{transform:rotate(180deg)}
+.session .inner.sesmini{padding:0;border-top:1px solid var(--line)}
+.session .inner.sesmini .lrow:last-of-type{border-bottom:0}
+.session .inner.sesmini .im.lk img{filter:blur(5px)}
+.session .inner.sesmini .im.lk svg{position:absolute;inset:0;margin:auto;color:#fff}
+.session .inner.sesmini .more{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-top:1px solid var(--line);background:var(--surface-2);color:var(--accent);font-weight:600;font-size:13.5px}
+.session .inner.sesmini .more:hover{background:var(--accent-soft)}
+@media (max-width:1100px){.shead .hide-s{display:none}.shead .sst{min-width:0}}
+@media (max-width:860px){
+  .session>.shead{grid-template-columns:38px minmax(0,1fr) 20px;grid-template-areas:"ic nm chev" "facts facts facts" "sst sst sst";row-gap:12px}
+  .shead .ic{grid-area:ic}.shead .nm{grid-area:nm}.shead .chev{grid-area:chev}
+  .shead .facts{grid-area:facts;justify-content:flex-start;gap:16px}
+  .shead .f{justify-items:start}
+  .shead .sst{grid-area:sst;justify-content:space-between}
+  .shead .when{justify-items:end}
+}
+
+/* ---------- v12: idiomas ---------- */
+html.i18n-wait body{opacity:0}
+body{transition:opacity .18s}
+.langbtn{width:auto;padding:0 10px;gap:6px;display:flex;align-items:center}
+.langbtn .lc{font:700 12px/1 var(--mono);letter-spacing:.04em;color:var(--text)}
+.langpop{min-width:200px}
+.langpop button{justify-content:flex-start}
+.langpop button .lc{font:700 11px/1 var(--mono);width:24px;color:var(--muted)}
+.langpop button.on{color:var(--accent)}
+.langpop button svg{margin-left:auto}
+.footlang{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;color:var(--muted)}
+.footlang a{color:var(--muted)}
+.footlang a:hover,.footlang a.on{color:var(--accent)}
+.mlang{display:flex;gap:6px;padding:12px 4px 4px;border-top:1px solid var(--line);margin-top:6px}
+.mlang button{flex:1;padding:10px 0;border-radius:9px;border:1px solid var(--line);background:none;font:700 12.5px/1 var(--mono);color:var(--muted)}
+.mlang button.on{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}
+.langhint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:10px;padding:10px 10px 10px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow);font-size:14px;animation:revIn .3s both;max-width:calc(100vw - 24px)}
+.langhint svg{color:var(--accent)}
+.langhint.out{opacity:0;transition:opacity .3s}
+@media (max-width:560px){.langwrap{display:none}.langhint{flex-wrap:wrap}}
+
+/* ---------- v12: contrato de compraventa ---------- */
+.cvwrap{padding-block:34px 80px}
+.cvhero{max-width:780px;margin-bottom:26px}
+.cvhero h1{font-size:clamp(28px,3.6vw,42px);margin:12px 0 10px;letter-spacing:-.025em}
+.cvhero .lead{color:var(--muted);font-size:16.5px;margin:0;max-width:60ch}
+.cvbadges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.cvbadges span{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--muted)}
+.cvbadges svg{color:var(--accent)}
+.cvgrid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:24px;align-items:start}
+.cvform{display:grid;gap:16px;min-width:0}
+.cvprog{position:sticky;top:76px;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(10px);font-size:13px}
+.cvprog .bar{flex:1 1 100%;height:5px;border-radius:9px;background:var(--surface-3);overflow:hidden}
+.cvprog .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent-fill));border-radius:9px;transition:width .35s}
+.cvprog small{color:var(--muted)}
+.cvprog small.ok{color:var(--ok);display:inline-flex;gap:5px;align-items:center}
+.cvsec{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:20px;scroll-margin-top:150px}
+.cvsec>header{display:flex;gap:13px;align-items:flex-start;margin-bottom:16px}
+.cvsec>header .n{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font:700 14px/1 var(--display);flex:none}
+.cvsec>header h3{font-size:17.5px;margin:3px 0 0}
+.cvsec>header p{margin:4px 0 0;color:var(--muted);font-size:13.5px}
+.cvsec .cvseg{margin-bottom:14px}
+.cvseg button{font-size:13px}
+.req{color:var(--accent);font-style:normal}
+.cvhint{font-size:12px;color:var(--muted)}
+.cvhint:empty{display:none}
+.cvhint.warn{color:var(--warn);font-weight:600}
+.in.bad{border-color:color-mix(in srgb,var(--warn) 70%,var(--line))}
+.in.up{text-transform:uppercase}
+.cvmoney{position:relative}
+.cvmoney .in{padding-right:34px;font-weight:700;font-size:16px}
+.cvmoney span{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:600}
+.cvwords{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:var(--surface-2);color:var(--muted);font-size:13.5px;font-style:italic}
+.cvwords:empty{display:none}
+.cvwords svg{color:var(--accent);margin-top:2px}
+.cvchk{display:flex;align-items:center;gap:10px;min-height:42px;font-size:14px;cursor:pointer}
+.cvchk input{width:18px;height:18px;accent-color:var(--accent-fill);flex:none}
+.cvchk.dis{opacity:.55;cursor:not-allowed}
+.cvdocs{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.cvdanos{margin:4px 0 8px}
+textarea.in{min-height:84px;height:auto;resize:vertical;padding-top:11px;line-height:1.5}
+.cvpads{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.cvpad{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface-2)}
+.cvpad-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13.5px}
+.cvpad canvas{display:block;width:100%;height:150px;border-radius:10px;background:#fbfaf7 linear-gradient(transparent 112px,#d9d4cb 112px,#d9d4cb 113px,transparent 113px);touch-action:none;cursor:crosshair;border:1px dashed #cfc8bd}
+.cvpad canvas.signing{border-style:solid;border-color:var(--accent-fill)}
+.cvpad small{display:flex;gap:6px;align-items:center;margin-top:7px;font-size:12px;color:var(--muted)}
+.cvnote{display:flex;gap:7px;align-items:center;margin:12px 0 0;font-size:12.5px;color:var(--muted)}
+.cvside{position:sticky;top:86px;display:grid;gap:14px}
+.cvcard{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.cvcard-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+.cvprevtabs{display:flex;gap:4px}
+.cvprevtabs button{border:1px solid var(--line);background:none;border-radius:8px;padding:5px 9px;font-size:12px;color:var(--muted);cursor:pointer}
+.cvprevtabs button.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+.cvpaper{max-height:min(58vh,560px);overflow:auto;background:#fdfcfa;color:#1d1d22;padding:24px 22px;font:12px/1.6 var(--body);letter-spacing:0;scrollbar-width:thin}
+.cvpaper .cvt{font-size:13.5px;text-align:center;margin:0 0 4px;letter-spacing:.01em;color:#111}
+.cvpaper .cvt::after{content:"";display:block;width:44px;height:2px;background:#e27122;margin:8px auto 0}
+.cvpaper .cvplace{text-align:right;margin:14px 0}
+.cvpaper h5{font-size:11.5px;margin:14px 0 6px;letter-spacing:.02em;color:#111}
+.cvpaper h5.c{text-align:center}
+.cvpaper p{margin:0 0 7px;text-align:justify;hyphens:auto}
+.cvpaper mark{background:rgba(226,113,34,.16);color:#a4480b;border-radius:3px;padding:0 3px;font-style:italic}
+.cvkv{width:100%;border-collapse:collapse;margin:4px 0 10px;font-size:11.5px}
+.cvkv th{text-align:left;font-weight:500;color:#6b6b74;padding:4px 6px;width:44%}
+.cvkv td{font-weight:600;padding:4px 6px;word-break:break-all}
+.cvkv tr:nth-child(odd){background:#f3f1ed}
+.cvkv th,.cvkv td{border:0;text-transform:none;letter-spacing:0;vertical-align:top}
+.cvsigs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.cvsigs>div{display:grid;gap:5px;align-content:start}
+.cvsigs .lab{font-weight:700;font-size:11px}
+.cvsigs img{height:54px;width:100%;object-fit:contain;border:1px solid #e3e0da;border-radius:6px;background:#fff}
+.cvsigs .line{display:block;height:54px;border:1px solid #e3e0da;border-radius:6px}
+.cvsigs small{font-size:10.5px;color:#6b6b74;white-space:pre-line}
+.cvactions{display:grid;gap:10px}
+.cvactions .btn.lg{width:100%;justify-content:center}
+.cvactions .btn.busy,.cvbar .btn.busy{opacity:.7;pointer-events:none}
+.cvopts{display:grid}
+.cvmeta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted)}
+#cvSaved{display:inline-flex;gap:5px;align-items:center;opacity:0;transition:opacity .3s;color:var(--ok)}
+#cvSaved.on{opacity:1}
+.cvmeta .link{display:inline-flex;gap:5px;align-items:center;border:0;background:none;color:var(--muted);font-size:12.5px;cursor:pointer}
+.cvmeta .link:hover{color:var(--bad)}
+.cvafter h4{margin:0 0 10px;font-size:15px}
+.cvafter ol{margin:0;padding-left:18px;display:grid;gap:9px;font-size:13px;color:var(--muted)}
+.cvafter b{color:var(--text)}
+.cvbar{display:none}
+@media (max-width:1080px){
+  .cvgrid{grid-template-columns:1fr}
+  .cvside{position:static}
+  .cvbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:40;align-items:center;justify-content:space-between;gap:10px;padding:10px 10px 10px 16px;border-radius:14px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line-2);box-shadow:var(--shadow)}
+  .cvbar span{font:600 13px var(--mono);color:var(--muted)}
+}
+@media (max-width:640px){
+  .cvdocs,.cvpads{grid-template-columns:1fr}
+  .cvsec{padding:16px}
+  .cvprog{top:64px}
+  .cvsec .cvseg{display:flex;width:100%}
+  .cvsec .cvseg button{flex:1 1 auto;justify-content:center}
+}
+
 /* primera sección tras el hero (ya sin la sala en directo encima) */
 .blk.first{padding-block:58px 44px}
 @media (max-width:760px){.blk.first{padding-block:32px 30px}}
@@ -948,7 +1118,7 @@ label:has(input[type=checkbox]){min-height:44px;display:flex;align-items:center;
       <a class="logo" href="#/" aria-label="MotorSubasta inicio"><span class="mark" aria-hidden="true"><svg viewBox="0 0 40 40"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a5e"/><stop offset="1" stop-color="#ff5c15"/></linearGradient></defs><rect width="40" height="40" rx="11.5" fill="url(#mg)"/><path d="M9.5 27.5 L15 13.5 L20 22 L25 13.5 L30.5 27.5" stroke="#fff" stroke-width="3.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="30.6" r="2.1" fill="#fff"/></svg></span><span class="wm"><b>MOTOR</b><i>SUBASTA</i></span></a>
       <p class="muted" style="max-width:34ch;font-size:14px;margin-top:16px">Subastas y mercado profesional de vehículos en España. Limpios, dañados y siniestros, con reglas claras.</p>
     </div>
-    <div><h5>Plataforma</h5><a href="#/subastas">Subastas en vivo</a><a href="#/mercado">Mercado</a><a href="#/precios">Precios y tarifas</a><a href="#/valoracion">Valoración gratuita</a></div>
+    <div><h5>Plataforma</h5><a href="#/subastas">Subastas en vivo</a><a href="#/mercado">Mercado</a><a href="#/precios">Precios y tarifas</a><a href="#/valoracion">Valoración gratuita</a><a href="#/contrato">Contrato de compraventa</a></div>
     <div><h5>Vender</h5><a href="#/publicar">Publicar vehículo</a><a href="#/valoracion">Oferta directa 24 h</a><a href="#/precios">Planes vendedor</a></div>
     <div><h5>Empresa</h5><a href="#/empresa">Sobre nosotros</a><a href="#/precios">Preguntas frecuentes</a><a href="#/empresa">Contacto</a></div>
     <div><h5>Legal</h5><a href="#/empresa">Política de privacidad</a><a href="#/empresa">Términos de servicio</a><a href="#/empresa">Condiciones de puja</a></div>

@@ -52,8 +52,8 @@ const ic = (n, c = "") => `<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="
 /* ---------- helpers ---------- */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const eur = n => "€" + Math.round(n).toLocaleString("es-ES");
-const num = n => Math.round(n).toLocaleString("es-ES");
+const eur = n => "€" + Math.round(n).toLocaleString(window.NUMLOC || "es-ES");
+const num = n => Math.round(n).toLocaleString(window.NUMLOC || "es-ES");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const store = {
   get(k, d) { try { const v = localStorage.getItem("ms_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
