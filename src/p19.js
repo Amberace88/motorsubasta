@@ -146,6 +146,21 @@ async function setLang(lang, opts = {}) {
   document.documentElement.classList.remove("i18n-wait");
 }
 
+
+/* banderas en SVG (los emoji de bandera no se ven en Windows) */
+var FLAG_N = 0;
+function flag(l) {
+  const id = "fl" + (++FLAG_N);
+  const body = {
+    es: '<rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/>',
+    en: `<clipPath id="${id}t"><path d="M15 10h15v10zv10H0zH0V0zV0h15z"/></clipPath><rect width="30" height="20" fill="#012169"/><path d="M0 0l30 20M30 0L0 20" stroke="#fff" stroke-width="4"/><path d="M0 0l30 20M30 0L0 20" stroke="#C8102E" stroke-width="2.4" clip-path="url(#${id}t)"/><path d="M15 0v20M0 10h30" stroke="#fff" stroke-width="6.4"/><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="3.8"/>`,
+    pt: '<rect width="30" height="20" fill="#DA291C"/><rect width="12" height="20" fill="#046A38"/><circle cx="12" cy="10" r="4.4" fill="none" stroke="#FFE900" stroke-width="1.4"/><path d="M9.9 7.4h4.2v3.5a2.1 2.1 0 0 1-4.2 0z" fill="#fff" stroke="#DA291C" stroke-width=".7"/>',
+    pl: '<rect width="30" height="20" fill="#fff"/><rect y="10" width="30" height="10" fill="#DC143C"/>',
+    uk: '<rect width="30" height="20" fill="#0057B7"/><rect y="10" width="30" height="10" fill="#FFD700"/>',
+  }[l] || "";
+  return `<span class="flag" aria-hidden="true"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice">${body}</svg></span>`;
+}
+
 /* ---------- interfaz: selector en la cabecera, menú móvil y pie ---------- */
 function renderLangUI() {
   const tools = $(".top .tools");
@@ -154,14 +169,14 @@ function renderLangUI() {
     w.className = "langwrap"; w.style.position = "relative";
     w.innerHTML = `<button class="icon-btn langbtn" id="langBtn" aria-haspopup="true" aria-label="Idioma"></button><div class="menu-pop langpop" id="langMenu" hidden translate="no"></div>`;
     tools.insertBefore(w, $("#themeBtn"));
-    $("#langBtn").onclick = e => { e.stopPropagation(); const m = $("#langMenu"); m.hidden = !m.hidden; };
+    $("#langBtn").onclick = e => { e.stopPropagation(); const m = $("#langMenu"); m.hidden = !m.hidden; e.currentTarget.setAttribute("aria-expanded", !m.hidden); };
     document.addEventListener("click", e => { const m = $("#langMenu"); if (m && !m.hidden && !e.target.closest(".langwrap")) m.hidden = true; });
   }
   const b = $("#langBtn");
-  if (b) b.innerHTML = ic("globe", "sm") + `<span class="lc" translate="no">${LANG_CODE[LANG]}</span>`;
+  if (b) b.innerHTML = flag(LANG) + `<span class="lc" translate="no">${LANG_CODE[LANG]}</span>` + ic("chev", "sm chev");
   const m = $("#langMenu");
   if (m) {
-    m.innerHTML = LANGS.map(l => `<button data-lang="${l}" class="${l === LANG ? "on" : ""}" lang="${l}"><span class="lc">${LANG_CODE[l]}</span>${LANG_NAMES[l]}${l === LANG ? ic("check", "sm") : ""}</button>`).join("");
+    m.innerHTML = LANGS.map(l => `<button data-lang="${l}" class="${l === LANG ? "on" : ""}" lang="${l}">${flag(l)}<span class="nm">${LANG_NAMES[l]}</span><span class="lc">${LANG_CODE[l]}</span>${l === LANG ? ic("check", "sm") : ""}</button>`).join("");
     $$("[data-lang]", m).forEach(x => x.onclick = () => { m.hidden = true; if (x.dataset.lang !== LANG) setLang(x.dataset.lang); });
   }
   let foot = $("#footLang");
@@ -170,7 +185,7 @@ function renderLangUI() {
     if (bar) { foot = document.createElement("span"); foot.id = "footLang"; foot.className = "footlang"; foot.setAttribute("translate", "no"); bar.insertBefore(foot, bar.lastElementChild); }
   }
   if (foot) {
-    foot.innerHTML = ic("globe", "sm") + LANGS.map(l => `<a href="javascript:void 0" data-flang="${l}" class="${l === LANG ? "on" : ""}" lang="${l}">${LANG_NAMES[l]}</a>`).join("");
+    foot.innerHTML = LANGS.map(l => `<a href="javascript:void 0" data-flang="${l}" class="${l === LANG ? "on" : ""}" lang="${l}">${flag(l)}${LANG_NAMES[l]}</a>`).join("");
     $$("[data-flang]", foot).forEach(a => a.onclick = e => { e.preventDefault(); if (a.dataset.flang !== LANG) { setLang(a.dataset.flang); scrollTo({ top: 0, behavior: "smooth" }); } });
   }
 }
@@ -180,7 +195,7 @@ function renderLangUI() {
   renderHeader = function (path) {
     base(path);
     const mn = $("#mnav");
-    if (mn && !mn.querySelector(".mlang")) mn.insertAdjacentHTML("beforeend", `<div class="mlang" translate="no">${LANGS.map(l => `<button data-mlang="${l}" class="${l === LANG ? "on" : ""}" lang="${l}">${LANG_CODE[l]}</button>`).join("")}</div>`);
+    if (mn && !mn.querySelector(".mlang")) mn.insertAdjacentHTML("beforeend", `<div class="mlang" translate="no">${LANGS.map(l => `<button data-mlang="${l}" class="${l === LANG ? "on" : ""}" lang="${l}">${flag(l)}${LANG_CODE[l]}</button>`).join("")}</div>`);
     $$("[data-mlang]", mn || document).forEach(x => x.onclick = () => { if (x.dataset.mlang !== LANG) setLang(x.dataset.mlang); });
     renderLangUI();
   };
@@ -195,7 +210,7 @@ function i18nSuggest() {
   const yes = { en: "Switch to English", pt: "Mudar para português", pl: "Przełącz na polski", uk: "Перейти на українську" }[nav];
   const d = document.createElement("div");
   d.className = "langhint"; d.setAttribute("translate", "no"); d.setAttribute("role", "dialog"); d.setAttribute("lang", nav);
-  d.innerHTML = `${ic("globe", "sm")}<span>${hello}</span><button class="btn sm primary" id="lhYes">${yes}</button><button class="icon-btn" id="lhNo" aria-label="×">${ic("x", "sm")}</button>`;
+  d.innerHTML = `${flag(nav)}<span>${hello}</span><button class="btn sm primary" id="lhYes">${yes}</button><button class="icon-btn" id="lhNo" aria-label="×">${ic("x", "sm")}</button>`;
   document.body.appendChild(d);
   const done = () => { store.set("langAsked", true); d.classList.add("out"); setTimeout(() => d.remove(), 300); };
   $("#lhYes").onclick = () => { done(); setLang(nav); };

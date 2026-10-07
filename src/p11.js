@@ -77,7 +77,7 @@ function quickBid(id, amount) {
 /* ---------- header: role aware ---------- */
 NAV.length = 0;
 NAV.push(["#/", "Inicio", "home"], ["#/subastas", "Subastas", "gavel"], ["#/mercado", "Mercado", "store"],
-  ["#/contrato", "Contrato", "doc"], ["#/precios", "Precios", "euro"], ["#/empresa", "Empresa", "building"]);
+  ["#/precios", "Precios", "euro"], ["#/empresa", "Empresa", "building"], ["#/contrato", "Contrato", "doc"]);
 function renderHeader(path) {
   const liveN = lots.filter(l => statusOf(l) === "live").length;
   const soonN = lots.filter(l => statusOf(l) === "soon").length;
