@@ -241,6 +241,6 @@ async function pubUploadPhotos(v) {
     const host = $(".mkd-ok") || $(".mkd-feat") || $(".specs"); if (!host || $(".vinrow")) return;
     if (!S.user) { host.insertAdjacentHTML("afterend", `<div class="vinrow">${ic("lock", "sm")}<span>VIN <b class="mono">•••••••••••••••••</b></span><a class="link" href="#/login?next=${encodeURIComponent("#/mercado/" + m[1])}">Inicia sesión para verlo</a></div>`); return; }
     if (!live()) return;
-    try { const { data } = await sb.rpc("listing_vin", { p_listing: m[1] }); if (data && !$(".vinrow")) { host.insertAdjacentHTML("afterend", `<div class="vinrow">${ic("search", "sm")}<span>VIN <b class="mono" translate="no">${esc(data)}</b></span><button type="button" class="link" data-copy-vin>Copiar</button></div>`); const cb = $("[data-copy-vin]"); if (cb) cb.onclick = () => { try { navigator.clipboard.writeText(data); toast("VIN copiado", "check"); } catch (e) {} }; } } catch (e) {}
+    try { const { data } = await sb.rpc("listing_vin", { p_listing: m[1] }); if (data && !$(".vinrow")) { host.insertAdjacentHTML("afterend", `<div class="vinrow">${ic("search", "sm")}<span>VIN <b class="mono" translate="no">${esc(data)}</b></span><a class="link" href="https://vincheckspain.com/?vin=${encodeURIComponent(data)}" target="_blank" rel="noopener">Comprobar historial ${ic("right", "sm")}</a></div>`); } } catch (e) {}
   });
 })();

@@ -276,9 +276,9 @@ async function sbPublishVehicle() {
   const row = { seller_id: S.user.id, make: PUB.make || "Vehículo", model: PUB.model || "", year: PUB.year || new Date().getFullYear(), km: PUB.km || 0,
     category: PUB.cat, title: PUB.title, panels: PUB.panels, vin: PUB.vin || null, plate: PUB.noPlate ? null : (PUB.plate || null), no_plate: !!PUB.noPlate,
     fuel: PUB.fuel || null, transmission: PUB.trans || null, description: PUB.desc || null,
-    city: PUB.city || S.user.city, province: PUB.prov || S.user.city, photos: [], status: PUB.type === "mercado" ? "mercado" : "revision" };
+    city: PUB.city || S.user.city, province: PUB.prov || S.user.city, photos: [], status: PUB.type === "mercado" ? "mercado" : "revision", country: PUB.cc === "PT" ? "PT" : "ES" };
   let r = await sb.from("vehicles").insert(row).select("id, status").single();
-  if (r.error && /no_plate|column/i.test(r.error.message)) { delete row.no_plate; r = await sb.from("vehicles").insert(row).select("id, status").single(); }
+  if (r.error && /no_plate|country|column/i.test(r.error.message)) { if (/country/i.test(r.error.message)) delete row.country; else delete row.no_plate; r = await sb.from("vehicles").insert(row).select("id, status").single(); }
   if (r.error) {
     const msg = /YA_PUBLICADO:subasta/.test(r.error.message) ? "Este vehículo ya está en una subasta: no puede publicarse también en el Mercado."
       : /YA_PUBLICADO/.test(r.error.message) ? "Este vehículo (VIN o matrícula) ya está publicado." : /VIN_/.test(r.error.message) ? "El VIN es obligatorio." : /MATRICULA/.test(r.error.message) ? "La matrícula es obligatoria." : "No se pudo guardar: " + r.error.message;

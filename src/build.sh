@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "$0")"
 OUT="../public/index.html"
 TMP="${TMPDIR:-/tmp}/ms-all2-$$.js"
-LAYERS="all.js p6.js p7.js p8.js p9.js p10.js p11.js p12.js p13.js p14.js p15.js p16.js p17.js p18.js p20.js p21.js p22.js p23.js p24.js p25.js p26.js p27.js p28.js p29.js p19.js"
+LAYERS="all.js p6.js p7.js p8.js p9.js p10.js p11.js p12.js p13.js p14.js p15.js p16.js p17.js p18.js p20.js p21.js p22.js p23.js p24.js p25.js p26.js p27.js p28.js p29.js p30.js p19.js"
 
 cat $LAYERS > "$TMP"
 node --check "$TMP"
