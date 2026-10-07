@@ -11565,6 +11565,9 @@ var MKC = {
 function ccOf(m) { return (m && (m.ctry || m.country)) === "PT" ? "PT" : "ES"; }
 function ccFlag(cc) { return flag(cc === "PT" ? "pt" : "es"); }
 
+/* Portugal queda preparado pero APAGADO hasta lanzar España: se enciende con app_settings.portugal = true */
+function ptOn() { return !!(window.APP_SETTINGS && window.APP_SETTINGS.portugal === true); }
+
 /* mercado que está mirando el visitante: ?pais= → elección guardada → país/idioma/zona horaria */
 var MK_CC = null;
 function mkGuessCC() {
@@ -11574,7 +11577,7 @@ function mkGuessCC() {
   if (/^(Europe\/Lisbon|Atlantic\/Azores|Atlantic\/Madeira)$/.test(tz)) return "PT";
   return typeof LANG !== "undefined" && LANG === "pt" ? "PT" : "ES";
 }
-function mkCC() { return MK_CC || (MK_CC = store.get("mkcc", null) || mkGuessCC()); }
+function mkCC() { if (!ptOn()) return "ES"; return MK_CC || (MK_CC = store.get("mkcc", null) || mkGuessCC()); }
 function mkSetCC(cc, remember) { MK_CC = ["ES", "PT", "ALL"].includes(cc) ? cc : "ES"; if (remember !== false) store.set("mkcc", MK_CC); }
 function mkCCLabel(cc) { return cc === "ALL" ? "en España y Portugal" : MKC[cc].en; }
 
@@ -11584,7 +11587,7 @@ function mkCCLabel(cc) { return cc === "ALL" ? "en España y Portugal" : MKC[cc]
   if (!/^https?:/.test(location.protocol) || /^(localhost|127\.)/.test(location.hostname)) return;
   fetch("/api/geo").then(r => r.ok ? r.json() : null).then(d => {
     if (!d || !d.cc) return; window.__geo = d.cc; try { sessionStorage.setItem("ms_geo", d.cc); } catch (e) {}
-    if (!store.get("mkcc", null) && !MK_CC_LOCKED) { const was = mkCC(); MK_CC = null; if (mkCC() !== was && /^\/mercado$/.test(route().path)) router(); }
+    if (ptOn() && !store.get("mkcc", null) && !MK_CC_LOCKED) { const was = mkCC(); MK_CC = null; if (mkCC() !== was && /^\/mercado$/.test(route().path)) router(); }
   }).catch(() => {});
 })();
 var MK_CC_LOCKED = false;
@@ -11636,6 +11639,7 @@ function ptLaunchNote() {
 (function patchMarketView() {
   const v = viewMarket;
   viewMarket = function () {
+    if (!ptOn()) return v.apply(this, arguments);
     const cc = mkCC();
     let h = v.apply(this, arguments);
     h = h.replace("<h1>Vehículos en venta</h1>", `<h1>Vehículos en venta <span class="mkh-cc">${mkCCLabel(cc)}</span></h1>`)
@@ -11704,7 +11708,7 @@ patchRoute(/^\/mercado\/([\w-]+)$/, (q, mm) => {
       <div class="kv total"><span>Coste total estimado</span><span class="tnum">${eur(m.price + reg)}</span></div>
       <small class="faint">En Portugal no hay impuesto de transmisión: el comprador paga el registro de propiedad (plazo de 15 días) y el IUC anual. Sin comisiones de MotorSubasta.</small>`;
   }
-  const viewerPT = mkCC() === "PT" || window.__geo === "PT" || (typeof LANG !== "undefined" && LANG === "pt");
+  const viewerPT = ptOn() && (mkCC() === "PT" || window.__geo === "PT" || (typeof LANG !== "undefined" && LANG === "pt"));
   if (cc === "ES" && viewerPT && !$(".ccimp")) {
     const qs = new URLSearchParams({ t: "isv", p: m.price, y: m.firstReg ? String(m.firstReg).slice(0, 7) : m.year + "-01", f: /di[eé]sel|gas[oó]leo/i.test(m.fuel) ? "d" : /el[eé]ctrico/i.test(m.fuel) ? "ev" : /h[ií]brido/i.test(m.fuel) ? "hev" : "g", c: m.cc || "" });
     const side = $(".mkd-side .pbox"); if (side) side.insertAdjacentHTML("afterend", `<div class="panel ccimp">${ccFlag("PT")}<div><b>¿Te lo llevas a Portugal?</b><span>Calcula el ISV, la legalización y el coste final con matrícula portuguesa.</span></div><a class="btn sm" href="#/herramientas?${qs}">${ic("euro", "sm")}Calcular ISV</a></div>`);
@@ -11716,11 +11720,13 @@ patchRoute(/^\/mercado\/([\w-]+)$/, (q, mm) => {
   const v = viewPublish;
   viewPublish = function (query) {
     if (query && query.pais && window.__pubccq !== query.pais) { window.__pubccq = query.pais; PUB.cc = String(query.pais).toUpperCase() === "PT" ? "PT" : "ES"; }
-    if (!PUB.cc) PUB.cc = mkCC() === "PT" ? "PT" : "ES";
+    if (!PUB.cc || !ptOn()) PUB.cc = mkCC() === "PT" ? "PT" : "ES";
     const C = MKC[PUB.cc];
     let h = v.apply(this, arguments);
     if (PUB.step !== 0) return h;
     const regs = C.regs, cur = regs.includes(PUB.prov) ? PUB.prov : "";
+    if (!ptOn()) return h.replace(/<div class="field"><label for="pProv">Provincia \*<\/label><select class="in" id="pProv">[\s\S]*?<\/select><\/div>/,
+      `<div class="field"><label for="pProv">Provincia *</label><select class="in" id="pProv"><option value="" ${cur ? "" : "selected"} disabled>Elige provincia</option>${regs.map(p => `<option ${cur === p ? "selected" : ""}>${p}</option>`).join("")}</select></div>`);
     h = h.replace(/<div class="field"><label for="pProv">Provincia \*<\/label><select class="in" id="pProv">[\s\S]*?<\/select><\/div>/,
       `<div class="field pubcc"><label>País del vehículo *</label><div class="ccpick" role="radiogroup" aria-label="País del vehículo">${["ES", "PT"].map(k => `<button type="button" role="radio" aria-checked="${PUB.cc === k}" class="${PUB.cc === k ? "on" : ""}" data-pcc="${k}">${ccFlag(k)}<span>${MKC[k].name}</span></button>`).join("")}</div></div>
        <div class="field"><label for="pProv">${C.reg} *</label><select class="in" id="pProv"><option value="" ${cur ? "" : "selected"} disabled>Elige ${C.reg.toLowerCase()}</option>${regs.map(p => `<option ${cur === p ? "selected" : ""}>${p}</option>`).join("")}</select></div>`)
@@ -11858,6 +11864,7 @@ function isvMount() {
 (function patchTools() {
   const v = viewTools;
   viewTools = function (q) {
+    if (!ptOn()) { const t0 = toolsState(); if (t0.tab === "isv") t0.tab = "itp"; if (q && q.t === "isv") q = Object.assign({}, q, { t: "itp" }); return v.call(this, q); }
     const t = toolsState(); if (q && q.t) t.tab = q.t;
     if (q && q.t === "isv") { const s = isvState(); if (q.p) s.price = +q.p || s.price; if (q.y && /^\d{4}-\d{2}$/.test(q.y)) s.reg = q.y; if (q.f && ["g", "d", "hev", "phev", "ev"].includes(q.f)) { s.fuel = q.f; s.dpf = q.f === "d"; } if (q.c) s.cc = +q.c || s.cc; s.norm = ""; }
     if (t.tab !== "isv") return v.apply(this, arguments).replace(/(<div class="seg tltabs" id="tlTabs">[\s\S]*?)(<\/div>)/, `$1<button class="" data-v="isv">${ccFlag("PT")}Importar a Portugal</button>$2`);
@@ -11868,15 +11875,16 @@ function isvMount() {
     return head + tabs + isvView() + "</div>";
   };
   const m = mountTools;
-  mountTools = function () { const t = toolsState(); if (t.tab === "isv") { $$("#tlTabs button").forEach(b => b.onclick = () => { t.tab = b.dataset.v; location.hash = "#/herramientas?t=" + t.tab; }); isvMount(); return; } return m.apply(this, arguments); };
+  mountTools = function () { const t = toolsState(); if (ptOn() && t.tab === "isv") { $$("#tlTabs button").forEach(b => b.onclick = () => { t.tab = b.dataset.v; location.hash = "#/herramientas?t=" + t.tab; }); isvMount(); return; } return m.apply(this, arguments); };
 })();
 
 /* ---------- consola: país en vehículos y sección España y Portugal ---------- */
 (function admCountries() {
-  const g = ADM_NAV.find(x => x[0] === "General"); if (g && !g[1].some(x => x[0] === "paises")) g[1].splice(2, 0, ["paises", "España y Portugal", "globe"]);
+  const g = ADM_NAV.find(x => x[0] === "General"); if (ptOn() && g && !g[1].some(x => x[0] === "paises")) g[1].splice(2, 0, ["paises", "España y Portugal", "globe"]);
   /* lista de vehículos: filtro por país */
   const R = ADM_R.vehiculos, rv = R.view;
   R.view = function (d, q, m) {
+    if (!ptOn()) return rv.call(this, d, q, m);
     const f = ADM.f.vcc || "all", veh = d.veh || [];
     const n = { ES: veh.filter(v => ccOf(v) === "ES").length, PT: veh.filter(v => ccOf(v) === "PT").length };
     const dd = f === "all" ? d : Object.assign({}, d, { veh: veh.filter(v => ccOf(v) === f) });
@@ -11888,7 +11896,7 @@ function isvMount() {
   const E = ADM_R.vehiculo, eb = E.bind;
   E.bind = function (d, q, m, draw) {
     eb.apply(this, arguments);
-    const side = $(".adm-ed-side"); if (!side || d.isNew || !d.v || !d.v.id || $("#eCC")) return;
+    const side = $(".adm-ed-side"); if (!ptOn() || !side || d.isNew || !d.v || !d.v.id || $("#eCC")) return;
     const cc = ccOf(d.v);
     side.insertAdjacentHTML("afterbegin", `<div class="panel adm-p adm-cc"><div class="adm-ph"><h3>${ic("globe", "sm")}País</h3></div><div class="ccpick" id="eCC">${["ES", "PT"].map(k => `<button type="button" class="${cc === k ? "on" : ""}" data-ecc="${k}">${ccFlag(k)}<span>${MKC[k].name}</span></button>`).join("")}</div><small class="faint">Decide en qué Mercado aparece el anuncio.</small></div>`);
     $$("[data-ecc]").forEach(b => b.onclick = async () => {
@@ -11958,7 +11966,7 @@ function isvMount() {
 
 /* ---------- inicio: aviso para visitantes de Portugal ---------- */
 patchRoute(/^\/$/, () => {
-  const viewerPT = mkCC() === "PT" || window.__geo === "PT" || (typeof LANG !== "undefined" && LANG === "pt");
+  const viewerPT = ptOn() && (mkCC() === "PT" || window.__geo === "PT" || (typeof LANG !== "undefined" && LANG === "pt"));
   if (!viewerPT || $(".ptbar")) return;
   const em = $("#app h1 em"); if (em && /España/.test(em.textContent)) em.textContent = "España y Portugal";
   const h = $("#app .hero") || $("#app section"); if (!h) return;
