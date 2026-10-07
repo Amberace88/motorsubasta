@@ -1919,6 +1919,22 @@ ol.adm-top img{width:46px;height:34px;object-fit:cover;border-radius:7px;flex:no
 @media (max-width:720px){.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media (max-width:1100px){.adm-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}.adm-nav::-webkit-scrollbar{display:none}.adm-find{flex:0 0 210px}.adm-g a{flex:none;white-space:nowrap}.adm-g a span:not(.adm-b){flex:none}}
+
+/* ---------- v21: archivo y confirmación ---------- */
+.conf-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;margin-bottom:14px;border-radius:13px;border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);background:var(--warn-soft);font-size:13px}.conf-bar>span{flex:1;min-width:220px}.conf-bar>.i{color:var(--warn)}
+.conf-card.stale{border-color:color-mix(in srgb,var(--warn) 45%,var(--line));background:linear-gradient(160deg,var(--warn-soft),var(--surface) 60%)}
+.conf-card.arch{border-color:var(--line-2);background:linear-gradient(160deg,var(--surface-2),var(--surface))}
+.conf-card h3{display:flex;align-items:center;gap:7px}
+.conf-arch-banner{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:13px;background:var(--surface-2);border:1px dashed var(--line-2);font-size:13.5px;color:var(--muted)}
+.arch-rs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.arch-r{position:relative;cursor:pointer}.arch-r input{position:absolute;opacity:0}
+.arch-r span{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:1px solid var(--line-2);font-size:13px;transition:border-color .2s,background .2s}
+.arch-r input:checked+span{border-color:var(--accent);background:var(--accent-soft)}.arch-r input:focus-visible+span{box-shadow:0 0 0 3px var(--accent-soft)}
+.conf-seller{margin:0 0 16px;padding:16px;border-color:color-mix(in srgb,var(--warn) 40%,var(--line))}
+.conf-seller .cs-h{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}.conf-seller h3{font-size:16px;margin:0}.conf-seller .cs-h p{margin:3px 0 0;font-size:13px}
+.cs-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}.cs-row img{width:64px;height:46px;object-fit:cover;border-radius:8px;flex:none}
+.cs-row>div:nth-child(2){flex:1;min-width:0;display:grid}.cs-row small{color:var(--faint);font-size:12px}.cs-a{display:flex;gap:6px;flex-wrap:wrap}
+@media (max-width:640px){.arch-rs{grid-template-columns:1fr}.cs-row{flex-wrap:wrap}.cs-a{width:100%}}
 </style>
 
 <div id="prog"></div>
