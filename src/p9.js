@@ -11,7 +11,7 @@ function viewLot(id) {
   const others = lots.filter(x => x.id !== id).sort((a, b) => a.startsAt - b.startsAt).slice(0, 4);
   const sc = scoreOf(l.panels), damaged = PANELS.filter(([k]) => l.panels[k]);
   const spec = [["Marca", l.make], ["Modelo", l.model], ["Año", l.year], ["Primera matriculación", l.firstReg],
-    ["VIN", locked ? "•••••••••••••••••" : l.vin], ["Kilometraje", num(l.km) + " km"], ["Tipo de carrocería", l.body], ["Cilindrada", num(l.cc) + " cc"],
+    ["VIN", roleIs("admin") && l.vin && l.vin !== "—" ? l.vin : "Se facilita al adjudicatario"], ["Kilometraje", num(l.km) + " km"], ["Tipo de carrocería", l.body], ["Cilindrada", num(l.cc) + " cc"],
     ["Combustible", l.fuel], ["Transmisión", l.trans], ["Potencia", l.cv + " CV"], ["Plazas", l.seats],
     ["Documentación", docLabel(l.titleSt || (l.cat === "siniestro" ? "salvamento" : "limpio"))], ["Nivel de daños", ["Ninguno", "Leve", "Moderado", "Grave"][Math.min(3, Math.floor((100 - sc) / 25))]],
     ["Categoría", c.short], ["Tipo de vendedor", l.sellerType], ["En marcha", l.runs ? "Sí" : "No"], ["Llaves", l.keys ? "Sí" : "No"]];

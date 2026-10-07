@@ -79,7 +79,7 @@ const AUCTION_SELECT = `id, session, starts_at, ends_at, start_price, reserve_pr
   featured, status, views, final_price,
   top_bid, second_bid, counter_price, decision, decision_deadline,
   vehicles ( make, model, year, km, fuel, transmission, body_type, power_cv, displacement, seats,
-             vin, first_reg, category, title, panels, runs, has_keys, photos, city, province, seller_kind ),
+             first_reg, category, title, panels, runs, has_keys, photos, city, province, seller_kind ),
   bids ( id, bidder_alias, amount, is_auto, created_at )`;
 
 async function sbLoadInventory() {

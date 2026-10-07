@@ -1950,6 +1950,32 @@ ol.adm-top img{width:46px;height:34px;object-fit:cover;border-radius:7px;flex:no
 .bl:focus-visible{outline:2px solid var(--accent-line);outline-offset:-4px;border-radius:12px}
 @media (prefers-reduced-motion:reduce){.brandl-track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}.brandl-row{-webkit-mask-image:none;mask-image:none}.brandl-track .bl[aria-hidden]{display:none}}
 @media (max-width:640px){.bl{width:86px;height:66px}.bl i{width:32px;height:32px}}
+/* ---------- v23: matrículas ocultas y subida de fotos ---------- */
+.modal.modal-xl{width:min(1080px,100%)}
+.pl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;max-height:58vh;overflow:auto;padding:2px}
+.pl-it{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface-2)}
+.pl-cv{aspect-ratio:4/3;display:grid;place-items:center;background:#111;overflow:hidden}
+.pl-cv img,.pl-cv canvas{width:100%;height:100%;object-fit:contain;display:block}
+.pl-cv canvas{cursor:crosshair;touch-action:none}
+.pl-it figcaption{padding:8px 10px;font-size:12.5px}.pl-it figcaption label{display:flex;gap:7px;align-items:center;cursor:pointer}
+.pl-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;bottom:-18px;background:var(--surface);padding:12px 0 2px;border-top:1px solid var(--line)}
+.pl-prog{display:grid;gap:8px}
+.pl-bar{height:8px;border-radius:6px;background:var(--surface-3);overflow:hidden}
+.pl-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#f0a35e);border-radius:6px;transition:width .35s cubic-bezier(.22,.9,.3,1)}
+.pl-prog small{font-size:13px;color:var(--muted);line-height:1.55}.pl-prog .bad{color:var(--bad,#d04545)}.pl-prog .warn{color:var(--warn,#c98a12)}
+.pph{display:grid;gap:12px}
+.pph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+.pph-grid figure{position:relative;margin:0;aspect-ratio:4/3;border-radius:11px;overflow:hidden;background:var(--surface-2);cursor:grab;animation:revIn .3s cubic-bezier(.22,.9,.3,1) both}
+.pph-grid figure img{width:100%;height:100%;object-fit:cover;display:block}
+.pph-grid figure .chip{position:absolute;left:6px;top:6px;font-size:11px}
+.pph-x{position:absolute;right:6px;top:6px;width:26px;height:26px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;opacity:.85;transition:opacity .2s,transform .2s}
+.pph-x:hover{opacity:1;transform:scale(1.08)}
+.pph-add{cursor:pointer;grid-column:1/-1;padding:22px}
+.pph-grid figure~.pph-add{grid-column:auto;aspect-ratio:4/3;padding:10px;font-size:12.5px}.pph-grid figure~.pph-add span{display:none}
+.pph-add.over{border-color:var(--accent);background:var(--accent-soft)}
+.pph-blur{margin-top:0;padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+.pph-blur>span:last-child{display:grid;gap:2px}.pph-blur small{color:var(--muted);font-size:12.5px}
+.pph-blur input:disabled+.toggle-ui{opacity:.75}
 </style>
 
 <div id="prog"></div>

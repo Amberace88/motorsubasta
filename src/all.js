@@ -488,7 +488,7 @@ function viewLot(id) {
         <div><small>Marca</small><b>${l.make}</b></div><div><small>Modelo</small><b>${l.model}</b></div><div><small>Año</small><b>${l.year}</b></div>
         <div><small>Kilometraje</small><b class="tnum">${num(l.km)} km</b></div><div><small>Combustible</small><b>${l.fuel}</b></div><div><small>Transmisión</small><b>${l.trans}</b></div>
         <div><small>Carrocería</small><b>${l.body}</b></div><div><small>Potencia</small><b>${l.cv} CV</b></div><div><small>Matrícula</small><b><span class="plate"><i>E</i><span>${l.plate}</span></span></b></div>
-        <div><small>VIN</small><b class="mono" style="font-size:12.5px">${locked ? "•••••••••••••••••" : l.vin}</b></div><div><small>Llaves</small><b>${l.keys ? "Sí, 1 juego" : "Sin llaves"}</b></div><div><small>Arranca y circula</small><b>${l.runs ? "Sí" : "No"}</b></div>
+        <div><small>VIN</small><b style="font-size:12.5px">Se facilita al adjudicatario</b></div><div><small>Llaves</small><b>${l.keys ? "Sí, 1 juego" : "Sin llaves"}</b></div><div><small>Arranca y circula</small><b>${l.runs ? "Sí" : "No"}</b></div>
       </div>
 
       <h2 class="h-sec">${ic("wrench")}Condición por panel</h2>
@@ -772,8 +772,8 @@ function viewPublish(query) {
       <div class="field"><label>Conducción</label><div class="pills"><button type="button" class="pill on">Funciona y conduce</button><button type="button" class="pill">Solo arranca</button><button type="button" class="pill">Necesita grúa</button></div></div>
       <div class="field"><label>Airbags</label><div class="pills"><button type="button" class="pill on">No desplegados</button><button type="button" class="pill">Desplegados</button><button type="button" class="pill">Faltantes</button></div></div>
       <div class="field"><label>Urgencia de venta</label><div class="pills"><button type="button" class="pill">Inmediata</button><button type="button" class="pill on">7 días</button><button type="button" class="pill">Sin prisa</button></div></div></div></div>`,
-    `<div class="panel" style="display:grid;gap:16px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Fotos del vehículo</h3><span class="chip bad" id="phCount">0/9 mínimo</span></div>
-      <div class="drop">${ic("upload", "lg")}<b>Arrastra las fotos aquí</b><span style="font-size:13px">Mínimo 9: frontal, trasera, laterales, interior, cuadro, motor y daños</span><button type="button" class="btn sm" id="phAdd">Añadir fotos de ejemplo</button></div>
+    `<div class="panel" style="display:grid;gap:16px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Fotos del vehículo</h3><span class="chip bad" id="phCount">Sin fotos</span></div>
+      ${pubPhotosBlock()}
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Descripción</h3><button type="button" class="btn sm" id="genDesc">${ic("spark", "sm")}Generar descripción</button></div>
       <textarea class="in" id="pDesc" style="min-height:160px" placeholder="Condición, daños, reparaciones necesarias, historial…"></textarea></div>`,
     `<div class="panel" style="display:grid;gap:16px"><h3 style="margin:0">Tipo de publicación</h3>
