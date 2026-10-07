@@ -119,3 +119,13 @@ Vienkāršākais: atver https://app.netlify.com/drop un uzmet tur `motorsubasta-
 están aplicados. pg_cron `motorsubasta-tick` cada 5 min ejecuta `demo_roll_auctions()` y `close_due_auctions()`.
 Antes del lanzamiento real, quitar la demo: `select cron.unschedule('motorsubasta-tick');` y volver a programar
 solo `select public.close_due_auctions();`.
+
+### v16–v17 (cuentas, Mercado, captación)
+- **Cuentas de prueba**: solo Comprador, Vendedor y Admin. Paneles con secciones separadas *Subastas* y *Mercado*.
+- **Mercado**: filtros, cuadrícula/lista, comparador de hasta 3 (`#/mercado/comparar`), ficha completa, ofertas reales (tabla `offers`).
+- **Contacto**: cada usuario elige teléfono / WhatsApp / email / plataforma (`profiles.contact_prefs`), visible solo con sesión iniciada (`listing_contact()`).
+- **Subastas anónimas**: el público solo ve `vehicles.seller_kind`; la recogida (`vehicle_pickup`) solo la ve el ganador pagado (`pickup_for_order()`).
+- **Reglas**: VIN obligatorio, matrícula obligatoria salvo `no_plate`; un vehículo activo no se repite y no puede estar a la vez en Mercado y Subasta (triggers en `08-cuentas.sql`).
+- **Captación**: `#/herramientas` (ITP, VIN), `#/venta-rapida` (tabla `car_leads`), `#/exportar`, `#/vender/importar` (CSV), compartir con imagen, búsquedas guardadas (`search_alerts`), páginas SEO estáticas en `public/` + `sitemap.xml`. Regenerar con `gen-seo.js`.
+- **Planes**: Comprador Pro −5 % / Dealer −10 % de comisión; vendedor 3 % / 2 % / 1,5 %. Dealer: 2 informes DGT al mes.
+- Aplicado en Supabase: `07-crecimiento.sql`, `08-cuentas.sql`.
